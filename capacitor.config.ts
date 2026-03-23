@@ -32,6 +32,15 @@ const config: CapacitorConfig = {
       smallIcon: 'ic_stat_icon_config_sample',
       iconColor: '#FF6B00',
     },
+    Geolocation: {
+      // Required for delivery address auto-fill
+    },
+    Haptics: {
+      // Used for order confirmation and button feedback
+    },
+    Camera: {
+      // Used for profile avatar upload
+    },
   },
   ios: {
     contentInset: 'automatic',

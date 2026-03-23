@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
+import { Providers } from '@/components/providers/Providers'
 
 export const metadata: Metadata = {
   title: {
@@ -43,6 +44,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
+  viewportFit: 'cover',
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: '#FF6B00' },
     { media: '(prefers-color-scheme: dark)', color: '#0A0A0A' },
@@ -52,7 +54,9 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fr" suppressHydrationWarning>
-      <body className="font-sans antialiased">{children}</body>
+      <body className="font-sans antialiased bg-[var(--bg-base)] text-[var(--text-primary)]">
+        <Providers>{children}</Providers>
+      </body>
     </html>
   )
 }

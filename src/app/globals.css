@@ -419,3 +419,15 @@ html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
 }
+
+/* =============================================================================
+   PAGE TRANSITION — CSS only, no Framer Motion
+   ============================================================================= */
+@keyframes pageIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-page-in {
+  animation: pageIn 0.18s ease both;
+}
