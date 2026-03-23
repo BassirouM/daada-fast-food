@@ -1,94 +1,421 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* =============================================================================
+   DAADA FAST FOOD — Design System
+   Tailwind v4 + CSS custom properties
+   ============================================================================= */
 
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 4%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 4%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 4%;
-    --primary: 24 100% 50%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 0 0% 96%;
-    --secondary-foreground: 0 0% 10%;
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 46%;
-    --accent: 24 100% 97%;
-    --accent-foreground: 24 100% 40%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 90%;
-    --input: 0 0% 90%;
-    --ring: 24 100% 50%;
-    --radius: 0.75rem;
-  }
+@import "tailwindcss";
 
-  .dark {
-    --background: 0 0% 4%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 7%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 7%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 24 100% 50%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 0 0% 15%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 15%;
-    --muted-foreground: 0 0% 65%;
-    --accent: 24 100% 15%;
-    --accent-foreground: 24 100% 60%;
-    --destructive: 0 63% 31%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 15%;
-    --input: 0 0% 15%;
-    --ring: 24 100% 50%;
-  }
+/* Self-hosted variable fonts */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/inter-variable.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+    U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-    font-feature-settings: 'rlig' 1, 'calt' 1;
-  }
+@font-face {
+  font-family: 'Syne';
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url('/fonts/syne-variable.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+    U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-/* Mobile-first PWA styles */
+/* =============================================================================
+   THEME — Tailwind v4 CSS variable theme
+   ============================================================================= */
+@theme {
+  /* Fonts */
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Syne', ui-sans-serif, system-ui, sans-serif;
+
+  /* Brand colors */
+  --color-brand-orange: #FF6B00;
+  --color-brand-orange-light: #FF8C38;
+  --color-brand-orange-dark: #CC5500;
+  --color-brand-black: #0A0A0A;
+  --color-brand-black-soft: #1A1A1A;
+  --color-brand-gray-dark: #2A2A2A;
+  --color-brand-gray-mid: #4A4A4A;
+  --color-brand-gray-light: #8A8A8A;
+  --color-brand-cream: #FFF8F3;
+
+  /* Radii */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 0.875rem;
+  --radius-xl: 1.25rem;
+  --radius-2xl: 1.75rem;
+  --radius-full: 9999px;
+
+  /* Spacing */
+  --spacing-safe-bottom: env(safe-area-inset-bottom, 0px);
+  --spacing-safe-top: env(safe-area-inset-top, 0px);
+}
+
+/* =============================================================================
+   CSS CUSTOM PROPERTIES — Dark/Light mode (no runtime JS)
+   ============================================================================= */
+:root {
+  color-scheme: dark;
+
+  /* Backgrounds */
+  --bg-base: #0A0A0A;
+  --bg-surface: #141414;
+  --bg-elevated: #1E1E1E;
+  --bg-overlay: #252525;
+  --bg-input: #1A1A1A;
+
+  /* Text */
+  --text-primary: #FFFFFF;
+  --text-secondary: #A0A0A0;
+  --text-muted: #5A5A5A;
+  --text-inverse: #0A0A0A;
+
+  /* Brand */
+  --brand: #FF6B00;
+  --brand-light: #FF8C38;
+  --brand-dark: #CC5500;
+  --brand-subtle: rgba(255, 107, 0, 0.12);
+  --brand-glow: rgba(255, 107, 0, 0.25);
+
+  /* Borders */
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.15);
+  --border-brand: rgba(255, 107, 0, 0.4);
+
+  /* Status */
+  --success: #22C55E;
+  --success-subtle: rgba(34, 197, 94, 0.12);
+  --warning: #F59E0B;
+  --warning-subtle: rgba(245, 158, 11, 0.12);
+  --danger: #EF4444;
+  --danger-subtle: rgba(239, 68, 68, 0.12);
+  --info: #3B82F6;
+  --info-subtle: rgba(59, 130, 246, 0.12);
+
+  /* Glass */
+  --glass-bg: rgba(255, 255, 255, 0.04);
+  --glass-bg-hover: rgba(255, 255, 255, 0.07);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-blur: blur(16px);
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.6);
+  --shadow-brand: 0 4px 20px rgba(255, 107, 0, 0.3);
+
+  /* Transitions */
+  --t-fast: 120ms ease;
+  --t-base: 200ms ease;
+  --t-slow: 300ms ease;
+  --t-spring: 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+[data-theme='light'] {
+  color-scheme: light;
+
+  --bg-base: #FAFAFA;
+  --bg-surface: #FFFFFF;
+  --bg-elevated: #F5F5F5;
+  --bg-overlay: #EFEFEF;
+  --bg-input: #F0F0F0;
+
+  --text-primary: #0A0A0A;
+  --text-secondary: #4A4A4A;
+  --text-muted: #8A8A8A;
+  --text-inverse: #FFFFFF;
+
+  --brand: #FF6B00;
+  --brand-light: #FF8C38;
+  --brand-dark: #CC5500;
+  --brand-subtle: rgba(255, 107, 0, 0.08);
+  --brand-glow: rgba(255, 107, 0, 0.15);
+
+  --border: rgba(0, 0, 0, 0.08);
+  --border-strong: rgba(0, 0, 0, 0.15);
+  --border-brand: rgba(255, 107, 0, 0.4);
+
+  --success: #16A34A;
+  --success-subtle: rgba(22, 163, 74, 0.1);
+  --warning: #D97706;
+  --warning-subtle: rgba(217, 119, 6, 0.1);
+  --danger: #DC2626;
+  --danger-subtle: rgba(220, 38, 38, 0.1);
+  --info: #2563EB;
+  --info-subtle: rgba(37, 99, 235, 0.1);
+
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-bg-hover: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(0, 0, 0, 0.08);
+  --glass-blur: blur(16px);
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.15);
+  --shadow-brand: 0 4px 20px rgba(255, 107, 0, 0.2);
+}
+
+/* =============================================================================
+   KEYFRAMES
+   ============================================================================= */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to   { transform: translateY(0);   opacity: 1; }
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-100%); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(100%); opacity: 0; }
+  to   { transform: translateX(0);   opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.92); opacity: 0; }
+  to   { transform: scale(1);    opacity: 1; }
+}
+
+@keyframes shimmer {
+  from { background-position: -200% 0; }
+  to   { background-position:  200% 0; }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse-brand {
+  0%, 100% { box-shadow: 0 0 0 0 var(--brand-glow); }
+  50%       { box-shadow: 0 0 0 8px transparent; }
+}
+
+@keyframes bounceIn {
+  0%   { transform: scale(0.8); opacity: 0; }
+  60%  { transform: scale(1.05); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* =============================================================================
+   ANIMATION UTILITIES
+   ============================================================================= */
+.animate-fade-in      { animation: fadeIn var(--t-base) both; }
+.animate-fade-out     { animation: fadeOut var(--t-base) both; }
+.animate-slide-up     { animation: slideUp var(--t-slow) both; }
+.animate-slide-down   { animation: slideDown var(--t-slow) both; }
+.animate-slide-right  { animation: slideInRight var(--t-slow) both; }
+.animate-scale-in     { animation: scaleIn var(--t-spring) both; }
+.animate-bounce-in    { animation: bounceIn var(--t-spring) both; }
+.animate-spin         { animation: spin 0.8s linear infinite; }
+.animate-pulse-brand  { animation: pulse-brand 1.5s ease infinite; }
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--bg-elevated) 25%,
+    var(--bg-overlay) 50%,
+    var(--bg-elevated) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+}
+
+/* =============================================================================
+   GLASSMORPHISM UTILITIES
+   ============================================================================= */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+}
+
+.glass-hover {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  transition: background var(--t-base);
+}
+.glass-hover:hover {
+  background: var(--glass-bg-hover);
+}
+
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  transition: transform var(--t-base), box-shadow var(--t-base);
+}
+.glass-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* =============================================================================
+   BASE STYLES
+   ============================================================================= */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 html {
   height: 100%;
   overflow-x: hidden;
+  /* iOS safe areas */
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 body {
   min-height: 100%;
-  /* Safe areas for iOS */
-  padding-top: env(safe-area-inset-top);
-  padding-bottom: env(safe-area-inset-bottom);
-  padding-left: env(safe-area-inset-left);
-  padding-right: env(safe-area-inset-right);
-}
-
-/* Prevent pull-to-refresh on iOS */
-body {
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Prevent bounce scroll on iOS */
   overscroll-behavior-y: none;
+  /* Prevent zoom on input focus (iOS) */
+  touch-action: manipulation;
 }
 
-/* Smooth scrolling */
+/* Minimum 320px support */
+.container {
+  width: 100%;
+  min-width: 320px;
+  max-width: 480px;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+/* =============================================================================
+   SCROLLBAR — Orange branded
+   ============================================================================= */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--brand);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--brand-light);
+}
+
+/* Firefox */
 * {
-  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--brand) transparent;
 }
 
 /* Hide scrollbar but keep functionality */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* =============================================================================
+   TYPOGRAPHY
+   ============================================================================= */
+.font-display {
+  font-family: 'Syne', ui-sans-serif, system-ui, sans-serif;
+  font-variation-settings: 'wght' 700;
 }
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+
+h1, h2, h3 {
+  font-family: 'Syne', ui-sans-serif, system-ui, sans-serif;
+  font-variation-settings: 'wght' 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+/* =============================================================================
+   FOCUS — Accessible orange ring
+   ============================================================================= */
+:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* =============================================================================
+   INTERACTIVE ELEMENTS
+   ============================================================================= */
+button, [role="button"] {
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  color: var(--brand);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* =============================================================================
+   SAFE AREA UTILITIES
+   ============================================================================= */
+.pb-safe { padding-bottom: env(safe-area-inset-bottom, 1rem); }
+.pt-safe { padding-top: env(safe-area-inset-top, 0px); }
+.mb-safe { margin-bottom: env(safe-area-inset-bottom, 1rem); }
+
+/* =============================================================================
+   MISC UTILITIES
+   ============================================================================= */
+.tap-highlight-none { -webkit-tap-highlight-color: transparent; }
+
+.brand-gradient {
+  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-light) 100%);
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.input-glow:focus {
+  box-shadow: 0 0 0 3px var(--brand-glow);
+  border-color: var(--brand);
+}
+
+/* Prevent text size adjust on rotation */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }

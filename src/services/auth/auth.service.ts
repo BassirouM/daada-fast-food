@@ -32,23 +32,32 @@ export const authService = {
   },
 
   async register(payload: RegisterPayload): Promise<{ user: User | null; error: string | null }> {
-    const { data, error } = await supabase.auth.signInWithOtp({
-      phone: payload.phone,
-    })
-
+    // Step 1: Send OTP via Supabase phone auth
+    const { error } = await supabase.auth.signInWithOtp({ phone: payload.phone })
     if (error) return { user: null, error: error.message }
 
-    // Create user profile
+    // Profile is created after OTP verification via createProfile()
+    return { user: null, error: null }
+  },
+
+  async createProfile(
+    userId: string,
+    payload: Pick<RegisterPayload, 'phone' | 'name' | 'email'>
+  ): Promise<{ user: User | null; error: string | null }> {
+    const insertData: Record<string, unknown> = {
+      id: userId,
+      phone: payload.phone,
+      name: payload.name,
+      role: 'customer',
+      is_verified: true,
+    }
+    if (payload.email !== undefined) {
+      insertData['email'] = payload.email
+    }
+
     const { data: profile, error: profileError } = await supabase
       .from('users')
-      .insert({
-        id: data.user?.id,
-        phone: payload.phone,
-        name: payload.name,
-        email: payload.email,
-        role: 'customer',
-        is_verified: true,
-      })
+      .insert(insertData)
       .select()
       .single()
 

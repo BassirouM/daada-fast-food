@@ -1,32 +1,74 @@
+'use client'
+
 import * as React from 'react'
 import { Slot } from '@radix-ui/react-slot'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
+import { Spinner } from './spinner'
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+  // Base — shared across all variants
+  [
+    'inline-flex items-center justify-center gap-2 whitespace-nowrap',
+    'font-medium text-sm leading-none',
+    'rounded-xl border border-transparent',
+    'transition-all duration-[120ms] ease-out',
+    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-base)]',
+    'disabled:pointer-events-none disabled:opacity-40',
+    'active:scale-[0.97]',
+    '-webkit-tap-highlight-color: transparent',
+    'select-none',
+  ],
   {
     variants: {
       variant: {
-        default: 'bg-brand-orange text-white hover:bg-brand-orange-dark',
-        destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
-        outline:
-          'border border-brand-orange text-brand-orange bg-transparent hover:bg-brand-orange hover:text-white',
-        secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-        ghost: 'hover:bg-accent hover:text-accent-foreground',
-        link: 'text-brand-orange underline-offset-4 hover:underline',
+        primary: [
+          'bg-[var(--brand)] text-white',
+          'hover:bg-[var(--brand-light)]',
+          'shadow-[var(--shadow-brand)]',
+          'hover:shadow-[0_6px_24px_rgba(255,107,0,0.4)]',
+        ],
+        secondary: [
+          'bg-[var(--bg-elevated)] text-[var(--text-primary)]',
+          'border-[var(--border)]',
+          'hover:bg-[var(--bg-overlay)] hover:border-[var(--border-strong)]',
+        ],
+        ghost: [
+          'bg-transparent text-[var(--text-secondary)]',
+          'hover:bg-[var(--bg-elevated)] hover:text-[var(--text-primary)]',
+        ],
+        outline: [
+          'bg-transparent text-[var(--brand)]',
+          'border-[var(--brand)]',
+          'hover:bg-[var(--brand-subtle)]',
+        ],
+        danger: [
+          'bg-[var(--danger-subtle)] text-[var(--danger)]',
+          'border-[rgba(239,68,68,0.25)]',
+          'hover:bg-[var(--danger)] hover:text-white',
+        ],
+        link: [
+          'bg-transparent text-[var(--brand)] underline-offset-4',
+          'hover:underline',
+          'h-auto p-0 rounded-none',
+        ],
       },
       size: {
-        default: 'h-10 px-4 py-2',
-        sm: 'h-9 rounded-md px-3',
-        lg: 'h-12 rounded-md px-8 text-base',
-        xl: 'h-14 rounded-md px-10 text-lg',
-        icon: 'h-10 w-10',
+        sm: 'h-9 px-3 text-xs rounded-lg',
+        md: 'h-11 px-5',
+        lg: 'h-13 px-7 text-base rounded-2xl',
+        xl: 'h-15 px-8 text-lg rounded-2xl',
+        icon: 'h-10 w-10 rounded-xl p-0',
+        'icon-sm': 'h-8 w-8 rounded-lg p-0',
+        'icon-lg': 'h-12 w-12 rounded-2xl p-0',
+      },
+      fullWidth: {
+        true: 'w-full',
       },
     },
     defaultVariants: {
-      variant: 'default',
-      size: 'default',
+      variant: 'primary',
+      size: 'md',
     },
   }
 )
@@ -35,13 +77,47 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean
+  loading?: boolean
+  leftIcon?: React.ReactNode
+  rightIcon?: React.ReactNode
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
+  (
+    {
+      className,
+      variant,
+      size,
+      fullWidth,
+      asChild = false,
+      loading = false,
+      disabled,
+      leftIcon,
+      rightIcon,
+      children,
+      ...props
+    },
+    ref
+  ) => {
     const Comp = asChild ? Slot : 'button'
+    const isDisabled = disabled ?? loading
+
     return (
-      <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />
+      <Comp
+        className={cn(buttonVariants({ variant, size, fullWidth, className }))}
+        ref={ref}
+        disabled={isDisabled}
+        aria-busy={loading}
+        {...props}
+      >
+        {loading ? (
+          <Spinner size="sm" className="text-current" />
+        ) : (
+          leftIcon
+        )}
+        {children}
+        {!loading && rightIcon}
+      </Comp>
     )
   }
 )

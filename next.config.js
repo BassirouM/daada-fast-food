@@ -12,6 +12,8 @@ const PRODUCTION_DOMAIN = process.env.NEXT_PUBLIC_APP_URL || 'https://daada-fast
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  // ESLint v10 incompatible with Next.js 14 built-in linting — run `npm run lint` separately
+  eslint: { ignoreDuringBuilds: true },
   images: {
     remotePatterns: [
       {

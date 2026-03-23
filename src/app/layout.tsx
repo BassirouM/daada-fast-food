@@ -1,19 +1,13 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter } from 'next/font/google'
 import './globals.css'
-
-const inter = Inter({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-inter',
-})
 
 export const metadata: Metadata = {
   title: {
     default: 'Daada Fast Food',
     template: '%s | Daada Fast Food',
   },
-  description: 'Livraison de nourriture rapide à Maroua, Cameroun. Commandez en ligne, payez Mobile Money.',
+  description:
+    'Livraison de nourriture rapide à Maroua, Cameroun. Commandez en ligne, payez Mobile Money.',
   keywords: ['livraison', 'nourriture', 'fast food', 'Maroua', 'Cameroun', 'mobile money'],
   authors: [{ name: 'Daada Fast Food' }],
   creator: 'Daada Fast Food',
@@ -55,16 +49,10 @@ export const viewport: Viewport = {
   ],
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fr" suppressHydrationWarning>
-      <body className={`${inter.variable} font-sans antialiased`}>
-        {children}
-      </body>
+      <body className="font-sans antialiased">{children}</body>
     </html>
   )
 }

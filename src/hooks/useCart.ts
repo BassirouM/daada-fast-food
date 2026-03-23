@@ -35,7 +35,7 @@ export function useCart() {
         menuItem,
         quantity,
         selectedOptions,
-        specialInstructions,
+        ...(specialInstructions !== undefined ? { specialInstructions } : {}),
         unitPrice,
         totalPrice,
       })

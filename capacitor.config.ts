@@ -38,10 +38,7 @@ const config: CapacitorConfig = {
     scheme: 'Daada',
   },
   android: {
-    buildOptions: {
-      keystorePath: undefined,
-      keystoreAlias: undefined,
-    },
+    // buildOptions configured at release time (keystorePath, keystoreAlias)
   },
 }
 

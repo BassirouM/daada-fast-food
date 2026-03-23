@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs'
+import { createServerClient } from '@supabase/auth-helpers-nextjs'
 
 // Routes that require authentication
 const PROTECTED_ROUTES = ['/cart', '/orders', '/profile', '/checkout']
@@ -10,7 +10,22 @@ const AUTH_ROUTES = ['/login', '/register']
 
 export async function middleware(request: NextRequest) {
   const response = NextResponse.next()
-  const supabase = createMiddlewareClient({ req: request, res: response })
+
+  const supabase = createServerClient(
+    process.env['NEXT_PUBLIC_SUPABASE_URL'] ?? '',
+    process.env['NEXT_PUBLIC_SUPABASE_ANON_KEY'] ?? '',
+    {
+      cookies: {
+        get: (name) => request.cookies.get(name)?.value,
+        set: (name, value, options) => {
+          response.cookies.set({ name, value, ...options })
+        },
+        remove: (name, options) => {
+          response.cookies.set({ name, value: '', ...options })
+        },
+      },
+    }
+  )
 
   // Refresh session if expired
   const {
@@ -38,14 +53,6 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths EXCEPT:
-     * - _next/static (static files)
-     * - _next/image (image optimization)
-     * - favicon.ico
-     * - public files (manifest, icons, sw.js)
-     * - API routes that don't need auth check
-     */
     '/((?!_next/static|_next/image|favicon.ico|icons|manifest.json|sw.js|workbox-).*)',
   ],
 }

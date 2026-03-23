@@ -22,8 +22,8 @@ export async function POST(request: NextRequest) {
     const formattedPhone = formatPhoneCM(phone)
     const supabase = createAdminClient()
 
-    const { error } = await supabase.auth.admin.generateLink({
-      type: 'phone_change',
+    // Use signInWithOtp for phone OTP (admin client bypasses rate limits)
+    const { error } = await supabase.auth.signInWithOtp({
       phone: formattedPhone,
     })
 
