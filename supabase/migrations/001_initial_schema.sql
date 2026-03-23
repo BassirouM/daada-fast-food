@@ -1,235 +1,184 @@
 -- =============================================================================
--- DAADA FAST FOOD — Initial Database Schema
--- Migration: 001_initial_schema
+-- DAADA FAST FOOD — Schéma initial complet
+-- Migration : 001_initial_schema
+-- Base de données : Supabase (PostgreSQL 15)
 -- =============================================================================
 
--- Enable necessary extensions
+-- Extensions
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-CREATE EXTENSION IF NOT EXISTS "postgis"; -- For geolocation
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
 -- =============================================================================
--- USERS
+-- USERS — Profils utilisateurs
 -- =============================================================================
 CREATE TABLE IF NOT EXISTS public.users (
-  id            UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
-  phone         TEXT UNIQUE NOT NULL,
-  email         TEXT UNIQUE,
-  name          TEXT NOT NULL,
-  avatar_url    TEXT,
-  role          TEXT NOT NULL DEFAULT 'customer'
-                  CHECK (role IN ('customer', 'admin', 'delivery_agent', 'kitchen')),
-  is_verified   BOOLEAN NOT NULL DEFAULT false,
-  created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  updated_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
+  id                    UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+  telephone             TEXT UNIQUE NOT NULL,
+  nom                   TEXT NOT NULL,
+  quartier              TEXT,
+  role                  TEXT NOT NULL DEFAULT 'customer'
+                          CHECK (role IN ('customer', 'admin', 'delivery_agent', 'kitchen')),
+  avatar_url            TEXT,
+  fcm_token             TEXT,
+  points_fidelite       INTEGER NOT NULL DEFAULT 0 CHECK (points_fidelite >= 0),
+  niveau_fidelite       TEXT NOT NULL DEFAULT 'bronze'
+                          CHECK (niveau_fidelite IN ('bronze', 'argent', 'or')),
+  adresses_sauvegardees JSONB NOT NULL DEFAULT '[]',
+  created_at            TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at            TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+COMMENT ON TABLE public.users IS 'Profils utilisateurs — liés à auth.users Supabase';
+COMMENT ON COLUMN public.users.points_fidelite IS 'Points de fidélité accumulés';
+COMMENT ON COLUMN public.users.adresses_sauvegardees IS 'JSONB : [{label, quartier, adresse_complete, latitude, longitude}]';
 
 -- =============================================================================
--- MENU
+-- MENUS — Catalogue des plats
 -- =============================================================================
-CREATE TABLE IF NOT EXISTS public.menu_categories (
-  id             UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  name           TEXT NOT NULL,
-  slug           TEXT UNIQUE NOT NULL,
-  description    TEXT,
-  image_url      TEXT,
-  display_order  INTEGER NOT NULL DEFAULT 0,
-  is_active      BOOLEAN NOT NULL DEFAULT true,
-  created_at     TIMESTAMPTZ NOT NULL DEFAULT NOW()
+CREATE TABLE IF NOT EXISTS public.menus (
+  id                UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  nom               TEXT NOT NULL,
+  description       TEXT NOT NULL DEFAULT '',
+  prix              INTEGER NOT NULL CHECK (prix >= 0),  -- en XAF (pas de décimales)
+  categorie         TEXT NOT NULL,                       -- 'Burgers', 'Poulet', 'Pizza', etc.
+  image_url         TEXT,
+  disponible        BOOLEAN NOT NULL DEFAULT true,
+  temps_preparation INTEGER NOT NULL DEFAULT 15,         -- en minutes
+  note_moyenne      NUMERIC(3, 2) NOT NULL DEFAULT 0.00 CHECK (note_moyenne BETWEEN 0 AND 5),
+  nb_commandes      INTEGER NOT NULL DEFAULT 0 CHECK (nb_commandes >= 0),
+  tags              TEXT[] NOT NULL DEFAULT '{}',        -- ex: ['épicé', 'halal', 'populaire']
+  created_at        TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
-CREATE TABLE IF NOT EXISTS public.menu_items (
-  id                          UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  category_id                 UUID NOT NULL REFERENCES public.menu_categories(id) ON DELETE RESTRICT,
-  name                        TEXT NOT NULL,
-  slug                        TEXT UNIQUE NOT NULL,
-  description                 TEXT NOT NULL DEFAULT '',
-  price                       INTEGER NOT NULL CHECK (price >= 0), -- in XAF (no decimals)
-  image_url                   TEXT,
-  is_available                BOOLEAN NOT NULL DEFAULT true,
-  is_featured                 BOOLEAN NOT NULL DEFAULT false,
-  preparation_time_minutes    INTEGER NOT NULL DEFAULT 15,
-  calories                    INTEGER,
-  tags                        TEXT[] NOT NULL DEFAULT '{}',
-  created_at                  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  updated_at                  TIMESTAMPTZ NOT NULL DEFAULT NOW()
-);
+COMMENT ON TABLE public.menus IS 'Catalogue complet des plats disponibles';
+COMMENT ON COLUMN public.menus.prix IS 'Prix en Franc CFA (XAF), sans décimales';
 
-CREATE TABLE IF NOT EXISTS public.menu_item_option_groups (
-  id              UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  menu_item_id    UUID NOT NULL REFERENCES public.menu_items(id) ON DELETE CASCADE,
-  name            TEXT NOT NULL,
-  is_required     BOOLEAN NOT NULL DEFAULT false,
-  min_selections  INTEGER NOT NULL DEFAULT 0,
-  max_selections  INTEGER NOT NULL DEFAULT 1,
-  display_order   INTEGER NOT NULL DEFAULT 0
-);
-
-CREATE TABLE IF NOT EXISTS public.menu_item_options (
+-- =============================================================================
+-- COMMANDES — Commandes clients
+-- =============================================================================
+CREATE TABLE IF NOT EXISTS public.commandes (
   id               UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  group_id         UUID NOT NULL REFERENCES public.menu_item_option_groups(id) ON DELETE CASCADE,
-  name             TEXT NOT NULL,
-  price_modifier   INTEGER NOT NULL DEFAULT 0, -- in XAF
-  is_available     BOOLEAN NOT NULL DEFAULT true
+  client_id        UUID NOT NULL REFERENCES public.users(id) ON DELETE RESTRICT,
+  livreur_id       UUID REFERENCES public.users(id) ON DELETE SET NULL,
+  statut           TEXT NOT NULL DEFAULT 'pending'
+                     CHECK (statut IN ('pending','confirmed','preparing','ready','picked_up','delivered','cancelled')),
+  adresse_livraison TEXT NOT NULL,
+  frais_livraison  INTEGER NOT NULL DEFAULT 0 CHECK (frais_livraison >= 0),
+  sous_total       INTEGER NOT NULL CHECK (sous_total >= 0),
+  total            INTEGER NOT NULL CHECK (total >= 0),
+  note_cuisinier   TEXT,                                 -- instruction spéciale pour le cuisinier
+  temps_estime     INTEGER,                              -- durée estimée en minutes
+  created_at       TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at       TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
--- =============================================================================
--- DELIVERY
--- =============================================================================
-CREATE TABLE IF NOT EXISTS public.delivery_zones (
-  id                          UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  name                        TEXT NOT NULL,
-  quartiers                   TEXT[] NOT NULL DEFAULT '{}',
-  delivery_fee                INTEGER NOT NULL CHECK (delivery_fee >= 0),
-  min_delivery_time_minutes   INTEGER NOT NULL DEFAULT 20,
-  max_delivery_time_minutes   INTEGER NOT NULL DEFAULT 45,
-  is_active                   BOOLEAN NOT NULL DEFAULT true
-);
-
-CREATE TABLE IF NOT EXISTS public.delivery_addresses (
-  id            UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  user_id       UUID NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
-  label         TEXT NOT NULL DEFAULT 'Maison',
-  address_line  TEXT NOT NULL,
-  quartier      TEXT NOT NULL,
-  ville         TEXT NOT NULL DEFAULT 'Maroua',
-  latitude      DOUBLE PRECISION NOT NULL,
-  longitude     DOUBLE PRECISION NOT NULL,
-  is_default    BOOLEAN NOT NULL DEFAULT false,
-  notes         TEXT,
-  created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
-);
+COMMENT ON TABLE public.commandes IS 'Commandes passées par les clients';
+COMMENT ON COLUMN public.commandes.statut IS 'pending → confirmed → preparing → ready → picked_up → delivered | cancelled';
 
 -- =============================================================================
--- ORDERS
+-- COMMANDE_ARTICLES — Lignes de commande
 -- =============================================================================
-CREATE TABLE IF NOT EXISTS public.orders (
-  id                      UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  order_number            TEXT UNIQUE NOT NULL,
-  customer_id             UUID NOT NULL REFERENCES public.users(id),
-  items                   JSONB NOT NULL DEFAULT '[]',
-  status                  TEXT NOT NULL DEFAULT 'pending'
-                            CHECK (status IN ('pending','confirmed','preparing','ready','picked_up','delivered','cancelled')),
-  timeline                JSONB NOT NULL DEFAULT '[]',
-  subtotal                INTEGER NOT NULL CHECK (subtotal >= 0),
-  delivery_fee            INTEGER NOT NULL DEFAULT 0,
-  discount                INTEGER NOT NULL DEFAULT 0,
-  total                   INTEGER NOT NULL CHECK (total >= 0),
-  delivery_address_id     UUID REFERENCES public.delivery_addresses(id),
-  delivery_latitude       DOUBLE PRECISION,
-  delivery_longitude      DOUBLE PRECISION,
-  delivery_agent_id       UUID REFERENCES public.users(id),
-  estimated_delivery_time TIMESTAMPTZ,
-  special_instructions    TEXT,
-  payment_id              UUID,
-  created_at              TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  updated_at              TIMESTAMPTZ NOT NULL DEFAULT NOW()
+CREATE TABLE IF NOT EXISTS public.commande_articles (
+  id           UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  commande_id  UUID NOT NULL REFERENCES public.commandes(id) ON DELETE CASCADE,
+  menu_id      UUID NOT NULL REFERENCES public.menus(id) ON DELETE RESTRICT,
+  nom          TEXT NOT NULL,         -- snapshot du nom au moment de la commande
+  quantite     INTEGER NOT NULL CHECK (quantite > 0),
+  prix_unitaire INTEGER NOT NULL CHECK (prix_unitaire >= 0)
 );
 
--- =============================================================================
--- PAYMENTS
--- =============================================================================
-CREATE TABLE IF NOT EXISTS public.payments (
-  id                        UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  order_id                  UUID NOT NULL REFERENCES public.orders(id),
-  method                    TEXT NOT NULL
-                              CHECK (method IN ('mtn_momo', 'orange_money', 'cash_on_delivery')),
-  status                    TEXT NOT NULL DEFAULT 'pending'
-                              CHECK (status IN ('pending', 'processing', 'completed', 'failed', 'refunded')),
-  amount                    INTEGER NOT NULL CHECK (amount > 0),
-  currency                  TEXT NOT NULL DEFAULT 'XAF',
-  phone_number              TEXT,
-  provider_transaction_id   TEXT,
-  provider_reference        TEXT,
-  failure_reason            TEXT,
-  initiated_at              TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  completed_at              TIMESTAMPTZ
-);
+COMMENT ON TABLE public.commande_articles IS 'Articles individuels par commande (snapshot des prix)';
 
 -- =============================================================================
--- NOTIFICATIONS
+-- PAIEMENTS
 -- =============================================================================
-CREATE TABLE IF NOT EXISTS public.notifications (
+CREATE TABLE IF NOT EXISTS public.paiements (
+  id               UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  commande_id      UUID NOT NULL REFERENCES public.commandes(id) ON DELETE RESTRICT,
+  transaction_id   TEXT UNIQUE,                          -- ID retourné par CinetPay
+  idempotency_key  TEXT UNIQUE NOT NULL,                 -- clé d'idempotence pour éviter les doublons
+  methode          TEXT NOT NULL
+                     CHECK (methode IN ('mtn_momo', 'orange_money', 'cinetpay', 'cash')),
+  montant          INTEGER NOT NULL CHECK (montant > 0),
+  statut           TEXT NOT NULL DEFAULT 'pending'
+                     CHECK (statut IN ('pending', 'processing', 'completed', 'failed', 'refunded')),
+  cinetpay_data    JSONB,                                -- réponse brute CinetPay
+  created_at       TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+COMMENT ON TABLE public.paiements IS 'Transactions de paiement (CinetPay, MTN MoMo, Orange Money, Espèces)';
+COMMENT ON COLUMN public.paiements.idempotency_key IS 'Clé unique pour éviter les doublons lors des retries';
+
+-- =============================================================================
+-- POSITIONS_LIVREURS — GPS temps réel
+-- =============================================================================
+CREATE TABLE IF NOT EXISTS public.positions_livreurs (
+  livreur_id  UUID PRIMARY KEY REFERENCES public.users(id) ON DELETE CASCADE,
+  latitude    DOUBLE PRECISION NOT NULL,
+  longitude   DOUBLE PRECISION NOT NULL,
+  disponible  BOOLEAN NOT NULL DEFAULT false,
+  updated_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+COMMENT ON TABLE public.positions_livreurs IS 'Position GPS en temps réel des livreurs (1 ligne par livreur)';
+
+-- =============================================================================
+-- AUDIT_LOG — Journal d'audit
+-- =============================================================================
+CREATE TABLE IF NOT EXISTS public.audit_log (
   id          UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  user_id     UUID NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
-  type        TEXT NOT NULL,
-  title       TEXT NOT NULL,
-  body        TEXT NOT NULL,
-  data        JSONB,
-  is_read     BOOLEAN NOT NULL DEFAULT false,
+  user_id     UUID REFERENCES public.users(id) ON DELETE SET NULL,
+  action      TEXT NOT NULL,            -- 'INSERT', 'UPDATE', 'DELETE', 'LOGIN', etc.
+  table_name  TEXT NOT NULL,
+  record_id   TEXT,
+  old_data    JSONB,
+  new_data    JSONB,
+  ip_address  INET,
   created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
-CREATE TABLE IF NOT EXISTS public.push_tokens (
-  id          UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  user_id     UUID NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
-  token       TEXT NOT NULL,
-  platform    TEXT NOT NULL CHECK (platform IN ('web', 'ios', 'android')),
-  created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  UNIQUE(user_id, token)
+COMMENT ON TABLE public.audit_log IS 'Journal immuable de toutes les modifications importantes';
+
+-- =============================================================================
+-- NOTIFICATIONS — Notifications in-app
+-- =============================================================================
+CREATE TABLE IF NOT EXISTS public.notifications (
+  id         UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id    UUID NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
+  titre      TEXT NOT NULL,
+  corps      TEXT NOT NULL,
+  type       TEXT NOT NULL
+               CHECK (type IN (
+                 'order_confirmed', 'order_preparing', 'order_ready',
+                 'order_picked_up', 'order_delivered', 'order_cancelled',
+                 'payment_success', 'payment_failed',
+                 'promotion', 'system', 'fidelite'
+               )),
+  lu         BOOLEAN NOT NULL DEFAULT false,
+  data       JSONB,                    -- données supplémentaires (order_id, etc.)
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
--- =============================================================================
--- INDEXES
--- =============================================================================
-CREATE INDEX IF NOT EXISTS idx_menu_items_category ON public.menu_items(category_id);
-CREATE INDEX IF NOT EXISTS idx_menu_items_available ON public.menu_items(is_available);
-CREATE INDEX IF NOT EXISTS idx_orders_customer ON public.orders(customer_id);
-CREATE INDEX IF NOT EXISTS idx_orders_status ON public.orders(status);
-CREATE INDEX IF NOT EXISTS idx_notifications_user ON public.notifications(user_id, is_read);
-CREATE INDEX IF NOT EXISTS idx_delivery_addresses_user ON public.delivery_addresses(user_id);
+COMMENT ON TABLE public.notifications IS 'Notifications in-app envoyées aux utilisateurs';
 
 -- =============================================================================
--- ROW LEVEL SECURITY
+-- INDEX
 -- =============================================================================
-ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.orders ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.payments ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.delivery_addresses ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.notifications ENABLE ROW LEVEL SECURITY;
-
--- Users can only see/update their own profile
-CREATE POLICY "Users can view own profile" ON public.users
-  FOR SELECT USING (auth.uid() = id);
-
-CREATE POLICY "Users can update own profile" ON public.users
-  FOR UPDATE USING (auth.uid() = id);
-
--- Orders: customers see their own orders, admins see all
-CREATE POLICY "Customers can view own orders" ON public.orders
-  FOR SELECT USING (auth.uid() = customer_id);
-
-CREATE POLICY "Customers can create orders" ON public.orders
-  FOR INSERT WITH CHECK (auth.uid() = customer_id);
-
--- Payments: users see own payments
-CREATE POLICY "Users can view own payments" ON public.payments
-  FOR SELECT USING (
-    order_id IN (SELECT id FROM public.orders WHERE customer_id = auth.uid())
-  );
-
--- Delivery addresses: users manage own addresses
-CREATE POLICY "Users manage own addresses" ON public.delivery_addresses
-  FOR ALL USING (auth.uid() = user_id);
-
--- Notifications: users see own notifications
-CREATE POLICY "Users view own notifications" ON public.notifications
-  FOR ALL USING (auth.uid() = user_id);
-
--- Public read for menu
-ALTER TABLE public.menu_categories ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.menu_items ENABLE ROW LEVEL SECURITY;
-
-CREATE POLICY "Anyone can view active categories" ON public.menu_categories
-  FOR SELECT USING (is_active = true);
-
-CREATE POLICY "Anyone can view available items" ON public.menu_items
-  FOR SELECT USING (is_available = true);
+CREATE INDEX IF NOT EXISTS idx_menus_categorie     ON public.menus(categorie);
+CREATE INDEX IF NOT EXISTS idx_menus_disponible    ON public.menus(disponible);
+CREATE INDEX IF NOT EXISTS idx_menus_note          ON public.menus(note_moyenne DESC);
+CREATE INDEX IF NOT EXISTS idx_commandes_client    ON public.commandes(client_id);
+CREATE INDEX IF NOT EXISTS idx_commandes_livreur   ON public.commandes(livreur_id);
+CREATE INDEX IF NOT EXISTS idx_commandes_statut    ON public.commandes(statut);
+CREATE INDEX IF NOT EXISTS idx_articles_commande   ON public.commande_articles(commande_id);
+CREATE INDEX IF NOT EXISTS idx_paiements_commande  ON public.paiements(commande_id);
+CREATE INDEX IF NOT EXISTS idx_notifs_user_lu      ON public.notifications(user_id, lu);
+CREATE INDEX IF NOT EXISTS idx_audit_user          ON public.audit_log(user_id);
+CREATE INDEX IF NOT EXISTS idx_audit_table         ON public.audit_log(table_name, created_at DESC);
 
 -- =============================================================================
--- FUNCTIONS
+-- TRIGGERS — updated_at automatique
 -- =============================================================================
-
--- Auto-update updated_at timestamp
 CREATE OR REPLACE FUNCTION update_updated_at()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -238,11 +187,17 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER users_updated_at BEFORE UPDATE ON public.users
+DROP TRIGGER IF EXISTS users_updated_at     ON public.users;
+DROP TRIGGER IF EXISTS commandes_updated_at ON public.commandes;
+
+CREATE TRIGGER users_updated_at
+  BEFORE UPDATE ON public.users
   FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 
-CREATE TRIGGER orders_updated_at BEFORE UPDATE ON public.orders
+CREATE TRIGGER commandes_updated_at
+  BEFORE UPDATE ON public.commandes
   FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 
-CREATE TRIGGER menu_items_updated_at BEFORE UPDATE ON public.menu_items
+CREATE TRIGGER positions_updated_at
+  BEFORE UPDATE ON public.positions_livreurs
   FOR EACH ROW EXECUTE FUNCTION update_updated_at();
