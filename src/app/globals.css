@@ -490,3 +490,40 @@ html {
 .promo-card {
   animation: promoPulse 2.2s ease-in-out infinite;
 }
+
+/* =============================================================================
+   CART — Additional keyframes
+   ============================================================================= */
+
+@keyframes badgeBounce {
+  0%   { transform: scale(1); }
+  35%  { transform: scale(1.55); }
+  60%  { transform: scale(0.88); }
+  80%  { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+@keyframes slideOutLeft {
+  from { transform: translateX(0);      opacity: 1; }
+  to   { transform: translateX(-110%);  opacity: 0; }
+}
+
+@keyframes slideInFromRight {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0); }
+}
+
+@keyframes cartImpact {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.4) rotate(-8deg); }
+  70%  { transform: scale(0.9) rotate(4deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+.animate-slide-right {
+  animation: slideInFromRight var(--t-slow) cubic-bezier(0.34, 1.1, 0.64, 1) both;
+}
+
+.cart-icon-impact {
+  animation: cartImpact 0.38s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}

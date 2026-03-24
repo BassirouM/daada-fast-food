@@ -1,10 +1,11 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useRef } from 'react'
 import Link from 'next/link'
 import { BottomSheet } from '@/components/ui/bottom-sheet'
 import { formatPrice } from '@/lib/utils'
 import { useCartStore } from '@/stores/cart.store'
+import { useFlyToCart } from '@/components/features/FlyToCartProvider'
 import type { Database } from '@/lib/supabase'
 import type { MenuItem } from '@/types/menu'
 
@@ -60,7 +61,9 @@ function Stars({ note }: { note: number }) {
 export default function PlatDetailSheet({ plat, suggestions, onClose, onSelectPlat }: PlatDetailSheetProps) {
   const [qty, setQty] = useState(1)
   const [added, setAdded] = useState(false)
-  const addItem = useCartStore((s) => s.addItem)
+  const addItem  = useCartStore((s) => s.addItem)
+  const { fly }  = useFlyToCart()
+  const addBtnRef = useRef<HTMLButtonElement>(null)
 
   const handleAdd = useCallback(() => {
     if (!plat) return
@@ -73,14 +76,16 @@ export default function PlatDetailSheet({ plat, suggestions, onClose, onSelectPl
       unitPrice: plat.prix,
       totalPrice: plat.prix * qty,
     })
-    // Light haptic on web
-    if ('vibrate' in navigator) navigator.vibrate(15)
+    // Fly-to-cart animation from button position
+    if (addBtnRef.current) {
+      fly(addBtnRef.current.getBoundingClientRect(), plat.image_url ?? undefined, catEmoji(plat.categorie))
+    }
     setAdded(true)
     setTimeout(() => {
       setAdded(false)
       onClose()
     }, 900)
-  }, [plat, qty, addItem, onClose])
+  }, [plat, qty, addItem, fly, onClose])
 
   const incQty = () => setQty(q => Math.min(q + 1, 20))
   const decQty = () => setQty(q => Math.max(q - 1, 1))
@@ -271,6 +276,7 @@ export default function PlatDetailSheet({ plat, suggestions, onClose, onSelectPl
 
         {/* Add to cart button */}
         <button
+          ref={addBtnRef}
           onClick={handleAdd}
           disabled={added}
           style={{

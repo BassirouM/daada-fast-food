@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { Bell, ShoppingCart, Search, X, Sun, Moon, User } from 'lucide-react'
 import { useAuthStore } from '@/stores/auth.store'
 import { useCartStore } from '@/stores/cart.store'
+import { useUIStore } from '@/stores/ui.store'
 import { useTheme } from '@/components/providers/ThemeProvider'
 import { Logo } from '@/components/ui/Logo'
 import { cn } from '@/lib/utils'
@@ -14,7 +15,8 @@ export function Header() {
   const [searchOpen, setSearchOpen] = useState(false)
   const searchRef = useRef<HTMLInputElement>(null)
   const { user } = useAuthStore()
-  const cartCount = useCartStore((s) => s.getItemCount())
+  const cartCount   = useCartStore((s) => s.getItemCount())
+  const openDrawer  = useUIStore((s) => s.openCartDrawer)
   const { theme, toggleTheme } = useTheme()
 
   useEffect(() => {
@@ -102,9 +104,10 @@ export function Header() {
           />
         </Link>
 
-        {/* Cart */}
-        <Link
-          href="/cart"
+        {/* Cart — opens drawer */}
+        <button
+          id="cart-icon-btn"
+          onClick={openDrawer}
           className="relative p-2 rounded-xl text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-elevated)] transition"
           aria-label={`Panier — ${cartCount} article${cartCount !== 1 ? 's' : ''}`}
         >
@@ -114,7 +117,7 @@ export function Header() {
               {cartCount > 99 ? '99+' : cartCount}
             </span>
           )}
-        </Link>
+        </button>
 
         {/* Avatar */}
         <Link href="/profile" className="ml-1 shrink-0" aria-label="Profil">
