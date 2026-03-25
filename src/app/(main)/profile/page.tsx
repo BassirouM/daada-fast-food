@@ -5,6 +5,11 @@ import { Pencil } from 'lucide-react'
 import { useAuth } from '@/hooks/useAuth'
 import { Modal, ModalFooter } from '@/components/ui/modal'
 import { cn } from '@/lib/utils'
+import {
+  OrderHistory,
+  SavedAddresses,
+  Settings,
+} from '@/components/features/profile/ProfilePart2'
 
 // ─── Types locaux ─────────────────────────────────────────────────────────────
 
@@ -517,7 +522,14 @@ export default function ProfilePage() {
         {/* 2 — Carte fidélité */}
         <FideliteCard />
 
-        {/* PARTIE 2 — Historique commandes, adresses, paramètres */}
+        {/* 3 — Historique commandes */}
+        <OrderHistory />
+
+        {/* 4 — Adresses sauvegardées */}
+        <SavedAddresses />
+
+        {/* 5 — Paramètres */}
+        <Settings />
       </div>
     </div>
   )
