@@ -44,6 +44,7 @@ function Navbar() {
         <div className="ml-auto flex flex-shrink-0 items-center gap-3">
           <nav className="hidden items-center gap-5 lg:flex">
             {[
+              { href: "/", label: "Accueil" },
               { href: "/menu", label: "Menu" },
               { href: "/cuisine", label: "Cuisine" },
               { href: "/about", label: "À propos" },
