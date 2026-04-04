@@ -244,6 +244,66 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* How it works */}
+      <section className="bg-white py-14 border-t border-gray-100">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <div className="text-center">
+            <h2
+              className="text-2xl font-bold text-gray-900 sm:text-3xl"
+              style={{ fontFamily: "Playfair Display, Georgia, serif" }}
+            >
+              Comment ça marche ?
+            </h2>
+            <p className="mt-2 text-sm text-gray-500">Recevez votre repas en 4 étapes simples</p>
+          </div>
+
+          <div className="mt-10 grid grid-cols-2 gap-6 sm:grid-cols-4">
+            {[
+              {
+                step: "01",
+                icon: "🛒",
+                title: "Choisissez",
+                desc: "Parcourez le menu et sélectionnez vos plats préférés.",
+              },
+              {
+                step: "02",
+                icon: "📱",
+                title: "Commandez",
+                desc: "Passez votre commande en quelques secondes depuis votre téléphone.",
+              },
+              {
+                step: "03",
+                icon: "💳",
+                title: "Payez",
+                desc: "Réglez facilement par Orange Money ou MTN MoMo.",
+              },
+              {
+                step: "04",
+                icon: "🛵",
+                title: "Recevez",
+                desc: "Votre repas arrive chaud chez vous en moins de 20 minutes.",
+              },
+            ].map((item, i, arr) => (
+              <div key={item.step} className="relative flex flex-col items-center text-center">
+                {/* Connector line */}
+                {i < arr.length - 1 && (
+                  <div className="absolute left-[calc(50%+2.5rem)] top-6 hidden h-0.5 w-[calc(100%-5rem)] bg-orange-100 sm:block" />
+                )}
+                {/* Icon circle */}
+                <div className="relative flex h-14 w-14 items-center justify-center rounded-full bg-orange-50 text-3xl ring-4 ring-white shadow-sm">
+                  {item.icon}
+                  <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-white">
+                    {item.step}
+                  </span>
+                </div>
+                <h3 className="mt-4 text-sm font-semibold text-gray-900">{item.title}</h3>
+                <p className="mt-1 text-xs leading-relaxed text-gray-500 max-w-[140px]">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Popular items */}
       <section className="py-14" style={{ backgroundColor: "#fffbf5" }}>
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
