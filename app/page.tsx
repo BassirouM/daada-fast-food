@@ -148,7 +148,7 @@ export default function HomePage() {
       {/* Promo strip */}
       <div className="overflow-hidden bg-primary py-2">
         <div className="flex w-max animate-promo gap-16 whitespace-nowrap text-xs font-semibold text-white">
-          {["🎉 Livraison GRATUITE dès 3 000 FCFA", "⚡ Livraison en moins de 20 min garantie", "🏆 La meilleure bouffe de Maroua", "💳 Paiement Orange Money &amp; MTN MoMo", "🛵 500+ plats livrés chaque jour"].map((msg) => (
+          {["🎉 Livraison GRATUITE dès 3 plats commandés", "⚡ Livraison en moins de 20 min garantie", "🏆 La meilleure bouffe de Maroua", "💳 Paiement Orange Money & MTN MoMo", "🛵 500+ plats livrés chaque jour"].map((msg) => (
             <span key={msg}>{msg}</span>
           ))}
         </div>
@@ -206,9 +206,7 @@ export default function HomePage() {
               className="mt-4 text-4xl font-black leading-tight text-white drop-shadow-lg sm:text-5xl lg:text-6xl"
               style={{ fontFamily: "Playfair Display, Georgia, serif" }}
             >
-              Saveurs de Maroua,
-              <br />
-              <span className="text-orange-300">livrées chez vous</span> 🍽️
+              Saveurs de Maroua, <span className="text-orange-300">livrées chez vous</span> 🍽️
             </h1>
             <p className="mt-4 max-w-md text-base text-white/85">
               Plats authentiques camerounais préparés avec amour. Commandez en ligne, payez par Mobile Money, recevez chaud.
@@ -234,7 +232,7 @@ export default function HomePage() {
 
             {/* Paiement + livraison */}
             <div className="mt-5 flex flex-wrap items-center gap-3">
-              <span className="text-xs text-white/70">🚚 Livraison <strong className="text-white">200 FCFA</strong> · Gratuit dès <strong className="text-white">3 000 FCFA</strong></span>
+              <span className="text-xs text-white/70">🚚 Livraison <strong className="text-white">500 FCFA</strong> · Gratuit dès <strong className="text-white">3 plats commandés</strong></span>
               <span className="text-white/40">|</span>
               <span className="inline-flex items-center gap-1 rounded-full bg-orange-500 px-2.5 py-0.5 text-xs font-bold text-white">OM</span>
               <span className="inline-flex items-center gap-1 rounded-full bg-yellow-400 px-2.5 py-0.5 text-xs font-bold text-gray-900">MTN</span>
@@ -255,14 +253,6 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Floating card livraison */}
-          <div className="absolute bottom-8 right-4 hidden items-center gap-3 rounded-2xl bg-white p-3 shadow-xl sm:flex">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-green-100 text-xl">🛵</div>
-            <div>
-              <div className="text-xs text-gray-500">Livraison rapide</div>
-              <div className="text-sm font-semibold text-gray-900">~15 minutes</div>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -517,7 +507,7 @@ export default function HomePage() {
               },
               {
                 q: "Combien coûtent les frais de livraison ?",
-                a: "Les frais de livraison sont de 200 FCFA. La livraison est gratuite pour toute commande supérieure à 3 000 FCFA.",
+                a: "Les frais de livraison sont de 500 FCFA. La livraison est gratuite à partir de 3 plats commandés.",
               },
               {
                 q: "Puis-je payer en espèces à la livraison ?",
@@ -556,22 +546,26 @@ export default function HomePage() {
             Commandez encore plus vite, suivez vos livraisons en temps réel
           </p>
           <div className="mt-6 flex flex-wrap justify-center gap-4">
-            {[
-              { icon: "🍎", store: "App Store" },
-              { icon: "🤖", store: "Google Play" },
-            ].map((app) => (
-              <a
-                key={app.store}
-                href="#"
-                className="flex items-center gap-3 rounded-xl border border-white/20 bg-white/10 px-5 py-3 text-white hover:bg-white/20 transition-colors"
-              >
-                <span className="text-2xl">{app.icon}</span>
-                <div className="text-left">
-                  <div className="text-xs text-gray-400">Bientôt sur</div>
-                  <div className="font-semibold">{app.store}</div>
-                </div>
-              </a>
-            ))}
+            {/* App Store */}
+            <a href="#" className="flex items-center gap-3 rounded-xl border border-white/20 bg-white/10 px-5 py-3 text-white transition-colors hover:bg-white/20">
+              <svg viewBox="0 0 24 24" className="h-7 w-7 fill-white" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+              </svg>
+              <div className="text-left">
+                <div className="text-xs text-gray-400">Bientôt sur</div>
+                <div className="font-semibold">App Store</div>
+              </div>
+            </a>
+            {/* Google Play */}
+            <a href="#" className="flex items-center gap-3 rounded-xl border border-white/20 bg-white/10 px-5 py-3 text-white transition-colors hover:bg-white/20">
+              <svg viewBox="0 0 24 24" className="h-7 w-7 fill-white" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3.18 23.76c.3.17.64.24.99.2l12.6-7.27-2.79-2.79-10.8 9.86zm-1.14-21.3c-.06.2-.04.43.04.66v18.2c0 .22.06.43.16.61l.1.1 10.2-10.2v-.24L2.04 2.46zm14.7 13.78 3.43-1.98c.98-.57.98-1.49 0-2.06l-3.43-1.98-3.07 3.01 3.07 3.01zm-16.07 8.9.1-.1 10.96-6.32-2.78-2.78L.67 22.36c-.28.26-.42.6-.4.94.02.36.18.69.4.84z"/>
+              </svg>
+              <div className="text-left">
+                <div className="text-xs text-gray-400">Bientôt sur</div>
+                <div className="font-semibold">Google Play</div>
+              </div>
+            </a>
           </div>
         </div>
       </section>
