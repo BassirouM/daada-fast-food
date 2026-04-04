@@ -1,11 +1,1 @@
-const baseConfig = require("@daada/config/tailwind");
-
-/** @type {import("tailwindcss").Config} */
-module.exports = {
-  ...baseConfig,
-  content: [
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    "../../packages/ui/src/**/*.{js,ts,jsx,tsx}",
-  ],
-};
+module.exports = {content: ["./app/**/*.{js,ts,jsx,tsx}","./components/**/*.{js,ts,jsx,tsx}"],theme: {extend: {colors: {primary: "#F97316",secondary: "#EF4444"},fontFamily: {sans: ["Inter","sans-serif"],serif: ["Playfair Display","serif"]}}},plugins: []}
