@@ -147,26 +147,10 @@ export default function HomePage() {
     <div className="flex flex-col pb-20 md:pb-0">
       {/* Hero */}
       <section className="bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
-        <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24 lg:py-32">
+        <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-9 lg:py-16">
           <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
             <div>
-              {/* Search bar — tout en haut */}
-              <form method="GET" action="/menu" className="flex items-center gap-2 rounded-2xl border border-gray-200 bg-white px-4 py-3 shadow-md focus-within:border-primary focus-within:ring-2 focus-within:ring-orange-100 transition-all">
-                <svg className="h-4 w-4 flex-shrink-0 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-                <input
-                  type="text"
-                  name="q"
-                  placeholder="Chercher un plat… Ndolé, Poulet DG, Koki…"
-                  className="flex-1 bg-transparent text-sm text-gray-700 placeholder-gray-400 outline-none"
-                />
-                <button type="submit" className="rounded-xl bg-primary px-4 py-2 text-xs font-semibold text-white hover:bg-orange-600 transition-colors">
-                  Chercher
-                </button>
-              </form>
-
-              <div className="mt-5 flex flex-wrap items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <span className="inline-flex items-center gap-2 rounded-full bg-orange-100 px-4 py-1.5 text-sm font-medium text-primary">
                   🌍 Maroua, Cameroun
                 </span>
@@ -217,7 +201,7 @@ export default function HomePage() {
               </div>
 
               {/* Stats */}
-              <div className="mt-8 flex gap-8">
+              <div className="mt-5 flex gap-8">
                 {[
                   { value: "500+", label: "Plats livrés/jour" },
                   { value: "15 min", label: "Livraison moyenne" },
@@ -262,7 +246,7 @@ export default function HomePage() {
       </section>
 
       {/* Categories */}
-      <section className="bg-white py-14">
+      <section className="bg-white py-9">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <h2
             className="text-2xl font-bold text-gray-900 sm:text-3xl"
@@ -286,7 +270,7 @@ export default function HomePage() {
       </section>
 
       {/* How it works */}
-      <section className="py-14 border-t border-orange-100" style={{ backgroundColor: "#fff8f0" }}>
+      <section className="py-9 border-t border-orange-100" style={{ backgroundColor: "#fff8f0" }}>
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <div className="text-center">
             <h2
@@ -298,7 +282,7 @@ export default function HomePage() {
             <p className="mt-2 text-sm text-gray-500">Recevez votre repas en 4 étapes simples</p>
           </div>
 
-          <div className="mt-10 grid grid-cols-2 gap-6 sm:grid-cols-4">
+          <div className="mt-6 grid grid-cols-2 gap-6 sm:grid-cols-4">
             {[
               {
                 step: "01",
@@ -346,7 +330,7 @@ export default function HomePage() {
       </section>
 
       {/* Popular items */}
-      <section className="py-14" style={{ backgroundColor: "#fffbf5" }}>
+      <section className="py-9" style={{ backgroundColor: "#fffbf5" }}>
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <div className="flex items-center justify-between">
             <h2
@@ -406,7 +390,7 @@ export default function HomePage() {
       </section>
 
       {/* Daada Cuisine teaser */}
-      <section className="bg-gradient-to-r from-primary to-secondary py-14">
+      <section className="bg-gradient-to-r from-primary to-secondary py-9">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2">
             <div>
@@ -475,9 +459,9 @@ export default function HomePage() {
       </section>
 
       {/* Testimonials marquee */}
-      <section className="bg-white py-14 overflow-hidden">
+      <section className="bg-white py-9 overflow-hidden">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
-          <div className="text-center mb-8">
+          <div className="text-center mb-5">
             <h2
               className="text-2xl font-bold text-gray-900 sm:text-3xl"
               style={{ fontFamily: "Playfair Display, Georgia, serif" }}
@@ -518,7 +502,7 @@ export default function HomePage() {
       </section>
 
       {/* FAQ */}
-      <section className="bg-white py-14 border-t border-gray-100">
+      <section className="bg-white py-9 border-t border-gray-100">
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
           <h2
             className="text-center text-2xl font-bold text-gray-900 sm:text-3xl"
@@ -526,7 +510,7 @@ export default function HomePage() {
           >
             Questions fréquentes
           </h2>
-          <div className="mt-8 space-y-3">
+          <div className="mt-5 space-y-3">
             {[
               {
                 q: "Quels quartiers de Maroua livrez-vous ?",
@@ -561,7 +545,7 @@ export default function HomePage() {
       </section>
 
       {/* Mobile App Banner */}
-      <section className="bg-gray-900 py-14">
+      <section className="bg-gray-900 py-9">
         <div className="mx-auto max-w-7xl px-4 text-center sm:px-6">
           <h2
             className="text-2xl font-bold text-white sm:text-3xl"

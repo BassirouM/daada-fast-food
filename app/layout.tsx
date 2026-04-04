@@ -29,61 +29,66 @@ export const viewport: Viewport = {
 function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-gray-100 bg-white/95 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
+      <div className="mx-auto flex h-16 max-w-7xl items-center gap-3 px-4 sm:px-6">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
+        <Link href="/" className="flex flex-shrink-0 items-center gap-2">
           <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-sm font-bold text-white shadow-sm">
             DF
           </div>
-          <span className="text-lg font-bold text-gray-900" style={{ fontFamily: "Playfair Display, serif" }}>
+          <span className="hidden text-lg font-bold text-gray-900 sm:block" style={{ fontFamily: "Playfair Display, serif" }}>
             Daada<span className="text-primary"> Fast Food</span>
           </span>
         </Link>
 
-        {/* Desktop nav */}
-        <nav className="hidden items-center gap-6 md:flex">
-          {[
-            { href: "/", label: "Accueil" },
-            { href: "/menu", label: "Menu" },
-            { href: "/cuisine", label: "Cuisine" },
-            { href: "/about", label: "À propos" },
-          ].map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-sm font-medium text-gray-600 transition-colors hover:text-primary"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
+        {/* Search bar — centre, toujours visible */}
+        <form
+          method="GET"
+          action="/menu"
+          className="hidden flex-1 items-center gap-2 rounded-xl border border-orange-200 bg-orange-50/40 px-3 py-2 transition-all focus-within:border-primary focus-within:bg-white focus-within:ring-2 focus-within:ring-orange-100 md:flex"
+        >
+          <svg className="h-4 w-4 flex-shrink-0 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <input
+            type="text"
+            name="q"
+            placeholder="Chercher un plat… Ndolé, Poulet DG, Koki…"
+            className="flex-1 bg-transparent text-sm text-gray-700 placeholder-gray-400 outline-none"
+          />
+          <button type="submit" className="rounded-lg bg-primary px-3 py-1 text-xs font-semibold text-white transition-colors hover:bg-orange-600">
+            Chercher
+          </button>
+        </form>
 
-        {/* CTA */}
-        <div className="flex items-center gap-3">
-          <div className="hidden md:flex items-center gap-1.5 rounded-full border border-green-200 bg-green-50 px-3 py-1">
-            <span className="h-2 w-2 rounded-full bg-green-500" style={{ animation: "pulse 2s infinite" }} />
-            <span className="text-xs font-medium text-green-700">Ouvert · ferme à 22h</span>
-          </div>
-          <Link
-            href="/login"
-            className="hidden rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary-600 transition-colors md:block"
-          >
-            Connexion
-          </Link>
-          {/* Mobile menu placeholder */}
-          <div className="flex gap-1 md:hidden">
+        {/* Right side */}
+        <div className="ml-auto flex flex-shrink-0 items-center gap-3">
+          <nav className="hidden items-center gap-5 lg:flex">
             {[
               { href: "/menu", label: "Menu" },
-              { href: "/login", label: "Conn." },
-            ].map((l) => (
-              <Link
-                key={l.href}
-                href={l.href}
-                className="rounded-lg px-3 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-100"
-              >
-                {l.label}
+              { href: "/cuisine", label: "Cuisine" },
+              { href: "/about", label: "À propos" },
+            ].map((link) => (
+              <Link key={link.href} href={link.href} className="text-sm font-medium text-gray-600 transition-colors hover:text-primary">
+                {link.label}
               </Link>
             ))}
+          </nav>
+          <div className="hidden items-center gap-1.5 rounded-full border border-green-200 bg-green-50 px-3 py-1 md:flex">
+            <span className="h-2 w-2 rounded-full bg-green-500" style={{ animation: "pulse 2s infinite" }} />
+            <span className="text-xs font-medium text-green-700">Ouvert · 22h</span>
+          </div>
+          <Link href="/login" className="hidden rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-orange-600 md:block">
+            Connexion
+          </Link>
+          {/* Mobile */}
+          <div className="flex items-center gap-1 md:hidden">
+            <Link href="/menu" aria-label="Rechercher" className="flex h-9 w-9 items-center justify-center rounded-lg text-gray-600 hover:bg-gray-100">
+              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </Link>
+            <Link href="/menu" className="rounded-lg px-3 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-100">Menu</Link>
+            <Link href="/login" className="rounded-lg px-3 py-1.5 text-xs font-semibold text-primary hover:bg-orange-50">Conn.</Link>
           </div>
         </div>
       </div>
@@ -94,7 +99,7 @@ function Navbar() {
 function Footer() {
   return (
     <footer className="border-t border-gray-200 bg-white">
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           {/* Brand */}
           <div>
