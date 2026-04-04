@@ -1,0 +1,63 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: daada_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: daada_dev
+      POSTGRES_USER: daada
+      POSTGRES_PASSWORD: daada_dev_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - daada_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U daada -d daada_dev"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: daada_redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    ports:
+      - "6379:6379"
+    volumes:
+      - daada_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: daada_redis_ui
+    restart: unless-stopped
+    environment:
+      REDIS_HOSTS: local:redis:6379
+    ports:
+      - "8081:8081"
+    depends_on:
+      redis:
+        condition: service_healthy
+    profiles:
+      - tools  # démarrer avec : docker compose --profile tools up
+
+volumes:
+  daada_postgres_data:
+    driver: local
+  daada_redis_data:
+    driver: local
+
+# Utilisation :
+#   docker compose up -d                          — postgres + redis
+#   docker compose --profile tools up -d          — + redis-commander UI
+#   docker compose down                           — arrêter
+#   docker compose down -v                        — arrêter + supprimer volumes
+#
+# Variables .env.local à configurer après :
+#   REDIS_URL=redis://localhost:6379
+#   DATABASE_URL=postgresql://daada:daada_dev_password@localhost:5432/daada_dev

@@ -1,0 +1,5 @@
+export { paymentService } from './payment.service'
+export { initierPaiement as cinetpayInitier, verifierWebhook as cinetpayVerifierWebhook, verifierStatut as cinetpayVerifierStatut } from './cinetpay'
+export { initierPaiement as campayInitier, verifierWebhook as campayVerifierWebhook, verifierStatut as campayVerifierStatut } from './campay'
+export type { CinetPayInitParams, CinetPayInitResult, CinetPayStatut, CinetPayWebhookPayload } from './cinetpay'
+export type { CamPayInitParams, CamPayInitResult, CamPayStatut, CamPayWebhookPayload } from './campay'

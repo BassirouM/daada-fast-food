@@ -1,0 +1,101 @@
+name: Deploy to Vercel
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy Production
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel@latest
+
+      - name: Pull Vercel environment
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Build project
+        id: build
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy to Vercel
+        id: deploy
+        run: |
+          URL=$(vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }})
+          echo "deployment_url=$URL" >> $GITHUB_OUTPUT
+
+      - name: Run Supabase migrations
+        if: steps.deploy.outcome == 'success'
+        run: |
+          echo "ℹ️ Supabase migrations — à configurer avec Supabase CLI"
+          # npx supabase db push --db-url "${{ secrets.SUPABASE_DB_URL }}"
+        continue-on-error: true
+
+      - name: Rollback on build failure
+        if: steps.build.outcome == 'failure'
+        run: |
+          echo "❌ Build échoué — rollback vers le dernier déploiement Vercel stable"
+          vercel rollback --token=${{ secrets.VERCEL_TOKEN }} || true
+
+      - name: Notify Slack on failure
+        if: failure()
+        uses: slackapi/slack-github-action@v2.1.0
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: |
+            {
+              "text": "❌ *Deploy Daada échoué* sur `main`",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "❌ *Deploy Daada Fast Food échoué*\n*Branche :* `main`\n*Commit :* `${{ github.sha }}`\n*Auteur :* ${{ github.actor }}\n*Lien :* <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Voir les logs>"
+                  }
+                }
+              ]
+            }
+
+      - name: Notify Slack on success
+        if: success()
+        uses: slackapi/slack-github-action@v2.1.0
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: |
+            {
+              "text": "✅ *Deploy Daada réussi*",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "✅ *Deploy Daada Fast Food réussi*\n*URL :* <${{ steps.deploy.outputs.deployment_url }}|Ouvrir>\n*Commit :* `${{ github.sha }}`\n*Auteur :* ${{ github.actor }}"
+                  }
+                }
+              ]
+            }
+
+# Required GitHub Secrets:
+# VERCEL_TOKEN         - Vercel API token
+# VERCEL_ORG_ID        - Your Vercel organization ID
+# VERCEL_PROJECT_ID    - Your Vercel project ID
+# SLACK_WEBHOOK_URL    - Slack Incoming Webhook URL (optionnel)
+# SUPABASE_DB_URL      - postgres://... (optionnel, pour migrations auto)
