@@ -66,6 +66,65 @@ const MOCK_RECIPES = [
   },
 ];
 
+const TESTIMONIALS = [
+  {
+    name: "Aïssatou D.",
+    quarter: "Domayo",
+    rating: 5,
+    text: "Le Ndolé était exactement comme celui de ma maman. Livré en 12 minutes, encore chaud !",
+    avatar: "A",
+  },
+  {
+    name: "Moussa K.",
+    quarter: "Dougoi",
+    rating: 5,
+    text: "Le Poulet DG est incroyable, le meilleur de Maroua. Je commande chaque vendredi.",
+    avatar: "M",
+  },
+  {
+    name: "Fatima B.",
+    quarter: "Kakataré",
+    rating: 5,
+    text: "Paiement Orange Money très simple. Le livreur était super sympa. Je recommande !",
+    avatar: "F",
+  },
+  {
+    name: "Ibrahim A.",
+    quarter: "Pitoare",
+    rating: 5,
+    text: "Les recettes Daada Cuisine m'ont appris à faire la sauce arachide. Incroyable !",
+    avatar: "I",
+  },
+  {
+    name: "Ramatou N.",
+    quarter: "Kongola",
+    rating: 5,
+    text: "Commande à 19h, livraison à 19h14. Un record ! Et c'était délicieux en plus.",
+    avatar: "R",
+  },
+  {
+    name: "Abdoulaye S.",
+    quarter: "Balaza",
+    rating: 4,
+    text: "Très bonne qualité pour le prix. Les boulettes de viande sont mes préférées.",
+    avatar: "A",
+  },
+  {
+    name: "Haoua M.",
+    quarter: "Gadala",
+    rating: 5,
+    text: "Service impeccable ! Mon mari et mes enfants adorent. On commande 3x par semaine.",
+    avatar: "H",
+  },
+  {
+    name: "Oumarou T.",
+    quarter: "Lopéré",
+    rating: 5,
+    text: "Le Koki Maïs me rappelle mon enfance. Merci Daada pour ces saveurs authentiques !",
+    avatar: "O",
+  },
+];
+
 const CATEGORIES = [
   { id: "plats", label: "Plats", icon: "🍽️", count: 24 },
   { id: "grillades", label: "Grillades", icon: "🔥", count: 12 },
@@ -83,9 +142,14 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24 lg:py-32">
           <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
             <div>
-              <span className="inline-flex items-center gap-2 rounded-full bg-orange-100 px-4 py-1.5 text-sm font-medium text-primary">
-                🌍 Maroua, Cameroun
-              </span>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="inline-flex items-center gap-2 rounded-full bg-orange-100 px-4 py-1.5 text-sm font-medium text-primary">
+                  🌍 Maroua, Cameroun
+                </span>
+                <span className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-1.5 text-sm font-bold text-white shadow-sm">
+                  🏆 La meilleure bouffe de Maroua
+                </span>
+              </div>
               <h1
                 className="mt-4 text-4xl font-black leading-tight text-gray-900 sm:text-5xl lg:text-6xl"
                 style={{ fontFamily: "Playfair Display, Georgia, serif" }}
@@ -308,6 +372,49 @@ export default function HomePage() {
                 </div>
               ))}
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials marquee */}
+      <section className="bg-white py-14 overflow-hidden">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <div className="text-center mb-8">
+            <h2
+              className="text-2xl font-bold text-gray-900 sm:text-3xl"
+              style={{ fontFamily: "Playfair Display, Georgia, serif" }}
+            >
+              Ce que disent nos clients ❤️
+            </h2>
+            <p className="mt-2 text-sm text-gray-500">
+              Plus de 2 000 familles de Maroua nous font confiance
+            </p>
+          </div>
+        </div>
+
+        {/* Scrolling band — duplicated for infinite loop */}
+        <div className="relative w-full overflow-hidden">
+          <div className="flex w-max animate-marquee gap-5">
+            {[...TESTIMONIALS, ...TESTIMONIALS].map((t, i) => (
+              <div
+                key={i}
+                className="w-72 flex-shrink-0 rounded-2xl border border-orange-100 bg-orange-50 p-5 shadow-sm"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-white">
+                    {t.avatar}
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-gray-900">{t.name}</p>
+                    <p className="text-xs text-gray-400">📍 {t.quarter}, Maroua</p>
+                  </div>
+                  <div className="ml-auto flex text-amber-400 text-xs">
+                    {"★".repeat(t.rating)}{"☆".repeat(5 - t.rating)}
+                  </div>
+                </div>
+                <p className="mt-3 text-sm leading-relaxed text-gray-600">"{t.text}"</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
