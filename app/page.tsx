@@ -145,6 +145,28 @@ const CATEGORIES = [
 export default function HomePage() {
   return (
     <div className="flex flex-col pb-20 md:pb-0">
+      {/* Search bar — centrée, immédiatement après le header */}
+      <div className="border-b border-orange-100 bg-white px-4 py-4 sm:px-6">
+        <form
+          method="GET"
+          action="/menu"
+          className="mx-auto flex max-w-2xl items-center gap-2 rounded-2xl border border-orange-200 bg-orange-50/40 px-4 py-3 shadow-sm transition-all focus-within:border-primary focus-within:bg-white focus-within:ring-2 focus-within:ring-orange-100"
+        >
+          <svg className="h-5 w-5 flex-shrink-0 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <input
+            type="text"
+            name="q"
+            placeholder="Chercher un plat… Ndolé, Poulet DG, Koki Maïs…"
+            className="flex-1 bg-transparent text-sm text-gray-700 placeholder-gray-400 outline-none"
+          />
+          <button type="submit" className="rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-orange-600">
+            Chercher
+          </button>
+        </form>
+      </div>
+
       {/* Hero */}
       <section className="bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
         <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-9 lg:py-16">

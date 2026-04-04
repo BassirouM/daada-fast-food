@@ -40,26 +40,6 @@ function Navbar() {
           </span>
         </Link>
 
-        {/* Search bar — centre, toujours visible */}
-        <form
-          method="GET"
-          action="/menu"
-          className="hidden flex-1 items-center gap-2 rounded-xl border border-orange-200 bg-orange-50/40 px-3 py-2 transition-all focus-within:border-primary focus-within:bg-white focus-within:ring-2 focus-within:ring-orange-100 md:flex"
-        >
-          <svg className="h-4 w-4 flex-shrink-0 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-          <input
-            type="text"
-            name="q"
-            placeholder="Chercher un plat… Ndolé, Poulet DG, Koki…"
-            className="flex-1 bg-transparent text-sm text-gray-700 placeholder-gray-400 outline-none"
-          />
-          <button type="submit" className="rounded-lg bg-primary px-3 py-1 text-xs font-semibold text-white transition-colors hover:bg-orange-600">
-            Chercher
-          </button>
-        </form>
-
         {/* Right side */}
         <div className="ml-auto flex flex-shrink-0 items-center gap-3">
           <nav className="hidden items-center gap-5 lg:flex">
@@ -82,12 +62,7 @@ function Navbar() {
           </Link>
           {/* Mobile */}
           <div className="flex items-center gap-1 md:hidden">
-            <Link href="/menu" aria-label="Rechercher" className="flex h-9 w-9 items-center justify-center rounded-lg text-gray-600 hover:bg-gray-100">
-              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-            </Link>
-            <Link href="/menu" className="rounded-lg px-3 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-100">Menu</Link>
+              <Link href="/menu" className="rounded-lg px-3 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-100">Menu</Link>
             <Link href="/login" className="rounded-lg px-3 py-1.5 text-xs font-semibold text-primary hover:bg-orange-50">Conn.</Link>
           </div>
         </div>
