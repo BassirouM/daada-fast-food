@@ -125,6 +125,14 @@ const TESTIMONIALS = [
   },
 ];
 
+const HERO_DISHES = [
+  { src: "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=800&h=800&fit=crop", alt: "Ndolé aux Crevettes" },
+  { src: "https://images.unsplash.com/photo-1598103442097-8b74394b95c8?w=800&h=800&fit=crop", alt: "Poulet DG" },
+  { src: "https://images.unsplash.com/photo-1547592180-85f173990554?w=800&h=800&fit=crop", alt: "Koki Maïs" },
+  { src: "https://images.unsplash.com/photo-1529042410759-befb1204b468?w=800&h=800&fit=crop", alt: "Boulettes de Viande" },
+  { src: "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=800&h=800&fit=crop", alt: "Plat du jour" },
+];
+
 const CATEGORIES = [
   { id: "plats", label: "Plats", icon: "🍽️", count: 24 },
   { id: "grillades", label: "Grillades", icon: "🔥", count: 12 },
@@ -142,7 +150,23 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24 lg:py-32">
           <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
             <div>
-              <div className="flex flex-wrap items-center gap-2">
+              {/* Search bar — tout en haut */}
+              <form method="GET" action="/menu" className="flex items-center gap-2 rounded-2xl border border-gray-200 bg-white px-4 py-3 shadow-md focus-within:border-primary focus-within:ring-2 focus-within:ring-orange-100 transition-all">
+                <svg className="h-4 w-4 flex-shrink-0 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                <input
+                  type="text"
+                  name="q"
+                  placeholder="Chercher un plat… Ndolé, Poulet DG, Koki…"
+                  className="flex-1 bg-transparent text-sm text-gray-700 placeholder-gray-400 outline-none"
+                />
+                <button type="submit" className="rounded-xl bg-primary px-4 py-2 text-xs font-semibold text-white hover:bg-orange-600 transition-colors">
+                  Chercher
+                </button>
+              </form>
+
+              <div className="mt-5 flex flex-wrap items-center gap-2">
                 <span className="inline-flex items-center gap-2 rounded-full bg-orange-100 px-4 py-1.5 text-sm font-medium text-primary">
                   🌍 Maroua, Cameroun
                 </span>
@@ -162,22 +186,6 @@ export default function HomePage() {
                 Plats authentiques camerounais préparés avec amour. Commandez en ligne,
                 payez par Mobile Money, recevez chaud.
               </p>
-
-              {/* Search bar */}
-              <form method="GET" action="/menu" className="mt-5 flex items-center gap-2 rounded-2xl border border-gray-200 bg-white px-4 py-2.5 shadow-sm focus-within:border-primary focus-within:ring-2 focus-within:ring-orange-100 transition-all">
-                <svg className="h-4 w-4 flex-shrink-0 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-                <input
-                  type="text"
-                  name="q"
-                  placeholder="Chercher un plat… Ndolé, Poulet DG…"
-                  className="flex-1 bg-transparent text-sm text-gray-700 placeholder-gray-400 outline-none"
-                />
-                <button type="submit" className="rounded-xl bg-primary px-3 py-1.5 text-xs font-semibold text-white hover:bg-orange-600 transition-colors">
-                  Chercher
-                </button>
-              </form>
 
               <div className="mt-8 flex flex-wrap gap-4">
                 <Link
@@ -223,24 +231,29 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Hero image */}
+            {/* Hero slideshow */}
             <div className="relative flex items-center justify-center">
-              <div className="relative h-80 w-80 sm:h-96 sm:w-96 lg:h-[28rem] lg:w-[28rem]">
-                <img
-                  src="https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=600&h=600&fit=crop"
-                  alt="Ndolé camerounais"
-                  className="h-full w-full rounded-3xl object-cover shadow-2xl"
-                  loading="eager"
-                />
-                {/* Floating card */}
-                <div className="absolute -bottom-4 -left-4 flex items-center gap-3 rounded-2xl bg-white p-3 shadow-xl">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-green-100 text-xl">
-                    🛵
-                  </div>
-                  <div>
-                    <div className="text-xs text-gray-500">Livraison rapide</div>
-                    <div className="text-sm font-semibold text-gray-900">~15 minutes</div>
-                  </div>
+              <div className="relative h-80 w-80 overflow-hidden rounded-3xl shadow-2xl sm:h-96 sm:w-96 lg:h-[28rem] lg:w-[28rem]">
+                {HERO_DISHES.map((dish, i) => (
+                  <img
+                    key={dish.alt}
+                    src={dish.src}
+                    alt={dish.alt}
+                    className="hero-slide h-full w-full object-cover"
+                    loading={i === 0 ? "eager" : "lazy"}
+                  />
+                ))}
+                {/* Gradient overlay bas */}
+                <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/40 to-transparent" />
+              </div>
+              {/* Floating card */}
+              <div className="absolute -bottom-4 -left-4 flex items-center gap-3 rounded-2xl bg-white p-3 shadow-xl">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-green-100 text-xl">
+                  🛵
+                </div>
+                <div>
+                  <div className="text-xs text-gray-500">Livraison rapide</div>
+                  <div className="text-sm font-semibold text-gray-900">~15 minutes</div>
                 </div>
               </div>
             </div>
@@ -266,7 +279,6 @@ export default function HomePage() {
               >
                 <span className="text-3xl transition-transform group-hover:scale-110">{cat.icon}</span>
                 <span className="text-center text-xs font-medium text-gray-700">{cat.label}</span>
-                <span className="text-xs text-gray-400">{cat.count}</span>
               </Link>
             ))}
           </div>
