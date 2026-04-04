@@ -206,7 +206,9 @@ export default function HomePage() {
               className="mt-4 text-4xl font-black leading-tight text-white drop-shadow-lg sm:text-5xl lg:text-6xl"
               style={{ fontFamily: "Playfair Display, Georgia, serif" }}
             >
-              Saveurs de Maroua, <span className="text-orange-300">livrées chez vous</span> 🍽️
+              Saveurs de Maroua,
+              <br />
+              <span className="text-orange-300">livrées chez vous 🍽️</span>
             </h1>
             <p className="mt-4 max-w-md text-base text-white/85">
               Plats authentiques camerounais préparés avec amour. Commandez en ligne, payez par Mobile Money, recevez chaud.
@@ -236,6 +238,7 @@ export default function HomePage() {
               <span className="text-white/40">|</span>
               <span className="inline-flex items-center gap-1 rounded-full bg-orange-500 px-2.5 py-0.5 text-xs font-bold text-white">OM</span>
               <span className="inline-flex items-center gap-1 rounded-full bg-yellow-400 px-2.5 py-0.5 text-xs font-bold text-gray-900">MTN</span>
+              <span className="inline-flex items-center gap-1 rounded-full bg-green-600 px-2.5 py-0.5 text-xs font-bold text-white">💵 Cash</span>
             </div>
 
             {/* Stats */}
