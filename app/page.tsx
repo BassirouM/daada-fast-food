@@ -136,7 +136,7 @@ const CATEGORIES = [
 
 export default function HomePage() {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col pb-20 md:pb-0">
       {/* Hero */}
       <section className="bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
         <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24 lg:py-32">
@@ -162,6 +162,23 @@ export default function HomePage() {
                 Plats authentiques camerounais préparés avec amour. Commandez en ligne,
                 payez par Mobile Money, recevez chaud.
               </p>
+
+              {/* Search bar */}
+              <form method="GET" action="/menu" className="mt-5 flex items-center gap-2 rounded-2xl border border-gray-200 bg-white px-4 py-2.5 shadow-sm focus-within:border-primary focus-within:ring-2 focus-within:ring-orange-100 transition-all">
+                <svg className="h-4 w-4 flex-shrink-0 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                <input
+                  type="text"
+                  name="q"
+                  placeholder="Chercher un plat… Ndolé, Poulet DG…"
+                  className="flex-1 bg-transparent text-sm text-gray-700 placeholder-gray-400 outline-none"
+                />
+                <button type="submit" className="rounded-xl bg-primary px-3 py-1.5 text-xs font-semibold text-white hover:bg-orange-600 transition-colors">
+                  Chercher
+                </button>
+              </form>
+
               <div className="mt-8 flex flex-wrap gap-4">
                 <Link
                   href="/menu"
@@ -180,8 +197,19 @@ export default function HomePage() {
                 </Link>
               </div>
 
+              {/* Delivery fee + payment badges */}
+              <div className="mt-4 flex flex-wrap items-center gap-3">
+                <span className="text-xs text-gray-500">
+                  🚚 Livraison <span className="font-semibold text-gray-700">200 FCFA</span> · Gratuit dès <span className="font-semibold text-gray-700">3 000 FCFA</span>
+                </span>
+                <span className="text-gray-300">|</span>
+                <span className="text-xs text-gray-500">Paiement accepté :</span>
+                <span className="inline-flex items-center gap-1 rounded-full bg-orange-500 px-2.5 py-0.5 text-xs font-bold text-white">OM</span>
+                <span className="inline-flex items-center gap-1 rounded-full bg-yellow-400 px-2.5 py-0.5 text-xs font-bold text-gray-900">MTN</span>
+              </div>
+
               {/* Stats */}
-              <div className="mt-10 flex gap-8">
+              <div className="mt-8 flex gap-8">
                 {[
                   { value: "500+", label: "Plats livrés/jour" },
                   { value: "15 min", label: "Livraison moyenne" },
@@ -202,6 +230,7 @@ export default function HomePage() {
                   src="https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=600&h=600&fit=crop"
                   alt="Ndolé camerounais"
                   className="h-full w-full rounded-3xl object-cover shadow-2xl"
+                  loading="eager"
                 />
                 {/* Floating card */}
                 <div className="absolute -bottom-4 -left-4 flex items-center gap-3 rounded-2xl bg-white p-3 shadow-xl">
@@ -245,7 +274,7 @@ export default function HomePage() {
       </section>
 
       {/* How it works */}
-      <section className="bg-white py-14 border-t border-gray-100">
+      <section className="py-14 border-t border-orange-100" style={{ backgroundColor: "#fff8f0" }}>
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <div className="text-center">
             <h2
@@ -352,12 +381,9 @@ export default function HomePage() {
                     </span>
                     <Link
                       href="/menu"
-                      aria-label={`Voir ${item.name}`}
-                      className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-white hover:bg-primary-600 transition-colors"
+                      className="rounded-full bg-primary px-4 py-1.5 text-xs font-semibold text-white hover:bg-orange-600 transition-colors"
                     >
-                      <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
-                      </svg>
+                      Voir →
                     </Link>
                   </div>
                 </div>
@@ -479,6 +505,49 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* FAQ */}
+      <section className="bg-white py-14 border-t border-gray-100">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6">
+          <h2
+            className="text-center text-2xl font-bold text-gray-900 sm:text-3xl"
+            style={{ fontFamily: "Playfair Display, Georgia, serif" }}
+          >
+            Questions fréquentes
+          </h2>
+          <div className="mt-8 space-y-3">
+            {[
+              {
+                q: "Quels quartiers de Maroua livrez-vous ?",
+                a: "Nous livrons dans tout Maroua dans un rayon de 5 km : Domayo, Dougoi, Kakataré, Pitoare, Kongola, Balaza, Gadala, Lopéré et bien d'autres quartiers.",
+              },
+              {
+                q: "Combien coûtent les frais de livraison ?",
+                a: "Les frais de livraison sont de 200 FCFA. La livraison est gratuite pour toute commande supérieure à 3 000 FCFA.",
+              },
+              {
+                q: "Puis-je payer en espèces à la livraison ?",
+                a: "Non. Pour garantir rapidité et sécurité, nous acceptons uniquement Orange Money et MTN MoMo. Le paiement se fait en 3 clics avant la livraison.",
+              },
+              {
+                q: "Quel est le délai de livraison ?",
+                a: "Notre délai moyen est de 15 minutes. Nous garantissons la livraison en moins de 20 minutes dans tous les quartiers couverts.",
+              },
+            ].map((faq) => (
+              <details
+                key={faq.q}
+                className="group cursor-pointer rounded-2xl border border-gray-100 bg-gray-50 p-4 open:border-orange-100 open:bg-orange-50 transition-colors"
+              >
+                <summary className="flex list-none items-center justify-between text-sm font-semibold text-gray-900">
+                  {faq.q}
+                  <span className="ml-4 flex-shrink-0 text-xl font-light text-primary transition-transform group-open:rotate-45">+</span>
+                </summary>
+                <p className="mt-3 text-sm leading-relaxed text-gray-500">{faq.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Mobile App Banner */}
       <section className="bg-gray-900 py-14">
         <div className="mx-auto max-w-7xl px-4 text-center sm:px-6">
@@ -511,6 +580,19 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      {/* Sticky mobile CTA bar */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 flex items-center justify-between gap-3 border-t border-gray-100 bg-white/95 px-4 py-3 backdrop-blur md:hidden">
+        <div>
+          <p className="text-xs font-semibold text-gray-900">Prêt à commander ?</p>
+          <p className="text-xs text-gray-400">Livraison dès 200 FCFA</p>
+        </div>
+        <Link
+          href="/menu"
+          className="inline-flex items-center gap-2 rounded-2xl bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-lg"
+        >
+          Commander 🛵
+        </Link>
+      </div>
     </div>
   );
 }

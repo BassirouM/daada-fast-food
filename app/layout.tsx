@@ -60,6 +60,10 @@ function Navbar() {
 
         {/* CTA */}
         <div className="flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-1.5 rounded-full border border-green-200 bg-green-50 px-3 py-1">
+            <span className="h-2 w-2 rounded-full bg-green-500" style={{ animation: "pulse 2s infinite" }} />
+            <span className="text-xs font-medium text-green-700">Ouvert · ferme à 22h</span>
+          </div>
           <Link
             href="/login"
             className="hidden rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary-600 transition-colors md:block"
