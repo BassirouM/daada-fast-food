@@ -145,8 +145,17 @@ const CATEGORIES = [
 export default function HomePage() {
   return (
     <div className="flex flex-col pb-20 md:pb-0">
-      {/* Search bar — centrée, immédiatement après le header */}
-      <div className="border-b border-orange-100 bg-white px-4 py-4 sm:px-6">
+      {/* Promo strip */}
+      <div className="overflow-hidden bg-primary py-2">
+        <div className="flex w-max animate-promo gap-16 whitespace-nowrap text-xs font-semibold text-white">
+          {["🎉 Livraison GRATUITE dès 3 000 FCFA", "⚡ Livraison en moins de 20 min garantie", "🏆 La meilleure bouffe de Maroua", "💳 Paiement Orange Money &amp; MTN MoMo", "🛵 500+ plats livrés chaque jour"].map((msg) => (
+            <span key={msg}>{msg}</span>
+          ))}
+        </div>
+      </div>
+
+      {/* Search bar — centrée */}
+      <div className="bg-white px-4 py-4 sm:px-6">
         <form
           method="GET"
           action="/menu"
@@ -167,101 +176,91 @@ export default function HomePage() {
         </form>
       </div>
 
-      {/* Hero */}
-      <section className="bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
-        <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-9 lg:py-16">
-          <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
-            <div>
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="inline-flex items-center gap-2 rounded-full bg-orange-100 px-4 py-1.5 text-sm font-medium text-primary">
-                  🌍 Maroua, Cameroun
-                </span>
-                <span className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-1.5 text-sm font-bold text-white shadow-sm">
-                  🏆 La meilleure bouffe de Maroua
-                </span>
-              </div>
-              <h1
-                className="mt-4 text-4xl font-black leading-tight text-gray-900 sm:text-5xl lg:text-6xl"
-                style={{ fontFamily: "Playfair Display, Georgia, serif" }}
+      {/* Hero — plein écran avec texte en overlay */}
+      <section className="relative min-h-[70vh] overflow-hidden">
+        {/* Diaporama en fond plein écran */}
+        {HERO_DISHES.map((dish, i) => (
+          <img
+            key={dish.alt}
+            src={dish.src}
+            alt={dish.alt}
+            className="hero-slide absolute inset-0 h-full w-full object-cover"
+            loading={i === 0 ? "eager" : "lazy"}
+          />
+        ))}
+        {/* Overlay sombre dégradé */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/50 to-transparent" />
+
+        {/* Contenu en overlay */}
+        <div className="relative mx-auto flex min-h-[70vh] max-w-7xl items-center px-4 sm:px-6">
+          <div className="max-w-xl py-16">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
+                🌍 Maroua, Cameroun
+              </span>
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1 text-xs font-bold text-white shadow">
+                🏆 La meilleure bouffe de Maroua
+              </span>
+            </div>
+            <h1
+              className="mt-4 text-4xl font-black leading-tight text-white drop-shadow-lg sm:text-5xl lg:text-6xl"
+              style={{ fontFamily: "Playfair Display, Georgia, serif" }}
+            >
+              Saveurs de Maroua,
+              <br />
+              <span className="text-orange-300">livrées chez vous</span> 🍽️
+            </h1>
+            <p className="mt-4 max-w-md text-base text-white/85">
+              Plats authentiques camerounais préparés avec amour. Commandez en ligne, payez par Mobile Money, recevez chaud.
+            </p>
+
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link
+                href="/menu"
+                className="inline-flex items-center gap-2 rounded-2xl bg-primary px-6 py-3.5 text-base font-semibold text-white shadow-lg transition-colors hover:bg-orange-600"
               >
-                Saveurs de Maroua,
-                <br />
-                <span className="text-primary">livrées chez vous</span> 🍽️
-              </h1>
-              <p className="mt-4 text-lg text-gray-600">
-                Plats authentiques camerounais préparés avec amour. Commandez en ligne,
-                payez par Mobile Money, recevez chaud.
-              </p>
-
-              <div className="mt-8 flex flex-wrap gap-4">
-                <Link
-                  href="/menu"
-                  className="inline-flex items-center gap-2 rounded-2xl bg-primary px-6 py-3.5 text-base font-semibold text-white shadow-lg hover:bg-primary-600 transition-colors"
-                >
-                  Commander maintenant
-                  <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                  </svg>
-                </Link>
-                <Link
-                  href="/cuisine"
-                  className="inline-flex items-center gap-2 rounded-2xl border border-gray-200 bg-white px-6 py-3.5 text-base font-semibold text-gray-700 hover:bg-gray-50 transition-colors"
-                >
-                  Voir les recettes 👨‍🍳
-                </Link>
-              </div>
-
-              {/* Delivery fee + payment badges */}
-              <div className="mt-4 flex flex-wrap items-center gap-3">
-                <span className="text-xs text-gray-500">
-                  🚚 Livraison <span className="font-semibold text-gray-700">200 FCFA</span> · Gratuit dès <span className="font-semibold text-gray-700">3 000 FCFA</span>
-                </span>
-                <span className="text-gray-300">|</span>
-                <span className="text-xs text-gray-500">Paiement accepté :</span>
-                <span className="inline-flex items-center gap-1 rounded-full bg-orange-500 px-2.5 py-0.5 text-xs font-bold text-white">OM</span>
-                <span className="inline-flex items-center gap-1 rounded-full bg-yellow-400 px-2.5 py-0.5 text-xs font-bold text-gray-900">MTN</span>
-              </div>
-
-              {/* Stats */}
-              <div className="mt-5 flex gap-8">
-                {[
-                  { value: "500+", label: "Plats livrés/jour" },
-                  { value: "15 min", label: "Livraison moyenne" },
-                  { value: "4.8 ⭐", label: "Note clients" },
-                ].map((stat) => (
-                  <div key={stat.label}>
-                    <div className="text-2xl font-bold text-gray-900">{stat.value}</div>
-                    <div className="text-xs text-gray-500">{stat.label}</div>
-                  </div>
-                ))}
-              </div>
+                Commander maintenant
+                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </Link>
+              <Link
+                href="/cuisine"
+                className="inline-flex items-center gap-2 rounded-2xl border border-white/30 bg-white/10 px-6 py-3.5 text-base font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white/20"
+              >
+                Voir les recettes 👨‍🍳
+              </Link>
             </div>
 
-            {/* Hero slideshow */}
-            <div className="relative flex items-center justify-center">
-              <div className="relative h-80 w-80 overflow-hidden rounded-3xl shadow-2xl sm:h-96 sm:w-96 lg:h-[28rem] lg:w-[28rem]">
-                {HERO_DISHES.map((dish, i) => (
-                  <img
-                    key={dish.alt}
-                    src={dish.src}
-                    alt={dish.alt}
-                    className="hero-slide h-full w-full object-cover"
-                    loading={i === 0 ? "eager" : "lazy"}
-                  />
-                ))}
-                {/* Gradient overlay bas */}
-                <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/40 to-transparent" />
-              </div>
-              {/* Floating card */}
-              <div className="absolute -bottom-4 -left-4 flex items-center gap-3 rounded-2xl bg-white p-3 shadow-xl">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-green-100 text-xl">
-                  🛵
+            {/* Paiement + livraison */}
+            <div className="mt-5 flex flex-wrap items-center gap-3">
+              <span className="text-xs text-white/70">🚚 Livraison <strong className="text-white">200 FCFA</strong> · Gratuit dès <strong className="text-white">3 000 FCFA</strong></span>
+              <span className="text-white/40">|</span>
+              <span className="inline-flex items-center gap-1 rounded-full bg-orange-500 px-2.5 py-0.5 text-xs font-bold text-white">OM</span>
+              <span className="inline-flex items-center gap-1 rounded-full bg-yellow-400 px-2.5 py-0.5 text-xs font-bold text-gray-900">MTN</span>
+            </div>
+
+            {/* Stats */}
+            <div className="mt-7 flex gap-8 border-t border-white/20 pt-5">
+              {[
+                { value: "500+", label: "Plats livrés/jour" },
+                { value: "15 min", label: "Livraison moyenne" },
+                { value: "4.8 ⭐", label: "Note clients" },
+              ].map((stat) => (
+                <div key={stat.label}>
+                  <div className="text-2xl font-bold text-white">{stat.value}</div>
+                  <div className="text-xs text-white/60">{stat.label}</div>
                 </div>
-                <div>
-                  <div className="text-xs text-gray-500">Livraison rapide</div>
-                  <div className="text-sm font-semibold text-gray-900">~15 minutes</div>
-                </div>
-              </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Floating card livraison */}
+          <div className="absolute bottom-8 right-4 hidden items-center gap-3 rounded-2xl bg-white p-3 shadow-xl sm:flex">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-green-100 text-xl">🛵</div>
+            <div>
+              <div className="text-xs text-gray-500">Livraison rapide</div>
+              <div className="text-sm font-semibold text-gray-900">~15 minutes</div>
             </div>
           </div>
         </div>
@@ -276,12 +275,12 @@ export default function HomePage() {
           >
             Parcourir par catégorie
           </h2>
-          <div className="mt-6 grid grid-cols-3 gap-4 sm:grid-cols-6">
+          <div className="mt-6 flex gap-3 overflow-x-auto pb-2 sm:grid sm:grid-cols-6 sm:overflow-visible sm:pb-0" style={{ scrollbarWidth: "none" }}>
             {CATEGORIES.map((cat) => (
               <Link
                 key={cat.id}
                 href={`/menu?category=${cat.id}`}
-                className="group flex flex-col items-center gap-2 rounded-2xl border border-gray-100 bg-gray-50 p-4 transition-all hover:border-primary hover:bg-orange-50"
+                className="group flex flex-shrink-0 flex-col items-center gap-2 rounded-2xl border border-gray-100 bg-gray-50 p-4 transition-all hover:border-primary hover:bg-orange-50 sm:flex-shrink"
               >
                 <span className="text-3xl transition-transform group-hover:scale-110">{cat.icon}</span>
                 <span className="text-center text-xs font-medium text-gray-700">{cat.label}</span>
@@ -576,6 +575,19 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      {/* WhatsApp floating button */}
+      <a
+        href="https://wa.me/237600000000?text=Bonjour%20Daada%2C%20je%20voudrais%20commander%20!"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Commander via WhatsApp"
+        className="fixed bottom-24 right-4 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-green-500 shadow-lg transition-transform hover:scale-110 hover:bg-green-600 md:bottom-6"
+      >
+        <svg viewBox="0 0 24 24" className="h-7 w-7 fill-white">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+      </a>
+
       {/* Sticky mobile CTA bar */}
       <div className="fixed bottom-0 left-0 right-0 z-40 flex items-center justify-between gap-3 border-t border-gray-100 bg-white/95 px-4 py-3 backdrop-blur md:hidden">
         <div>
