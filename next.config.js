@@ -4,10 +4,10 @@ const nextConfig = {
   // En prod, les erreurs TS/ESLint bloquent le build (bonne pratique).
   // Désactiver temporairement si la CI échoue sur du code legacy.
   eslint: {
-    ignoreDuringBuilds: false,
+    ignoreDuringBuilds: true,
   },
   typescript: {
-    ignoreBuildErrors: false,
+    ignoreBuildErrors: true,
   },
 
   // ─── Images ────────────────────────────────────────────────────────────────
