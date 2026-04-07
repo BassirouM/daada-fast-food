@@ -50,7 +50,8 @@
     "@mux/mux-player-react": "^2.9.0",
     "@radix-ui/react-slot": "^1.1.0",
     "@anthropic-ai/sdk": "^0.27.0",
-    "@sentry/nextjs": "^8.28.0"
+    "@sentry/nextjs": "^8.28.0",
+    "firebase-admin": "^12.3.0"
   },
   "devDependencies": {
     "typescript": "^5.0.0",
