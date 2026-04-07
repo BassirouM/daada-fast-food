@@ -6,10 +6,19 @@ import { Redis } from '@upstash/redis'
 
 // ─── Route patterns ──────────────────────────────────────────────────────────
 
-const PROTECTED_ROUTES = ['/checkout', '/profile', '/orders']
-const ADMIN_ROUTES     = ['/admin']
-const ADMIN_API        = ['/api/admin']
-const AUTH_ROUTES      = ['/login', '/register']
+// Routes nécessitant une authentification simple
+const PROTECTED_ROUTES = ['/checkout', '/profile', '/orders', '/profil', '/commandes', '/panier']
+
+// Routes nécessitant un rôle spécifique
+const ADMIN_ROUTES  = ['/admin']
+const DRIVER_ROUTES = ['/driver', '/livreur']
+const ADMIN_API     = ['/api/admin']
+
+// Routes auth (redirige vers /menu si déjà connecté)
+const AUTH_ROUTES   = ['/login', '/register', '/verify', '/email']
+
+// Routes premium (/cuisine/:slug/premium)
+const PREMIUM_PATTERN = /^\/cuisine\/[^/]+\/premium/
 
 // ─── Rate limiters ───────────────────────────────────────────────────────────
 // Graceful degradation : si Upstash n'est pas configuré, le rate limiting est désactivé.
@@ -84,6 +93,12 @@ function logSuspicious(ip: string, pathname: string, ua: string, reason: string)
   )
 }
 
+function redirectTo(url: string, req: NextRequest, returnUrl?: string): NextResponse {
+  const dest = new URL(url, req.url)
+  if (returnUrl) dest.searchParams.set('returnUrl', returnUrl)
+  return NextResponse.redirect(dest)
+}
+
 // ─── Middleware principal ─────────────────────────────────────────────────────
 
 export async function middleware(request: NextRequest) {
@@ -133,6 +148,9 @@ export async function middleware(request: NextRequest) {
     data: { session },
   } = await supabase.auth.getSession()
 
+  const meta = (session?.user.app_metadata ?? {}) as Record<string, unknown>
+  const role = (meta['role'] as string | undefined) ?? 'customer'
+
   // ── 3. Protection routes admin ──────────────────────────────────────────────
   const isAdminPath =
     ADMIN_ROUTES.some((r) => pathname.startsWith(r)) ||
@@ -140,36 +158,55 @@ export async function middleware(request: NextRequest) {
 
   if (isAdminPath) {
     if (!session) {
-      const url = new URL('/login', request.url)
-      url.searchParams.set('returnUrl', pathname)
-      return NextResponse.redirect(url)
+      return redirectTo('/login', request, pathname)
     }
-
-    // Rôle stocké dans app_metadata (défini côté serveur uniquement)
-    const meta = session.user.app_metadata as Record<string, unknown>
-    const role = meta['role']
-
     if (role !== 'admin' && role !== 'super_admin') {
-      logSuspicious(ip, pathname, ua, `admin-access-denied:role=${String(role ?? 'none')}`)
+      logSuspicious(ip, pathname, ua, `admin-access-denied:role=${role}`)
       return NextResponse.json({ error: 'Accès refusé' }, { status: 403 })
     }
   }
 
-  // ── 4. Routes protégées (authentification requise) ──────────────────────────
-  const isProtected = PROTECTED_ROUTES.some((r) => pathname.startsWith(r))
-  if (isProtected && !session) {
-    const url = new URL('/login', request.url)
-    url.searchParams.set('returnUrl', pathname)
-    return NextResponse.redirect(url)
+  // ── 4. Protection routes driver ─────────────────────────────────────────────
+  const isDriverPath = DRIVER_ROUTES.some((r) => pathname.startsWith(r))
+  if (isDriverPath) {
+    if (!session) {
+      return redirectTo('/login', request, pathname)
+    }
+    if (role !== 'driver' && role !== 'delivery_agent' && role !== 'admin' && role !== 'super_admin') {
+      logSuspicious(ip, pathname, ua, `driver-access-denied:role=${role}`)
+      return NextResponse.redirect(new URL('/', request.url))
+    }
   }
 
-  // ── 5. Pages auth (redirection si déjà connecté) ───────────────────────────
-  const isAuthPage = AUTH_ROUTES.some((r) => pathname.startsWith(r))
+  // ── 5. Protection routes premium ────────────────────────────────────────────
+  if (PREMIUM_PATTERN.test(pathname)) {
+    if (!session) {
+      return redirectTo('/login', request, pathname)
+    }
+    // Vérifie le flag premium dans app_metadata (mis à jour par le webhook paiement)
+    const isPremium = meta['premium_active'] === true
+    const premiumExpiry = meta['premium_expires_at'] as string | undefined
+    const isExpired = premiumExpiry ? new Date(premiumExpiry) < new Date() : true
+
+    if (!isPremium || isExpired) {
+      // Redirige vers la page d'abonnement
+      return NextResponse.redirect(new URL('/premium', request.url))
+    }
+  }
+
+  // ── 6. Routes protégées (authentification requise) ──────────────────────────
+  const isProtected = PROTECTED_ROUTES.some((r) => pathname.startsWith(r))
+  if (isProtected && !session) {
+    return redirectTo('/login', request, pathname)
+  }
+
+  // ── 7. Pages auth (redirige vers /menu si déjà connecté) ───────────────────
+  const isAuthPage = AUTH_ROUTES.some((r) => pathname === r || pathname.startsWith(r + '/'))
   if (isAuthPage && session) {
     return NextResponse.redirect(new URL('/menu', request.url))
   }
 
-  // ── 6. Détection patterns suspects ─────────────────────────────────────────
+  // ── 8. Détection patterns suspects ─────────────────────────────────────────
   const hasPathTraversal = pathname.includes('..')
   const hasInjection     = /[<>'"`;]/.test(decodeURIComponent(pathname))
   const hasLfiAttempt    = /etc\/passwd|proc\/self|\.env/i.test(pathname)

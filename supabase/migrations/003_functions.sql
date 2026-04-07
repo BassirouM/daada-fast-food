@@ -352,7 +352,7 @@ RETURNS INT LANGUAGE sql STABLE AS $$
   FROM loyalty_transactions
   WHERE user_id = p_user_id
     AND type IN ('earn','bonus')
-  MINUS
+  EXCEPT
   SELECT COALESCE(SUM(ABS(points)), 0)
   FROM loyalty_transactions
   WHERE user_id = p_user_id AND type IN ('redeem','expire')

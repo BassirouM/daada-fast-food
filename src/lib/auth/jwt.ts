@@ -185,6 +185,57 @@ export async function isTokenRevoked(jti: string): Promise<boolean> {
   }
 }
 
+// ─── Temp token (phone vérifiée, profil à compléter) ─────────────────────────
+
+const TEMP_TOKEN_AUDIENCE = 'daada-app-temp'
+const tempSecret = new TextEncoder().encode(
+  (process.env.JWT_TEMP_SECRET ?? process.env.JWT_SECRET ?? '') ||
+  'daada-dev-temp-secret-insecure-32chars!!'
+)
+
+export type TempTokenPayload = {
+  telephone: string  // +237XXXXXXXXX
+}
+
+export type VerifiedTempPayload = TempTokenPayload & {
+  jti: string
+  iat: number
+  exp: number
+}
+
+/** Génère un token court (10 min) attestant que le numéro a été vérifié par OTP. */
+export async function generateTempToken(telephone: string): Promise<string> {
+  return new SignJWT({ telephone, isTemp: true })
+    .setProtectedHeader({ alg: 'HS256' })
+    .setSubject('TEMP')
+    .setIssuedAt()
+    .setExpirationTime('10m')
+    .setIssuer(ISSUER)
+    .setAudience(TEMP_TOKEN_AUDIENCE)
+    .setJti(crypto.randomUUID())
+    .sign(tempSecret)
+}
+
+/** Vérifie et décode un temp token. Retourne null si invalide / expiré. */
+export async function verifyTempToken(token: string): Promise<VerifiedTempPayload | null> {
+  try {
+    const { payload } = await jwtVerify(token, tempSecret, {
+      issuer:   ISSUER,
+      audience: TEMP_TOKEN_AUDIENCE,
+    })
+    const telephone = payload['telephone'] as string | undefined
+    if (!telephone || !payload.jti || !payload.iat || !payload.exp) return null
+    return {
+      telephone,
+      jti: payload.jti,
+      iat: payload.iat,
+      exp: payload.exp,
+    }
+  } catch {
+    return null
+  }
+}
+
 // ─── Options cookies ──────────────────────────────────────────────────────────
 
 export function getAccessTokenCookieOptions(): CookieOptions {

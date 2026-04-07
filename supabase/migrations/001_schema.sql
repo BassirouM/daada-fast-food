@@ -52,7 +52,7 @@ $$;
 -- CORE : RESTAURANTS
 -- =============================================================================
 
-CREATE TABLE restaurants (
+CREATE TABLE IF NOT EXISTS restaurants (
   id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name                VARCHAR(120) NOT NULL,
   owner_id            UUID,                             -- FK → users (créé après)
@@ -72,19 +72,20 @@ CREATE TABLE restaurants (
   updated_at          TIMESTAMPTZ DEFAULT NOW()
 );
 
+DROP TRIGGER IF EXISTS trg_restaurants_updated_at ON restaurants;
 CREATE TRIGGER trg_restaurants_updated_at
   BEFORE UPDATE ON restaurants
   FOR EACH ROW EXECUTE FUNCTION set_updated_at();
 
-CREATE INDEX idx_restaurants_owner    ON restaurants(owner_id);
-CREATE INDEX idx_restaurants_slug     ON restaurants(slug);
-CREATE INDEX idx_restaurants_active   ON restaurants(is_active);
+CREATE INDEX IF NOT EXISTS idx_restaurants_owner    ON restaurants(owner_id);
+CREATE INDEX IF NOT EXISTS idx_restaurants_slug     ON restaurants(slug);
+CREATE INDEX IF NOT EXISTS idx_restaurants_active   ON restaurants(is_active);
 
 -- =============================================================================
 -- CORE : USERS
 -- =============================================================================
 
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
   id                  UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
   phone               VARCHAR(20) UNIQUE NOT NULL,
   email               VARCHAR(120),
@@ -100,13 +101,14 @@ CREATE TABLE users (
   updated_at          TIMESTAMPTZ DEFAULT NOW()
 );
 
+DROP TRIGGER IF EXISTS trg_users_updated_at ON users;
 CREATE TRIGGER trg_users_updated_at
   BEFORE UPDATE ON users
   FOR EACH ROW EXECUTE FUNCTION set_updated_at();
 
-CREATE INDEX idx_users_phone    ON users(phone);
-CREATE INDEX idx_users_role     ON users(role);
-CREATE INDEX idx_users_referral ON users(referral_code);
+CREATE INDEX IF NOT EXISTS idx_users_phone    ON users(phone);
+CREATE INDEX IF NOT EXISTS idx_users_role     ON users(role);
+CREATE INDEX IF NOT EXISTS idx_users_referral ON users(referral_code);
 
 -- FK deferred pour restaurants.owner_id
 ALTER TABLE restaurants
@@ -117,7 +119,7 @@ ALTER TABLE restaurants
 -- CORE : ADDRESSES
 -- =============================================================================
 
-CREATE TABLE addresses (
+CREATE TABLE IF NOT EXISTS addresses (
   id             UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id        UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   label          VARCHAR(60),
@@ -130,13 +132,13 @@ CREATE TABLE addresses (
   created_at     TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX idx_addresses_user ON addresses(user_id);
+CREATE INDEX IF NOT EXISTS idx_addresses_user ON addresses(user_id);
 
 -- =============================================================================
 -- CORE : DELIVERY ZONES
 -- =============================================================================
 
-CREATE TABLE delivery_zones (
+CREATE TABLE IF NOT EXISTS delivery_zones (
   id             UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   restaurant_id  UUID NOT NULL REFERENCES restaurants(id) ON DELETE CASCADE,
   name           VARCHAR(80) NOT NULL,
@@ -148,13 +150,13 @@ CREATE TABLE delivery_zones (
   created_at     TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX idx_delivery_zones_restaurant ON delivery_zones(restaurant_id);
+CREATE INDEX IF NOT EXISTS idx_delivery_zones_restaurant ON delivery_zones(restaurant_id);
 
 -- =============================================================================
 -- MENU : CATEGORIES
 -- =============================================================================
 
-CREATE TABLE categories (
+CREATE TABLE IF NOT EXISTS categories (
   id             UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   restaurant_id  UUID NOT NULL REFERENCES restaurants(id) ON DELETE CASCADE,
   name_fr        VARCHAR(80) NOT NULL,
@@ -167,13 +169,13 @@ CREATE TABLE categories (
   UNIQUE(restaurant_id, slug)
 );
 
-CREATE INDEX idx_categories_restaurant ON categories(restaurant_id);
+CREATE INDEX IF NOT EXISTS idx_categories_restaurant ON categories(restaurant_id);
 
 -- =============================================================================
 -- MENU : MENU ITEMS
 -- =============================================================================
 
-CREATE TABLE menu_items (
+CREATE TABLE IF NOT EXISTS menu_items (
   id                      UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   restaurant_id           UUID NOT NULL REFERENCES restaurants(id) ON DELETE CASCADE,
   category_id             UUID REFERENCES categories(id) ON DELETE SET NULL,
@@ -197,20 +199,21 @@ CREATE TABLE menu_items (
   updated_at              TIMESTAMPTZ DEFAULT NOW()
 );
 
+DROP TRIGGER IF EXISTS trg_menu_items_updated_at ON menu_items;
 CREATE TRIGGER trg_menu_items_updated_at
   BEFORE UPDATE ON menu_items
   FOR EACH ROW EXECUTE FUNCTION set_updated_at();
 
-CREATE INDEX idx_menu_items_restaurant ON menu_items(restaurant_id);
-CREATE INDEX idx_menu_items_category   ON menu_items(category_id);
-CREATE INDEX idx_menu_items_available  ON menu_items(is_available);
-CREATE INDEX idx_menu_items_featured   ON menu_items(is_featured);
+CREATE INDEX IF NOT EXISTS idx_menu_items_restaurant ON menu_items(restaurant_id);
+CREATE INDEX IF NOT EXISTS idx_menu_items_category   ON menu_items(category_id);
+CREATE INDEX IF NOT EXISTS idx_menu_items_available  ON menu_items(is_available);
+CREATE INDEX IF NOT EXISTS idx_menu_items_featured   ON menu_items(is_featured);
 
 -- =============================================================================
 -- MENU : ITEM OPTIONS & CHOICES
 -- =============================================================================
 
-CREATE TABLE item_options (
+CREATE TABLE IF NOT EXISTS item_options (
   id         UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   item_id    UUID NOT NULL REFERENCES menu_items(id) ON DELETE CASCADE,
   name_fr    VARCHAR(80) NOT NULL,
@@ -220,9 +223,9 @@ CREATE TABLE item_options (
   position   INT DEFAULT 0
 );
 
-CREATE INDEX idx_item_options_item ON item_options(item_id);
+CREATE INDEX IF NOT EXISTS idx_item_options_item ON item_options(item_id);
 
-CREATE TABLE option_choices (
+CREATE TABLE IF NOT EXISTS option_choices (
   id           UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   option_id    UUID NOT NULL REFERENCES item_options(id) ON DELETE CASCADE,
   name_fr      VARCHAR(80) NOT NULL,
@@ -231,13 +234,13 @@ CREATE TABLE option_choices (
   is_available BOOLEAN DEFAULT true
 );
 
-CREATE INDEX idx_option_choices_option ON option_choices(option_id);
+CREATE INDEX IF NOT EXISTS idx_option_choices_option ON option_choices(option_id);
 
 -- =============================================================================
 -- MENU : ITEM MEDIA
 -- =============================================================================
 
-CREATE TABLE item_media (
+CREATE TABLE IF NOT EXISTS item_media (
   id         UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   item_id    UUID NOT NULL REFERENCES menu_items(id) ON DELETE CASCADE,
   url        TEXT NOT NULL,
@@ -246,13 +249,13 @@ CREATE TABLE item_media (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX idx_item_media_item ON item_media(item_id);
+CREATE INDEX IF NOT EXISTS idx_item_media_item ON item_media(item_id);
 
 -- =============================================================================
 -- COMMANDES : ORDERS
 -- =============================================================================
 
-CREATE TABLE orders (
+CREATE TABLE IF NOT EXISTS orders (
   id                    UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   restaurant_id         UUID NOT NULL REFERENCES restaurants(id),
   user_id               UUID NOT NULL REFERENCES users(id),
@@ -276,21 +279,22 @@ CREATE TABLE orders (
   updated_at            TIMESTAMPTZ DEFAULT NOW()
 );
 
+DROP TRIGGER IF EXISTS trg_orders_updated_at ON orders;
 CREATE TRIGGER trg_orders_updated_at
   BEFORE UPDATE ON orders
   FOR EACH ROW EXECUTE FUNCTION set_updated_at();
 
-CREATE INDEX idx_orders_restaurant ON orders(restaurant_id);
-CREATE INDEX idx_orders_user       ON orders(user_id);
-CREATE INDEX idx_orders_status     ON orders(status);
-CREATE INDEX idx_orders_payment    ON orders(payment_status);
-CREATE INDEX idx_orders_created    ON orders(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_orders_restaurant ON orders(restaurant_id);
+CREATE INDEX IF NOT EXISTS idx_orders_user       ON orders(user_id);
+CREATE INDEX IF NOT EXISTS idx_orders_status     ON orders(status);
+CREATE INDEX IF NOT EXISTS idx_orders_payment    ON orders(payment_status);
+CREATE INDEX IF NOT EXISTS idx_orders_created    ON orders(created_at DESC);
 
 -- =============================================================================
 -- COMMANDES : ORDER ITEMS
 -- =============================================================================
 
-CREATE TABLE order_items (
+CREATE TABLE IF NOT EXISTS order_items (
   id             UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   order_id       UUID NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
   item_id        UUID NOT NULL REFERENCES menu_items(id),
@@ -300,14 +304,14 @@ CREATE TABLE order_items (
   subtotal       DECIMAL(10,2) NOT NULL
 );
 
-CREATE INDEX idx_order_items_order ON order_items(order_id);
-CREATE INDEX idx_order_items_item  ON order_items(item_id);
+CREATE INDEX IF NOT EXISTS idx_order_items_order ON order_items(order_id);
+CREATE INDEX IF NOT EXISTS idx_order_items_item  ON order_items(item_id);
 
 -- =============================================================================
 -- COMMANDES : ORDER STATUS HISTORY
 -- =============================================================================
 
-CREATE TABLE order_status_history (
+CREATE TABLE IF NOT EXISTS order_status_history (
   id           UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   order_id     UUID NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
   from_status  VARCHAR(20),
@@ -317,13 +321,13 @@ CREATE TABLE order_status_history (
   created_at   TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX idx_order_status_history_order ON order_status_history(order_id);
+CREATE INDEX IF NOT EXISTS idx_order_status_history_order ON order_status_history(order_id);
 
 -- =============================================================================
 -- PAIEMENT : PAYMENTS
 -- =============================================================================
 
-CREATE TABLE payments (
+CREATE TABLE IF NOT EXISTS payments (
   id                   UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   order_id             UUID NOT NULL REFERENCES orders(id),
   provider             payment_provider NOT NULL,
@@ -337,15 +341,15 @@ CREATE TABLE payments (
   created_at           TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX idx_payments_order  ON payments(order_id);
-CREATE INDEX idx_payments_status ON payments(status);
-CREATE INDEX idx_payments_txn    ON payments(transaction_id);
+CREATE INDEX IF NOT EXISTS idx_payments_order  ON payments(order_id);
+CREATE INDEX IF NOT EXISTS idx_payments_status ON payments(status);
+CREATE INDEX IF NOT EXISTS idx_payments_txn    ON payments(transaction_id);
 
 -- =============================================================================
 -- PAIEMENT : PAYMENT SPLITS
 -- =============================================================================
 
-CREATE TABLE payment_splits (
+CREATE TABLE IF NOT EXISTS payment_splits (
   id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   payment_id      UUID NOT NULL REFERENCES payments(id) ON DELETE CASCADE,
   recipient_type  split_recipient NOT NULL,
@@ -355,13 +359,13 @@ CREATE TABLE payment_splits (
   created_at      TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX idx_payment_splits_payment ON payment_splits(payment_id);
+CREATE INDEX IF NOT EXISTS idx_payment_splits_payment ON payment_splits(payment_id);
 
 -- =============================================================================
 -- PAIEMENT : REFUNDS
 -- =============================================================================
 
-CREATE TABLE refunds (
+CREATE TABLE IF NOT EXISTS refunds (
   id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   payment_id    UUID NOT NULL REFERENCES payments(id),
   amount        DECIMAL(10,2) NOT NULL,
@@ -371,13 +375,13 @@ CREATE TABLE refunds (
   created_at    TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX idx_refunds_payment ON refunds(payment_id);
+CREATE INDEX IF NOT EXISTS idx_refunds_payment ON refunds(payment_id);
 
 -- =============================================================================
 -- LIVRAISON : DELIVERIES
 -- =============================================================================
 
-CREATE TABLE deliveries (
+CREATE TABLE IF NOT EXISTS deliveries (
   id           UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   order_id     UUID NOT NULL REFERENCES orders(id),
   driver_id    UUID REFERENCES users(id) ON DELETE SET NULL,
@@ -389,15 +393,15 @@ CREATE TABLE deliveries (
   created_at   TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX idx_deliveries_order  ON deliveries(order_id);
-CREATE INDEX idx_deliveries_driver ON deliveries(driver_id);
-CREATE INDEX idx_deliveries_status ON deliveries(status);
+CREATE INDEX IF NOT EXISTS idx_deliveries_order  ON deliveries(order_id);
+CREATE INDEX IF NOT EXISTS idx_deliveries_driver ON deliveries(driver_id);
+CREATE INDEX IF NOT EXISTS idx_deliveries_status ON deliveries(status);
 
 -- =============================================================================
 -- LIVRAISON : DRIVER LOCATIONS
 -- =============================================================================
 
-CREATE TABLE driver_locations (
+CREATE TABLE IF NOT EXISTS driver_locations (
   id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   driver_id   UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   order_id    UUID REFERENCES orders(id) ON DELETE SET NULL,
@@ -409,15 +413,15 @@ CREATE TABLE driver_locations (
   recorded_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX idx_driver_locations_driver  ON driver_locations(driver_id);
-CREATE INDEX idx_driver_locations_order   ON driver_locations(order_id);
-CREATE INDEX idx_driver_locations_time    ON driver_locations(recorded_at DESC);
+CREATE INDEX IF NOT EXISTS idx_driver_locations_driver  ON driver_locations(driver_id);
+CREATE INDEX IF NOT EXISTS idx_driver_locations_order   ON driver_locations(order_id);
+CREATE INDEX IF NOT EXISTS idx_driver_locations_time    ON driver_locations(recorded_at DESC);
 
 -- =============================================================================
 -- LIVRAISON : DELIVERY ROUTES
 -- =============================================================================
 
-CREATE TABLE delivery_routes (
+CREATE TABLE IF NOT EXISTS delivery_routes (
   id             UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   delivery_id    UUID NOT NULL REFERENCES deliveries(id) ON DELETE CASCADE,
   route_geojson  JSONB,
@@ -426,13 +430,13 @@ CREATE TABLE delivery_routes (
   created_at     TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX idx_delivery_routes_delivery ON delivery_routes(delivery_id);
+CREATE INDEX IF NOT EXISTS idx_delivery_routes_delivery ON delivery_routes(delivery_id);
 
 -- =============================================================================
 -- FIDÉLITÉ : LOYALTY TRANSACTIONS
 -- =============================================================================
 
-CREATE TABLE loyalty_transactions (
+CREATE TABLE IF NOT EXISTS loyalty_transactions (
   id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id     UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   order_id    UUID REFERENCES orders(id) ON DELETE SET NULL,
@@ -442,14 +446,14 @@ CREATE TABLE loyalty_transactions (
   created_at  TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX idx_loyalty_user  ON loyalty_transactions(user_id);
-CREATE INDEX idx_loyalty_order ON loyalty_transactions(order_id);
+CREATE INDEX IF NOT EXISTS idx_loyalty_user  ON loyalty_transactions(user_id);
+CREATE INDEX IF NOT EXISTS idx_loyalty_order ON loyalty_transactions(order_id);
 
 -- =============================================================================
 -- MARKETING : COUPONS
 -- =============================================================================
 
-CREATE TABLE coupons (
+CREATE TABLE IF NOT EXISTS coupons (
   id             UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   restaurant_id  UUID REFERENCES restaurants(id) ON DELETE CASCADE,
   code           VARCHAR(20) UNIQUE NOT NULL,
@@ -464,15 +468,15 @@ CREATE TABLE coupons (
   created_at     TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX idx_coupons_code   ON coupons(code);
-CREATE INDEX idx_coupons_active ON coupons(is_active);
+CREATE INDEX IF NOT EXISTS idx_coupons_code   ON coupons(code);
+CREATE INDEX IF NOT EXISTS idx_coupons_active ON coupons(is_active);
 
 -- FK coupons → orders (deferred)
 ALTER TABLE orders
   ADD CONSTRAINT fk_orders_coupon
   FOREIGN KEY (coupon_id) REFERENCES coupons(id) ON DELETE SET NULL;
 
-CREATE TABLE coupon_usages (
+CREATE TABLE IF NOT EXISTS coupon_usages (
   id         UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   coupon_id  UUID NOT NULL REFERENCES coupons(id) ON DELETE CASCADE,
   user_id    UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -481,53 +485,53 @@ CREATE TABLE coupon_usages (
   UNIQUE(coupon_id, user_id, order_id)
 );
 
-CREATE INDEX idx_coupon_usages_coupon ON coupon_usages(coupon_id);
-CREATE INDEX idx_coupon_usages_user   ON coupon_usages(user_id);
+CREATE INDEX IF NOT EXISTS idx_coupon_usages_coupon ON coupon_usages(coupon_id);
+CREATE INDEX IF NOT EXISTS idx_coupon_usages_user   ON coupon_usages(user_id);
 
 -- =============================================================================
 -- MARKETING : REFERRALS
 -- =============================================================================
 
-CREATE TABLE referrals (
-  id                   UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  referrer_id          UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-  referee_id           UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-  status               referral_status DEFAULT 'pending',
-  first_order_id       UUID REFERENCES orders(id) ON DELETE SET NULL,
-  referrer_reward_fcfa INT DEFAULT 500,
+CREATE TABLE IF NOT EXISTS referrals (
+  id                    UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  referrer_id           UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  referee_id            UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  status                referral_status DEFAULT 'pending',
+  first_order_id        UUID REFERENCES orders(id) ON DELETE SET NULL,
+  referrer_reward_fcfa  INT DEFAULT 500,
   referee_discount_fcfa INT DEFAULT 500,
-  created_at           TIMESTAMPTZ DEFAULT NOW(),
+  created_at            TIMESTAMPTZ DEFAULT NOW(),
   UNIQUE(referrer_id, referee_id)
 );
 
-CREATE INDEX idx_referrals_referrer ON referrals(referrer_id);
-CREATE INDEX idx_referrals_referee  ON referrals(referee_id);
+CREATE INDEX IF NOT EXISTS idx_referrals_referrer ON referrals(referrer_id);
+CREATE INDEX IF NOT EXISTS idx_referrals_referee  ON referrals(referee_id);
 
 -- =============================================================================
 -- NOTIFICATIONS
 -- =============================================================================
 
-CREATE TABLE notifications (
-  id        UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id   UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-  title_fr  VARCHAR(120),
-  title_en  VARCHAR(120),
-  body_fr   TEXT,
-  body_en   TEXT,
-  type      VARCHAR(50),
-  data      JSONB DEFAULT '{}',
-  read_at   TIMESTAMPTZ,
+CREATE TABLE IF NOT EXISTS notifications (
+  id         UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id    UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  title_fr   VARCHAR(120),
+  title_en   VARCHAR(120),
+  body_fr    TEXT,
+  body_en    TEXT,
+  type       VARCHAR(50),
+  data       JSONB DEFAULT '{}',
+  read_at    TIMESTAMPTZ,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX idx_notifications_user    ON notifications(user_id);
-CREATE INDEX idx_notifications_unread  ON notifications(user_id) WHERE read_at IS NULL;
+CREATE INDEX IF NOT EXISTS idx_notifications_user   ON notifications(user_id);
+CREATE INDEX IF NOT EXISTS idx_notifications_unread ON notifications(user_id) WHERE read_at IS NULL;
 
 -- =============================================================================
 -- STREAMING
 -- =============================================================================
 
-CREATE TABLE streams (
+CREATE TABLE IF NOT EXISTS streams (
   id               UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   restaurant_id    UUID NOT NULL REFERENCES restaurants(id) ON DELETE CASCADE,
   title            VARCHAR(200) NOT NULL,
@@ -543,20 +547,20 @@ CREATE TABLE streams (
   created_at       TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX idx_streams_restaurant ON streams(restaurant_id);
-CREATE INDEX idx_streams_status     ON streams(status);
+CREATE INDEX IF NOT EXISTS idx_streams_restaurant ON streams(restaurant_id);
+CREATE INDEX IF NOT EXISTS idx_streams_status     ON streams(status);
 
-CREATE TABLE stream_reactions (
-  id        UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  stream_id UUID NOT NULL REFERENCES streams(id) ON DELETE CASCADE,
-  user_id   UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-  emoji     VARCHAR(10) NOT NULL,
+CREATE TABLE IF NOT EXISTS stream_reactions (
+  id         UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  stream_id  UUID NOT NULL REFERENCES streams(id) ON DELETE CASCADE,
+  user_id    UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  emoji      VARCHAR(10) NOT NULL,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX idx_stream_reactions_stream ON stream_reactions(stream_id);
+CREATE INDEX IF NOT EXISTS idx_stream_reactions_stream ON stream_reactions(stream_id);
 
-CREATE TABLE stream_messages (
+CREATE TABLE IF NOT EXISTS stream_messages (
   id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   stream_id     UUID NOT NULL REFERENCES streams(id) ON DELETE CASCADE,
   user_id       UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -565,13 +569,13 @@ CREATE TABLE stream_messages (
   created_at    TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX idx_stream_messages_stream ON stream_messages(stream_id);
+CREATE INDEX IF NOT EXISTS idx_stream_messages_stream ON stream_messages(stream_id);
 
 -- =============================================================================
 -- RÉSERVATIONS
 -- =============================================================================
 
-CREATE TABLE reservations (
+CREATE TABLE IF NOT EXISTS reservations (
   id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   restaurant_id   UUID NOT NULL REFERENCES restaurants(id) ON DELETE CASCADE,
   user_id         UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -585,11 +589,11 @@ CREATE TABLE reservations (
   created_at      TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX idx_reservations_restaurant ON reservations(restaurant_id);
-CREATE INDEX idx_reservations_user       ON reservations(user_id);
-CREATE INDEX idx_reservations_date       ON reservations(date);
+CREATE INDEX IF NOT EXISTS idx_reservations_restaurant ON reservations(restaurant_id);
+CREATE INDEX IF NOT EXISTS idx_reservations_user       ON reservations(user_id);
+CREATE INDEX IF NOT EXISTS idx_reservations_date       ON reservations(date);
 
-CREATE TABLE reservation_slots (
+CREATE TABLE IF NOT EXISTS reservation_slots (
   id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   restaurant_id UUID NOT NULL REFERENCES restaurants(id) ON DELETE CASCADE,
   day_of_week   INT NOT NULL CHECK (day_of_week BETWEEN 0 AND 6),
@@ -602,7 +606,7 @@ CREATE TABLE reservation_slots (
 -- IA & ANALYTICS
 -- =============================================================================
 
-CREATE TABLE premium_subscriptions (
+CREATE TABLE IF NOT EXISTS premium_subscriptions (
   id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id         UUID UNIQUE NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   plan            subscription_plan NOT NULL,
@@ -614,21 +618,21 @@ CREATE TABLE premium_subscriptions (
   auto_renew      BOOLEAN DEFAULT true
 );
 
-CREATE INDEX idx_premium_subs_user   ON premium_subscriptions(user_id);
-CREATE INDEX idx_premium_subs_status ON premium_subscriptions(status);
+CREATE INDEX IF NOT EXISTS idx_premium_subs_user   ON premium_subscriptions(user_id);
+CREATE INDEX IF NOT EXISTS idx_premium_subs_status ON premium_subscriptions(status);
 
-CREATE TABLE ai_recommendations (
-  id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id       UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-  item_ids      UUID[] NOT NULL,
-  explanation   TEXT,
-  generated_at  TIMESTAMPTZ DEFAULT NOW(),
-  expires_at    TIMESTAMPTZ
+CREATE TABLE IF NOT EXISTS ai_recommendations (
+  id           UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id      UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  item_ids     UUID[] NOT NULL,
+  explanation  TEXT,
+  generated_at TIMESTAMPTZ DEFAULT NOW(),
+  expires_at   TIMESTAMPTZ
 );
 
-CREATE INDEX idx_ai_recommendations_user ON ai_recommendations(user_id);
+CREATE INDEX IF NOT EXISTS idx_ai_recommendations_user ON ai_recommendations(user_id);
 
-CREATE TABLE fraud_scores (
+CREATE TABLE IF NOT EXISTS fraud_scores (
   id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   order_id      UUID NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
   user_id       UUID NOT NULL REFERENCES users(id),
@@ -638,22 +642,22 @@ CREATE TABLE fraud_scores (
   created_at    TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX idx_fraud_scores_order ON fraud_scores(order_id);
-CREATE INDEX idx_fraud_scores_user  ON fraud_scores(user_id);
+CREATE INDEX IF NOT EXISTS idx_fraud_scores_order ON fraud_scores(order_id);
+CREATE INDEX IF NOT EXISTS idx_fraud_scores_user  ON fraud_scores(user_id);
 
-CREATE TABLE price_history (
-  id           UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  item_id      UUID NOT NULL REFERENCES menu_items(id) ON DELETE CASCADE,
-  old_price    DECIMAL(10,2) NOT NULL,
-  new_price    DECIMAL(10,2) NOT NULL,
-  reason       VARCHAR(200),
-  changed_by   UUID REFERENCES users(id) ON DELETE SET NULL,
-  created_at   TIMESTAMPTZ DEFAULT NOW()
+CREATE TABLE IF NOT EXISTS price_history (
+  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  item_id     UUID NOT NULL REFERENCES menu_items(id) ON DELETE CASCADE,
+  old_price   DECIMAL(10,2) NOT NULL,
+  new_price   DECIMAL(10,2) NOT NULL,
+  reason      VARCHAR(200),
+  changed_by  UUID REFERENCES users(id) ON DELETE SET NULL,
+  created_at  TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX idx_price_history_item ON price_history(item_id);
+CREATE INDEX IF NOT EXISTS idx_price_history_item ON price_history(item_id);
 
-CREATE TABLE sales_forecasts (
+CREATE TABLE IF NOT EXISTS sales_forecasts (
   id                UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   restaurant_id     UUID NOT NULL REFERENCES restaurants(id) ON DELETE CASCADE,
   forecast_date     DATE NOT NULL,
@@ -664,5 +668,315 @@ CREATE TABLE sales_forecasts (
   created_at        TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX idx_sales_forecasts_restaurant ON sales_forecasts(restaurant_id);
-CREATE INDEX idx_sales_forecasts_date       ON sales_forecasts(forecast_date);
+CREATE INDEX IF NOT EXISTS idx_sales_forecasts_restaurant ON sales_forecasts(restaurant_id);
+CREATE INDEX IF NOT EXISTS idx_sales_forecasts_date       ON sales_forecasts(forecast_date);
+
+-- =============================================================================
+-- MODULE RECETTES & ÉPICIERS (fusionné depuis 005_recipes.sql)
+-- =============================================================================
+
+-- =============================================================================
+-- RECETTES
+-- =============================================================================
+
+CREATE TABLE IF NOT EXISTS recipes (
+  id               UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  restaurant_id    UUID REFERENCES restaurants(id) ON DELETE SET NULL,
+  menu_item_id     UUID REFERENCES menu_items(id) ON DELETE SET NULL,
+  title_fr         VARCHAR(200) NOT NULL,
+  title_en         VARCHAR(200),
+  description_fr   TEXT,
+  description_en   TEXT,
+  cover_image_url  TEXT,
+  video_url        TEXT,
+  difficulty       recipe_difficulty DEFAULT 'moyen',
+  prep_time_min    INT DEFAULT 30,
+  cook_time_min    INT DEFAULT 30,
+  rest_time_min    INT DEFAULT 0,
+  servings_default INT DEFAULT 4,
+  cuisine_type     VARCHAR(60) DEFAULT 'Camerounaise',
+  tags             TEXT[] DEFAULT '{}',
+  is_premium       BOOLEAN DEFAULT true,
+  is_published     BOOLEAN DEFAULT false,
+  avg_rating       DECIMAL(3,2) DEFAULT 0,
+  ratings_count    INT DEFAULT 0,
+  created_by       UUID REFERENCES users(id) ON DELETE SET NULL,
+  created_at       TIMESTAMPTZ DEFAULT NOW(),
+  updated_at       TIMESTAMPTZ DEFAULT NOW()
+);
+
+DROP TRIGGER IF EXISTS trg_recipes_updated_at ON recipes;
+CREATE TRIGGER trg_recipes_updated_at
+  BEFORE UPDATE ON recipes
+  FOR EACH ROW EXECUTE FUNCTION set_updated_at();
+
+CREATE INDEX IF NOT EXISTS idx_recipes_restaurant ON recipes(restaurant_id);
+CREATE INDEX IF NOT EXISTS idx_recipes_premium    ON recipes(is_premium);
+CREATE INDEX IF NOT EXISTS idx_recipes_published  ON recipes(is_published);
+CREATE INDEX IF NOT EXISTS idx_recipes_difficulty ON recipes(difficulty);
+
+-- =============================================================================
+-- INGRÉDIENTS
+-- =============================================================================
+
+CREATE TABLE IF NOT EXISTS recipe_ingredients (
+  id               UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  recipe_id        UUID NOT NULL REFERENCES recipes(id) ON DELETE CASCADE,
+  name_fr          VARCHAR(120) NOT NULL,
+  name_en          VARCHAR(120),
+  quantity         DECIMAL(10,3),
+  unit             VARCHAR(30),
+  is_optional      BOOLEAN DEFAULT false,
+  substitutes      TEXT[] DEFAULT '{}',
+  market_category  VARCHAR(80),
+  position         INT DEFAULT 0
+);
+
+CREATE INDEX IF NOT EXISTS idx_recipe_ingredients_recipe ON recipe_ingredients(recipe_id);
+
+-- =============================================================================
+-- ÉTAPES
+-- =============================================================================
+
+CREATE TABLE IF NOT EXISTS recipe_steps (
+  id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  recipe_id       UUID NOT NULL REFERENCES recipes(id) ON DELETE CASCADE,
+  position        INT NOT NULL,
+  title_fr        VARCHAR(200),
+  title_en        VARCHAR(200),
+  instruction_fr  TEXT NOT NULL,
+  instruction_en  TEXT,
+  image_url       TEXT,
+  video_url       TEXT,
+  timer_seconds   INT,
+  chef_tip_fr     TEXT,
+  chef_tip_en     TEXT,
+  is_premium      BOOLEAN DEFAULT true
+);
+
+CREATE INDEX IF NOT EXISTS idx_recipe_steps_recipe ON recipe_steps(recipe_id);
+
+-- =============================================================================
+-- ÉPICIERS
+-- =============================================================================
+
+CREATE TABLE IF NOT EXISTS grocery_stores (
+  id             UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name           VARCHAR(120) NOT NULL,
+  type           store_type DEFAULT 'epicerie',
+  city           VARCHAR(60) DEFAULT 'Maroua',
+  quartier       VARCHAR(80),
+  address_detail TEXT,
+  lat            DECIMAL(10,7),
+  lng            DECIMAL(10,7),
+  phone          VARCHAR(20),
+  whatsapp       VARCHAR(20),
+  opening_hours  JSONB DEFAULT '{}',
+  specialties    TEXT[] DEFAULT '{}',
+  photo_url      TEXT,
+  is_verified    BOOLEAN DEFAULT false,
+  is_partner     BOOLEAN DEFAULT false,
+  rating         DECIMAL(3,2),
+  created_at     TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_grocery_stores_type     ON grocery_stores(type);
+CREATE INDEX IF NOT EXISTS idx_grocery_stores_quartier ON grocery_stores(quartier);
+CREATE INDEX IF NOT EXISTS idx_grocery_stores_partner  ON grocery_stores(is_partner);
+
+-- =============================================================================
+-- PRIX INGRÉDIENTS
+-- =============================================================================
+
+CREATE TABLE IF NOT EXISTS ingredient_prices (
+  id               UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  ingredient_name  VARCHAR(120) NOT NULL,
+  grocery_store_id UUID NOT NULL REFERENCES grocery_stores(id) ON DELETE CASCADE,
+  price_fcfa       DECIMAL(10,2) NOT NULL,
+  unit             VARCHAR(30) NOT NULL,
+  price_date       DATE DEFAULT CURRENT_DATE,
+  notes            TEXT,
+  reported_by      UUID REFERENCES users(id) ON DELETE SET NULL,
+  is_verified      BOOLEAN DEFAULT false,
+  created_at       TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_ingredient_prices_store      ON ingredient_prices(grocery_store_id);
+CREATE INDEX IF NOT EXISTS idx_ingredient_prices_ingredient ON ingredient_prices(ingredient_name);
+CREATE INDEX IF NOT EXISTS idx_ingredient_prices_date       ON ingredient_prices(price_date DESC);
+
+-- =============================================================================
+-- RECETTE ↔ ÉPICIER (liaison)
+-- =============================================================================
+
+CREATE TABLE IF NOT EXISTS recipe_stores (
+  id               UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  recipe_id        UUID NOT NULL REFERENCES recipes(id) ON DELETE CASCADE,
+  grocery_store_id UUID NOT NULL REFERENCES grocery_stores(id) ON DELETE CASCADE,
+  note_fr          TEXT,
+  note_en          TEXT,
+  UNIQUE(recipe_id, grocery_store_id)
+);
+
+-- =============================================================================
+-- AVIS RECETTES
+-- =============================================================================
+
+CREATE TABLE IF NOT EXISTS recipe_reviews (
+  id                UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  recipe_id         UUID NOT NULL REFERENCES recipes(id) ON DELETE CASCADE,
+  user_id           UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  rating            INT NOT NULL CHECK (rating BETWEEN 1 AND 5),
+  comment           TEXT,
+  photo_url         TEXT,
+  is_verified_cook  BOOLEAN DEFAULT false,
+  helpful_count     INT DEFAULT 0,
+  created_at        TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(recipe_id, user_id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_recipe_reviews_recipe ON recipe_reviews(recipe_id);
+CREATE INDEX IF NOT EXISTS idx_recipe_reviews_user   ON recipe_reviews(user_id);
+
+-- =============================================================================
+-- FAVORIS RECETTES
+-- =============================================================================
+
+CREATE TABLE IF NOT EXISTS recipe_favorites (
+  id         UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  recipe_id  UUID NOT NULL REFERENCES recipes(id) ON DELETE CASCADE,
+  user_id    UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(recipe_id, user_id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_recipe_favorites_user   ON recipe_favorites(user_id);
+CREATE INDEX IF NOT EXISTS idx_recipe_favorites_recipe ON recipe_favorites(recipe_id);
+
+-- =============================================================================
+-- PLANS DE REPAS
+-- =============================================================================
+
+CREATE TABLE IF NOT EXISTS meal_plans (
+  id                       UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id                  UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  week_start               DATE NOT NULL,
+  plan                     JSONB DEFAULT '{}',
+  shopping_list_generated  BOOLEAN DEFAULT false,
+  created_at               TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_meal_plans_user ON meal_plans(user_id);
+
+-- =============================================================================
+-- LISTES DE COURSES
+-- =============================================================================
+
+CREATE TABLE IF NOT EXISTS shopping_lists (
+  id                    UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id               UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  meal_plan_id          UUID REFERENCES meal_plans(id) ON DELETE SET NULL,
+  recipe_ids            UUID[] DEFAULT '{}',
+  items                 JSONB DEFAULT '[]',
+  total_estimated_fcfa  DECIMAL(10,2),
+  created_at            TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_shopping_lists_user ON shopping_lists(user_id);
+
+-- =============================================================================
+-- TRIGGER : avg_rating recettes
+-- =============================================================================
+
+CREATE OR REPLACE FUNCTION update_recipe_avg_rating()
+RETURNS TRIGGER LANGUAGE plpgsql AS $$
+BEGIN
+  UPDATE recipes
+  SET
+    avg_rating    = (SELECT ROUND(AVG(rating)::NUMERIC, 2) FROM recipe_reviews WHERE recipe_id = NEW.recipe_id),
+    ratings_count = (SELECT COUNT(*) FROM recipe_reviews WHERE recipe_id = NEW.recipe_id)
+  WHERE id = NEW.recipe_id;
+  RETURN NEW;
+END;
+$$;
+
+DROP TRIGGER IF EXISTS trg_recipe_avg_rating ON recipe_reviews;
+CREATE TRIGGER trg_recipe_avg_rating
+  AFTER INSERT OR UPDATE ON recipe_reviews
+  FOR EACH ROW EXECUTE FUNCTION update_recipe_avg_rating();
+
+-- =============================================================================
+-- RLS : RECETTES
+-- =============================================================================
+
+ALTER TABLE recipes            ENABLE ROW LEVEL SECURITY;
+ALTER TABLE recipe_ingredients ENABLE ROW LEVEL SECURITY;
+ALTER TABLE recipe_steps       ENABLE ROW LEVEL SECURITY;
+ALTER TABLE recipe_reviews     ENABLE ROW LEVEL SECURITY;
+ALTER TABLE recipe_favorites   ENABLE ROW LEVEL SECURITY;
+ALTER TABLE grocery_stores     ENABLE ROW LEVEL SECURITY;
+ALTER TABLE ingredient_prices  ENABLE ROW LEVEL SECURITY;
+ALTER TABLE meal_plans         ENABLE ROW LEVEL SECURITY;
+ALTER TABLE shopping_lists     ENABLE ROW LEVEL SECURITY;
+
+-- Lecture publique des recettes gratuites
+CREATE POLICY "recipes_public_free" ON recipes
+  FOR SELECT USING (is_published = true AND is_premium = false);
+
+-- Lecture premium pour abonnés actifs
+CREATE POLICY "recipes_premium_subscribers" ON recipes
+  FOR SELECT USING (
+    is_published = true
+    AND (
+      is_premium = false
+      OR EXISTS (
+        SELECT 1 FROM premium_subscriptions ps
+        WHERE ps.user_id = auth.uid()
+          AND ps.status IN ('trial','active')
+          AND (ps.expires_at IS NULL OR ps.expires_at > NOW())
+      )
+    )
+  );
+
+-- Écriture pour admins et super_admins
+CREATE POLICY "recipes_write_admin" ON recipes
+  FOR ALL USING (
+    EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role IN ('admin','super_admin','owner'))
+  );
+
+-- Ingrédients et étapes : mêmes règles que la recette parente
+CREATE POLICY "recipe_ingredients_select" ON recipe_ingredients
+  FOR SELECT USING (
+    EXISTS (SELECT 1 FROM recipes r WHERE r.id = recipe_id AND r.is_published = true)
+  );
+
+CREATE POLICY "recipe_steps_select" ON recipe_steps
+  FOR SELECT USING (
+    EXISTS (SELECT 1 FROM recipes r WHERE r.id = recipe_id AND r.is_published = true)
+    AND (is_premium = false OR EXISTS (
+      SELECT 1 FROM premium_subscriptions ps
+      WHERE ps.user_id = auth.uid() AND ps.status IN ('trial','active')
+        AND (ps.expires_at IS NULL OR ps.expires_at > NOW())
+    ))
+  );
+
+-- Épiciers : lecture publique
+CREATE POLICY "grocery_stores_public" ON grocery_stores
+  FOR SELECT USING (true);
+
+CREATE POLICY "ingredient_prices_public" ON ingredient_prices
+  FOR SELECT USING (is_verified = true);
+
+-- Avis : lecture publique, écriture authentifiée
+CREATE POLICY "recipe_reviews_public_read" ON recipe_reviews FOR SELECT USING (true);
+CREATE POLICY "recipe_reviews_auth_write"  ON recipe_reviews FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+-- Favoris, plans, listes : données personnelles
+CREATE POLICY "recipe_favorites_own" ON recipe_favorites
+  FOR ALL USING (user_id = auth.uid());
+
+CREATE POLICY "meal_plans_own" ON meal_plans
+  FOR ALL USING (user_id = auth.uid());
+
+CREATE POLICY "shopping_lists_own" ON shopping_lists
+  FOR ALL USING (user_id = auth.uid());

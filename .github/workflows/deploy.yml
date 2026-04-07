@@ -1,101 +1,147 @@
-name: Deploy to Vercel
+name: Deploy → Vercel Production
 
+# Déclenché automatiquement à chaque push sur main.
+# Aucune commande manuelle nécessaire.
 on:
   push:
     branches: [main]
 
+# Un seul déploiement à la fois — jamais d'annulation en cours de route.
 concurrency:
   group: deploy-production
   cancel-in-progress: false
 
 jobs:
   deploy:
-    name: Deploy Production
+    name: Build & Deploy
     runs-on: ubuntu-latest
     environment: production
+    # URL visible dans le résumé GitHub Actions
+    outputs:
+      deployment_url: ${{ steps.deploy.outputs.deployment_url }}
 
     steps:
-      - name: Checkout code
+      # ── 1. Code ────────────────────────────────────────────────────────────
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node.js 20
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
 
-      - name: Install Vercel CLI
-        run: npm install -g vercel@latest
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
 
+      # ── 2. Vercel CLI ──────────────────────────────────────────────────────
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      # Pull de la config Vercel (env, fichiers de projet).
+      # Utilise les secrets VERCEL_ORG_ID + VERCEL_PROJECT_ID pour identifier
+      # le projet sans avoir besoin d'un .vercel/project.json local.
       - name: Pull Vercel environment
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
-      - name: Build project
+      # ── 3. Build ───────────────────────────────────────────────────────────
+      - name: Build
         id: build
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
+      # Rollback immédiat si le build échoue (avant tout déploiement)
+      - name: Rollback on build failure
+        if: steps.build.outcome == 'failure'
+        run: vercel rollback --token=${{ secrets.VERCEL_TOKEN }} || true
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      # ── 4. Deploy ──────────────────────────────────────────────────────────
       - name: Deploy to Vercel
         id: deploy
         run: |
           URL=$(vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }})
           echo "deployment_url=$URL" >> $GITHUB_OUTPUT
+          echo "✅ Déployé : $URL"
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
-      - name: Run Supabase migrations
+      # ── 5. URL dans le résumé Actions ─────────────────────────────────────
+      - name: Write job summary
         if: steps.deploy.outcome == 'success'
         run: |
-          echo "ℹ️ Supabase migrations — à configurer avec Supabase CLI"
-          # npx supabase db push --db-url "${{ secrets.SUPABASE_DB_URL }}"
-        continue-on-error: true
+          echo "## ✅ Déploiement réussi" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| | |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+          echo "| **URL** | [${{ steps.deploy.outputs.deployment_url }}](${{ steps.deploy.outputs.deployment_url }}) |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Site** | [daada-web.vercel.app](https://daada-web.vercel.app) |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Commit** | \`${{ github.sha }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Auteur** | ${{ github.actor }} |" >> $GITHUB_STEP_SUMMARY
 
-      - name: Rollback on build failure
-        if: steps.build.outcome == 'failure'
-        run: |
-          echo "❌ Build échoué — rollback vers le dernier déploiement Vercel stable"
-          vercel rollback --token=${{ secrets.VERCEL_TOKEN }} || true
+      # ── 6. Migrations Supabase (optionnel) ────────────────────────────────
+      # Décommenter quand SUPABASE_DB_URL est configuré dans les secrets GitHub.
+      # - name: Run Supabase migrations
+      #   if: steps.deploy.outcome == 'success'
+      #   run: npx supabase db push --db-url "${{ secrets.SUPABASE_DB_URL }}"
 
-      - name: Notify Slack on failure
+      # ── 7. Notifications Slack (optionnel) ────────────────────────────────
+      - name: Notify Slack — failure
         if: failure()
+        continue-on-error: true
         uses: slackapi/slack-github-action@v2.1.0
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
           webhook-type: incoming-webhook
           payload: |
             {
-              "text": "❌ *Deploy Daada échoué* sur `main`",
-              "blocks": [
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "❌ *Deploy Daada Fast Food échoué*\n*Branche :* `main`\n*Commit :* `${{ github.sha }}`\n*Auteur :* ${{ github.actor }}\n*Lien :* <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Voir les logs>"
-                  }
+              "text": "❌ *Deploy Daada Fast Food échoué* sur `main`",
+              "blocks": [{
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "❌ *Deploy échoué*\n*Commit :* `${{ github.sha }}`\n*Auteur :* ${{ github.actor }}\n*Logs :* <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Voir>"
                 }
-              ]
+              }]
             }
 
-      - name: Notify Slack on success
+      - name: Notify Slack — success
         if: success()
+        continue-on-error: true
         uses: slackapi/slack-github-action@v2.1.0
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
           webhook-type: incoming-webhook
           payload: |
             {
-              "text": "✅ *Deploy Daada réussi*",
-              "blocks": [
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "✅ *Deploy Daada Fast Food réussi*\n*URL :* <${{ steps.deploy.outputs.deployment_url }}|Ouvrir>\n*Commit :* `${{ github.sha }}`\n*Auteur :* ${{ github.actor }}"
-                  }
+              "text": "✅ *Daada Fast Food déployé*",
+              "blocks": [{
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "✅ *Deploy réussi*\n*URL :* <${{ steps.deploy.outputs.deployment_url }}|Ouvrir>\n*Commit :* `${{ github.sha }}`\n*Auteur :* ${{ github.actor }}"
                 }
-              ]
+              }]
             }
 
-# Required GitHub Secrets:
-# VERCEL_TOKEN         - Vercel API token
-# VERCEL_ORG_ID        - Your Vercel organization ID
-# VERCEL_PROJECT_ID    - Your Vercel project ID
-# SLACK_WEBHOOK_URL    - Slack Incoming Webhook URL (optionnel)
-# SUPABASE_DB_URL      - postgres://... (optionnel, pour migrations auto)
+# ─────────────────────────────────────────────────────────────────────────────
+# Secrets GitHub requis (Settings → Secrets → Actions) :
+#
+#   VERCEL_TOKEN      → Vercel → Account Settings → Tokens → Create
+#   VERCEL_ORG_ID     → Valeur de .vercel/project.json → orgId
+#                       (team_F4vaixOTG1ivcTTIngd1Bthe)
+#   VERCEL_PROJECT_ID → Valeur de .vercel/project.json → projectId
+#                       (prj_UpHD15m4OkvqXIKaoOpjT06rwDqv)
+#
+# Secrets optionnels :
+#   SLACK_WEBHOOK_URL → Slack → Incoming Webhooks (notifications)
+#   SUPABASE_DB_URL   → postgres://... (migrations auto)
+# ─────────────────────────────────────────────────────────────────────────────
