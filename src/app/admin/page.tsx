@@ -24,7 +24,7 @@ type TopPlat = { nom: string; total: number; image_url: string | null }
 
 // ─── Palette pie chart ────────────────────────────────────────────────────────
 
-const PIE_COLORS = ['#FF6B00', '#CC5500', '#FF9A45', '#FFB784', '#3B82F6', '#10B981']
+const PIE_COLORS = ['#F97316', '#EA580C', '#FF9A45', '#FFB784', '#3B82F6', '#10B981']
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -233,7 +233,7 @@ export default function AdminDashboard() {
         </div>
       ) : (
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-          <KpiCard icon={ShoppingBag}  label="Commandes du jour"      value={String(kpi?.commandesDuJour ?? 0)} color="#FF6B00" />
+          <KpiCard icon={ShoppingBag}  label="Commandes du jour"      value={String(kpi?.commandesDuJour ?? 0)} color="#F97316" />
           <KpiCard icon={TrendingUp}   label="CA du jour"             value={formatPrice(kpi?.caJour ?? 0)}    color="#10B981" />
           <KpiCard icon={Users}        label="Nouveaux clients"        value={String(kpi?.nouveauxClients ?? 0)} color="#3B82F6" />
           <KpiCard icon={Clock}        label="Délai moyen livraison"   value={`${kpi?.delaiMoyenMin ?? 0} min`} color="#F59E0B" />
@@ -258,7 +258,7 @@ export default function AdminDashboard() {
                   contentStyle={{ background: 'var(--bg-elevated)', border: '1px solid var(--border)', borderRadius: 10, fontSize: 12 }}
                   labelStyle={{ color: 'var(--text-primary)', fontWeight: 600 }}
                 />
-                <Bar dataKey="commandes" name="Commandes" fill="#FF6B00" radius={[6,6,0,0]} />
+                <Bar dataKey="commandes" name="Commandes" fill="#F97316" radius={[6,6,0,0]} />
               </BarChart>
             </ResponsiveContainer>
           )}

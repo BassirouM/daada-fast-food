@@ -96,13 +96,13 @@ function EchecPageInner() {
               display:        'block',
               padding:        '0.875rem',
               borderRadius:   14,
-              background:     'linear-gradient(135deg, #FF6B00, #CC5500)',
+              background:     'linear-gradient(135deg, #F97316, #EA580C)',
               color:          'white',
               fontWeight:     700,
               fontSize:       '1rem',
               textDecoration: 'none',
               textAlign:      'center',
-              boxShadow:      '0 4px 20px rgba(255,107,0,0.4)',
+              boxShadow:      '0 4px 20px rgba(249,115,22,0.4)',
             }}
           >
             🔄 Réessayer le paiement

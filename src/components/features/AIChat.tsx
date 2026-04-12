@@ -158,7 +158,7 @@ function MessageBubble({
           width:        32,
           height:       32,
           borderRadius: '50%',
-          background:   'linear-gradient(135deg, #FF6B00, #CC5500)',
+          background:   'linear-gradient(135deg, #F97316, #EA580C)',
           display:      'flex',
           alignItems:   'center',
           justifyContent: 'center',
@@ -395,12 +395,12 @@ export default function AIChat() {
           borderRadius:    '50%',
           background:      isOpen
             ? 'var(--bg-elevated)'
-            : 'linear-gradient(135deg, #FF6B00, #CC5500)',
+            : 'linear-gradient(135deg, #F97316, #EA580C)',
           border:          isOpen ? '1.5px solid var(--border)' : 'none',
           color:           isOpen ? 'var(--text-secondary)' : 'white',
           fontSize:        isOpen ? '1.25rem' : '1.5rem',
           cursor:          'pointer',
-          boxShadow:       '0 4px 20px rgba(255,107,0,0.4)',
+          boxShadow:       '0 4px 20px rgba(249,115,22,0.4)',
           display:         'flex',
           alignItems:      'center',
           justifyContent:  'center',
@@ -460,7 +460,7 @@ export default function AIChat() {
           {/* Header */}
           <div style={{
             padding:        '12px 16px',
-            background:     'linear-gradient(135deg, #FF6B00, #CC5500)',
+            background:     'linear-gradient(135deg, #F97316, #EA580C)',
             display:        'flex',
             alignItems:     'center',
             justifyContent: 'space-between',
@@ -565,7 +565,7 @@ export default function AIChat() {
               <div style={{ display: 'flex', alignItems: 'flex-start', marginBottom: 12 }}>
                 <div style={{
                   width: 32, height: 32, borderRadius: '50%',
-                  background: 'linear-gradient(135deg, #FF6B00, #CC5500)',
+                  background: 'linear-gradient(135deg, #F97316, #EA580C)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   fontSize: '1rem', flexShrink: 0, marginRight: 8,
                 }}>

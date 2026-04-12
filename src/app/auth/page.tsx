@@ -331,14 +331,14 @@ function AuthPageInner() {
           width: 100%;
           padding: 0.875rem;
           border-radius: 14px;
-          background: linear-gradient(135deg, #FF6B00, #CC5500);
+          background: linear-gradient(135deg, #F97316, #EA580C);
           color: white;
           font-size: 1rem;
           font-weight: 700;
           border: none;
           cursor: pointer;
           transition: opacity 0.15s, transform 0.15s;
-          box-shadow: 0 4px 20px rgba(255,107,0,0.4);
+          box-shadow: 0 4px 20px rgba(249,115,22,0.4);
         }
         .auth-btn:hover:not(:disabled) { opacity: 0.92; transform: translateY(-1px); }
         .auth-btn:disabled { opacity: 0.55; cursor: not-allowed; }
@@ -368,7 +368,7 @@ function AuthPageInner() {
           className="hidden md:flex"
           style={{
             width: '42%',
-            background: 'linear-gradient(160deg, #FF6B00 0%, #CC5500 45%, #0A0A0A 100%)',
+            background: 'linear-gradient(160deg, #F97316 0%, #EA580C 45%, #0A0A0A 100%)',
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
@@ -447,7 +447,7 @@ function AuthPageInner() {
               left: 0,
               right: 0,
               height: 180,
-              background: 'linear-gradient(160deg, #FF6B00 0%, #CC5500 60%, transparent 100%)',
+              background: 'linear-gradient(160deg, #F97316 0%, #EA580C 60%, transparent 100%)',
               pointerEvents: 'none',
             }}
           />

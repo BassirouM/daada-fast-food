@@ -92,14 +92,14 @@ function OtpInputs({
           aria-label={`Chiffre ${i + 1} du code OTP`}
           className={[
             'w-11 h-14 text-center text-xl font-bold rounded-2xl border-2 transition-all duration-150',
-            'bg-white/10 text-white caret-[#FF6B00]',
+            'bg-white/10 text-white caret-[#F97316]',
             'focus:outline-none focus:scale-105',
             'disabled:opacity-40',
             hasError
               ? 'border-red-500 bg-red-500/10'
               : value[i]
-              ? 'border-[#FF6B00] bg-[#FF6B00]/10'
-              : 'border-white/20 focus:border-[#FF6B00]',
+              ? 'border-[#F97316] bg-[#F97316]/10'
+              : 'border-white/20 focus:border-[#F97316]',
           ].join(' ')}
         />
       ))}
@@ -286,7 +286,7 @@ export default function VerifyPage() {
               type="button"
               onClick={handleResend}
               disabled={loading}
-              className="text-[#FF6B00] font-semibold hover:text-[#FF8C00] transition-colors disabled:opacity-40"
+              className="text-[#F97316] font-semibold hover:text-[#FF8C00] transition-colors disabled:opacity-40"
             >
               Renvoyer le code
             </button>

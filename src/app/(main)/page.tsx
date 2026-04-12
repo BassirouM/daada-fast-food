@@ -40,7 +40,7 @@ async function getPlats(): Promise<{ populaires: Plat[]; topNotes: Plat[] }> {
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 const CAT_CONFIG: Record<string, { emoji: string; gradient: string; label: string }> = {
-  burger:   { emoji: '🍔', gradient: 'linear-gradient(135deg, #FF6B00, #FF8C38)', label: 'Burgers'  },
+  burger:   { emoji: '🍔', gradient: 'linear-gradient(135deg, #F97316, #FB923C)', label: 'Burgers'  },
   poulet:   { emoji: '🍗', gradient: 'linear-gradient(135deg, #F59E0B, #D97706)', label: 'Poulet'   },
   pizza:    { emoji: '🍕', gradient: 'linear-gradient(135deg, #EF4444, #DC2626)', label: 'Pizza'    },
   frites:   { emoji: '🍟', gradient: 'linear-gradient(135deg, #EAB308, #CA8A04)', label: 'Frites'   },
@@ -95,7 +95,7 @@ function PlatCard({ plat }: { plat: Plat }) {
             position: 'absolute', top: 8, left: 8,
             fontSize: '0.625rem', fontWeight: 800,
             padding: '3px 8px', borderRadius: 999,
-            background: '#FF6B00', color: 'white',
+            background: '#F97316', color: 'white',
           }}>🔥 Populaire</span>
         )}
         <span style={{
@@ -126,15 +126,15 @@ function PlatCard({ plat }: { plat: Plat }) {
         )}
 
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <span style={{ fontSize: '1rem', fontWeight: 900, color: '#FF6B00' }}>
+          <span style={{ fontSize: '1rem', fontWeight: 900, color: '#F97316' }}>
             {formatPrice(plat.prix)}
           </span>
           <span style={{
             width: 32, height: 32, borderRadius: '50%',
-            background: 'linear-gradient(135deg, #FF6B00, #CC5500)',
+            background: 'linear-gradient(135deg, #F97316, #EA580C)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             color: 'white', fontSize: '1.25rem', fontWeight: 700,
-            boxShadow: '0 3px 10px rgba(255,107,0,0.4)',
+            boxShadow: '0 3px 10px rgba(249,115,22,0.4)',
           }}>+</span>
         </div>
       </div>
@@ -153,7 +153,7 @@ function SectionHeader({ title, sub, href }: { title: string; sub?: string; href
       </div>
       {href && (
         <Link href={href} style={{
-          fontSize: '0.8125rem', fontWeight: 700, color: '#FF6B00',
+          fontSize: '0.8125rem', fontWeight: 700, color: '#F97316',
           textDecoration: 'none', whiteSpace: 'nowrap', paddingTop: 2,
         }}>Voir tout →</Link>
       )}
@@ -225,7 +225,7 @@ export default async function HomePage() {
             maxWidth: 340,
           }}>
             La meilleure bouffe<br />
-            <span style={{ color: '#FF8C38' }}>livrée en 30 min</span> ⚡
+            <span style={{ color: '#FB923C' }}>livrée en 30 min</span> ⚡
           </h1>
 
           <HomeSearchBar />
@@ -256,7 +256,7 @@ export default async function HomePage() {
             borderRight: i < 3 ? '1px solid var(--border)' : 'none',
             minWidth: 72,
           }}>
-            <span style={{ fontSize: '1rem', fontWeight: 900, color: '#FF6B00' }}>{s.val}</span>
+            <span style={{ fontSize: '1rem', fontWeight: 900, color: '#F97316' }}>{s.val}</span>
             <span style={{ fontSize: '0.625rem', color: 'var(--text-muted)', marginTop: 1, whiteSpace: 'nowrap' }}>{s.label}</span>
           </div>
         ))}
@@ -332,8 +332,8 @@ export default async function HomePage() {
                     minWidth: 240, padding: '0.875rem',
                     borderRadius: 16, textDecoration: 'none',
                     background: 'var(--bg-surface)',
-                    border: '1px solid rgba(255,107,0,0.2)',
-                    boxShadow: '0 2px 12px rgba(255,107,0,0.08)',
+                    border: '1px solid rgba(249,115,22,0.2)',
+                    boxShadow: '0 2px 12px rgba(249,115,22,0.08)',
                     flexShrink: 0,
                   }}
                 >
@@ -352,7 +352,7 @@ export default async function HomePage() {
                     <span style={{
                       fontSize: '0.625rem', fontWeight: 800,
                       padding: '2px 8px', borderRadius: 999,
-                      background: '#FF6B00', color: 'white',
+                      background: '#F97316', color: 'white',
                       display: 'inline-block', marginBottom: 4,
                     }}>-20%</span>
                     <p style={{
@@ -361,7 +361,7 @@ export default async function HomePage() {
                       whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
                     }}>{plat.nom}</p>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 2 }}>
-                      <span style={{ fontWeight: 800, color: '#FF6B00', fontSize: '0.9375rem' }}>{formatPrice(promo)}</span>
+                      <span style={{ fontWeight: 800, color: '#F97316', fontSize: '0.9375rem' }}>{formatPrice(promo)}</span>
                       <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textDecoration: 'line-through' }}>{formatPrice(plat.prix)}</span>
                     </div>
                   </div>
@@ -464,16 +464,16 @@ export default async function HomePage() {
                 <div style={{
                   position: 'absolute', top: 20, left: '50%', width: '100%',
                   height: 2,
-                  background: 'linear-gradient(90deg, #FF6B00, rgba(255,107,0,0.2))',
+                  background: 'linear-gradient(90deg, #F97316, rgba(249,115,22,0.2))',
                   zIndex: 0,
                 }} />
               )}
               <div style={{
                 width: 42, height: 42, borderRadius: '50%',
-                background: 'linear-gradient(135deg, #FF6B00, #CC5500)',
+                background: 'linear-gradient(135deg, #F97316, #EA580C)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontSize: '1.25rem',
-                boxShadow: '0 4px 14px rgba(255,107,0,0.35)',
+                boxShadow: '0 4px 14px rgba(249,115,22,0.35)',
                 position: 'relative', zIndex: 1,
                 marginBottom: '0.625rem',
               }}>{emoji}</div>
@@ -494,10 +494,10 @@ export default async function HomePage() {
       ══════════════════════════════════════════════════════════════════ */}
       <section style={{
         margin: '1rem', borderRadius: 20,
-        background: 'linear-gradient(135deg, #FF6B00 0%, #CC5500 100%)',
+        background: 'linear-gradient(135deg, #F97316 0%, #EA580C 100%)',
         padding: '2rem 1.5rem',
         display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center',
-        boxShadow: '0 8px 32px rgba(255,107,0,0.35)',
+        boxShadow: '0 8px 32px rgba(249,115,22,0.35)',
       }}>
         <div style={{ fontSize: '3rem', marginBottom: '0.5rem' }}>🛵</div>
         <h2 style={{ fontSize: '1.375rem', fontWeight: 900, color: '#fff', marginBottom: '0.375rem' }}>
@@ -511,7 +511,7 @@ export default async function HomePage() {
           style={{
             display: 'inline-flex', alignItems: 'center', gap: 8,
             padding: '0.875rem 2.25rem', borderRadius: 999,
-            background: '#fff', color: '#FF6B00',
+            background: '#fff', color: '#F97316',
             fontSize: '1rem', fontWeight: 800,
             textDecoration: 'none',
             boxShadow: '0 4px 16px rgba(0,0,0,0.15)',

@@ -39,12 +39,12 @@ function FlameIcon({ size }: { size: number }) {
       <ellipse cx="19" cy="26" rx="3" ry="4" fill="white" opacity="0.2" />
       <defs>
         <linearGradient id="flame-gradient" x1="20" y1="2" x2="20" y2="38" gradientUnits="userSpaceOnUse">
-          <stop offset="0%"   stopColor="#FF8C38" />
-          <stop offset="100%" stopColor="#FF6B00" />
+          <stop offset="0%"   stopColor="#FB923C" />
+          <stop offset="100%" stopColor="#F97316" />
         </linearGradient>
         <linearGradient id="flame-inner" x1="20" y1="11" x2="20" y2="34" gradientUnits="userSpaceOnUse">
           <stop offset="0%"   stopColor="#FFD580" />
-          <stop offset="100%" stopColor="#FF8C38" />
+          <stop offset="100%" stopColor="#FB923C" />
         </linearGradient>
       </defs>
     </svg>

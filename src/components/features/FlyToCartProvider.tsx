@@ -42,8 +42,8 @@ export function FlyToCartProvider({ children }: { children: React.ReactNode }) {
       'align-items: center',
       'justify-content: center',
       'font-size: 1.5rem',
-      'background: linear-gradient(135deg, #FF6B00, #CC5500)',
-      'box-shadow: 0 4px 16px rgba(255,107,0,0.5)',
+      'background: linear-gradient(135deg, #F97316, #EA580C)',
+      'box-shadow: 0 4px 16px rgba(249,115,22,0.5)',
       'will-change: transform, opacity',
     ].join(';')
 

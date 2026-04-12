@@ -22,7 +22,7 @@ export default function AuthCallbackPage() {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        background: 'linear-gradient(160deg, #FF6B00 0%, #CC5500 40%, #0A0A0A 100%)',
+        background: 'linear-gradient(160deg, #F97316 0%, #EA580C 40%, #0A0A0A 100%)',
         gap: '1.5rem',
       }}
     >

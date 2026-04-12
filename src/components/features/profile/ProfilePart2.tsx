@@ -55,7 +55,7 @@ const STATUT_LABEL: Record<StatutCommande, string> = {
 const STATUT_COLOR: Record<StatutCommande, string> = {
   pending:   '#F59E0B',
   confirmed: '#3B82F6',
-  preparing: '#FF6B00',
+  preparing: '#F97316',
   ready:     '#8B5CF6',
   picked_up: '#06B6D4',
   delivered: '#10B981',
@@ -317,7 +317,7 @@ export function OrderHistory() {
               <button
                 onClick={() => router.push('/menu')}
                 className="mt-4 px-5 py-2.5 rounded-xl text-sm font-bold text-white"
-                style={{ background: 'linear-gradient(135deg, #FF6B00, #CC5500)' }}
+                style={{ background: 'linear-gradient(135deg, #F97316, #EA580C)' }}
               >
                 Explorer le menu
               </button>
@@ -634,7 +634,7 @@ export function SavedAddresses() {
             <button
               onClick={() => setAddOpen(true)}
               className="mt-3 px-4 py-2 rounded-xl text-sm font-semibold text-white"
-              style={{ background: 'linear-gradient(135deg, #FF6B00, #CC5500)' }}
+              style={{ background: 'linear-gradient(135deg, #F97316, #EA580C)' }}
             >
               Ajouter une adresse
             </button>

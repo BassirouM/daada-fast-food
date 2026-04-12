@@ -50,7 +50,7 @@ const STATUT_LABEL: Record<StatutCommande, string> = {
 const STATUT_COLOR: Record<StatutCommande, string> = {
   pending:   '#F59E0B',
   confirmed: '#3B82F6',
-  preparing: '#FF6B00',
+  preparing: '#F97316',
   ready:     '#8B5CF6',
   picked_up: '#06B6D4',
   delivered: '#10B981',
@@ -203,7 +203,7 @@ export default function OrdersPage() {
                   padding:      '0.5rem 0.875rem',
                   borderRadius: 20,
                   border:       `1.5px solid ${filter === v ? 'var(--brand)' : 'var(--border)'}`,
-                  background:   filter === v ? 'rgba(255,107,0,0.1)' : 'transparent',
+                  background:   filter === v ? 'rgba(249,115,22,0.1)' : 'transparent',
                   color:        filter === v ? 'var(--brand)' : 'var(--text-secondary)',
                   fontWeight:   filter === v ? 700 : 500,
                   fontSize:     '0.8125rem',
@@ -239,7 +239,7 @@ export default function OrdersPage() {
             {filter === 'all' && (
               <button
                 onClick={() => router.push('/menu')}
-                style={{ padding: '0.75rem 1.5rem', borderRadius: 12, background: 'linear-gradient(135deg, #FF6B00, #CC5500)', color: 'white', fontWeight: 700, border: 'none', cursor: 'pointer' }}
+                style={{ padding: '0.75rem 1.5rem', borderRadius: 12, background: 'linear-gradient(135deg, #F97316, #EA580C)', color: 'white', fontWeight: 700, border: 'none', cursor: 'pointer' }}
               >
                 Explorer le menu
               </button>

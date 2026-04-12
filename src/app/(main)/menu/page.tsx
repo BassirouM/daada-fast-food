@@ -102,7 +102,7 @@ function GridCard({ plat, index, onOpen }: { plat: Plat; index: number; onOpen: 
               alignItems: 'center',
               justifyContent: 'center',
               fontSize: '2.75rem',
-              background: 'linear-gradient(135deg, #FF6B00, #CC5500)',
+              background: 'linear-gradient(135deg, #F97316, #EA580C)',
             }}
           >
             {catEmoji(plat.categorie)}
@@ -125,7 +125,7 @@ function GridCard({ plat, index, onOpen }: { plat: Plat; index: number; onOpen: 
           <p style={{ fontSize: '0.8125rem', fontWeight: 600, color: '#fff', textShadow: '0 1px 4px rgba(0,0,0,0.5)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
             {plat.nom}
           </p>
-          <p style={{ fontSize: '0.75rem', fontWeight: 700, color: '#FF8C38' }}>
+          <p style={{ fontSize: '0.75rem', fontWeight: 700, color: '#FB923C' }}>
             {formatPrice(plat.prix)}
           </p>
         </div>
@@ -166,7 +166,7 @@ function GridCard({ plat, index, onOpen }: { plat: Plat; index: number; onOpen: 
             alignItems: 'center',
             justifyContent: 'center',
             border: 'none',
-            boxShadow: '0 2px 8px rgba(255,107,0,0.5)',
+            boxShadow: '0 2px 8px rgba(249,115,22,0.5)',
           }}
           aria-label={`Commander ${plat.nom}`}
         >
@@ -202,7 +202,7 @@ function ListCard({ plat, index, onOpen }: { plat: Plat; index: number; onOpen: 
           flexShrink: 0,
           borderRadius: 'var(--radius-lg)',
           overflow: 'hidden',
-          background: 'linear-gradient(135deg, #FF6B00, #CC5500)',
+          background: 'linear-gradient(135deg, #F97316, #EA580C)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -576,9 +576,9 @@ function MenuPageInner() {
                   borderRadius: 999,
                   fontSize: '0.75rem',
                   fontWeight: isActive ? 700 : 500,
-                  background: isActive ? 'rgba(255,107,0,0.15)' : 'var(--bg-elevated)',
+                  background: isActive ? 'rgba(249,115,22,0.15)' : 'var(--bg-elevated)',
                   color: isActive ? 'var(--brand)' : 'var(--text-secondary)',
-                  border: isActive ? '1px solid rgba(255,107,0,0.4)' : '1px solid var(--border)',
+                  border: isActive ? '1px solid rgba(249,115,22,0.4)' : '1px solid var(--border)',
                   transition: 'all var(--t-base)',
                   whiteSpace: 'nowrap',
                 }}

@@ -53,7 +53,7 @@ function UpsellCard({ suggestion, onAdd }: {
         borderRadius: 10,
         overflow:     'hidden',
         flexShrink:   0,
-        background:   'linear-gradient(135deg, #FF6B00, #CC5500)',
+        background:   'linear-gradient(135deg, #F97316, #EA580C)',
         display:      'flex',
         alignItems:   'center',
         justifyContent: 'center',
@@ -88,8 +88,8 @@ function UpsellCard({ suggestion, onAdd }: {
             fontWeight: 600,
             padding:    '1px 6px',
             borderRadius: 999,
-            background: 'rgba(255,107,0,0.15)',
-            color:      '#FF6B00',
+            background: 'rgba(249,115,22,0.15)',
+            color:      '#F97316',
           }}>
             {suggestion.reason}
           </span>

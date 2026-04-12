@@ -310,7 +310,7 @@ export default function CheckoutPage() {
                       </span>
                       <button
                         onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                        style={{ width: 28, height: 28, borderRadius: 8, border: '1.5px solid var(--brand)', background: 'rgba(255,107,0,0.1)', color: 'var(--brand)', fontSize: '1rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 }}
+                        style={{ width: 28, height: 28, borderRadius: 8, border: '1.5px solid var(--brand)', background: 'rgba(249,115,22,0.1)', color: 'var(--brand)', fontSize: '1rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 }}
                       >
                         +
                       </button>
@@ -388,7 +388,7 @@ export default function CheckoutPage() {
                   ))}
                 </div>
                 {useMapAddress && (
-                  <div style={{ background: 'var(--bg-elevated)', borderRadius: 10, padding: '0.75rem', border: '1.5px solid rgba(255,107,0,0.3)' }}>
+                  <div style={{ background: 'var(--bg-elevated)', borderRadius: 10, padding: '0.75rem', border: '1.5px solid rgba(249,115,22,0.3)' }}>
                     <p style={{ fontWeight: 600, fontSize: '0.875rem', color: 'var(--text-primary)' }}>{adresseLivraison.label}</p>
                     <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.125rem' }}>{adresseLivraison.quartier} · ~{adresseLivraison.tempsEstime} min · {formatPrice(adresseLivraison.fraisLivraison)}</p>
                   </div>
@@ -424,7 +424,7 @@ export default function CheckoutPage() {
             {!adresseLivraison && (
               <button
                 onClick={() => router.push('/map?returnUrl=/checkout')}
-                style={{ width: '100%', padding: '0.75rem', borderRadius: 12, border: '1.5px dashed var(--brand)', background: 'rgba(255,107,0,0.06)', color: 'var(--brand)', fontSize: '0.875rem', fontWeight: 600, cursor: 'pointer', marginBottom: '0.75rem' }}
+                style={{ width: '100%', padding: '0.75rem', borderRadius: 12, border: '1.5px dashed var(--brand)', background: 'rgba(249,115,22,0.06)', color: 'var(--brand)', fontSize: '0.875rem', fontWeight: 600, cursor: 'pointer', marginBottom: '0.75rem' }}
               >
                 🗺️ Choisir sur la carte (recommandé)
               </button>
@@ -453,7 +453,7 @@ export default function CheckoutPage() {
                   <button
                     key={v}
                     onClick={() => setHeureMode(v)}
-                    style={{ flex: 1, padding: '0.625rem 0.5rem', borderRadius: 10, border: `1.5px solid ${heureMode === v ? 'var(--brand)' : 'var(--border)'}`, background: heureMode === v ? 'rgba(255,107,0,0.08)' : 'var(--bg-elevated)', color: heureMode === v ? 'var(--brand)' : 'var(--text-secondary)', fontSize: '0.8125rem', fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s' }}
+                    style={{ flex: 1, padding: '0.625rem 0.5rem', borderRadius: 10, border: `1.5px solid ${heureMode === v ? 'var(--brand)' : 'var(--border)'}`, background: heureMode === v ? 'rgba(249,115,22,0.08)' : 'var(--bg-elevated)', color: heureMode === v ? 'var(--brand)' : 'var(--text-secondary)', fontSize: '0.8125rem', fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s' }}
                   >
                     {label}
                   </button>
@@ -567,7 +567,7 @@ export default function CheckoutPage() {
             <button
               onClick={goToStep2}
               disabled={items.length === 0}
-              style={{ width: '100%', padding: '0.875rem', borderRadius: 14, background: 'linear-gradient(135deg, #FF6B00, #CC5500)', color: 'white', fontWeight: 700, fontSize: '1rem', border: 'none', cursor: 'pointer', boxShadow: '0 4px 20px rgba(255,107,0,0.4)' }}
+              style={{ width: '100%', padding: '0.875rem', borderRadius: 14, background: 'linear-gradient(135deg, #F97316, #EA580C)', color: 'white', fontWeight: 700, fontSize: '1rem', border: 'none', cursor: 'pointer', boxShadow: '0 4px 20px rgba(249,115,22,0.4)' }}
             >
               Continuer · {formatPrice(total)}
             </button>
@@ -575,7 +575,7 @@ export default function CheckoutPage() {
           {step === 2 && (
             <button
               onClick={goToStep3}
-              style={{ width: '100%', padding: '0.875rem', borderRadius: 14, background: 'linear-gradient(135deg, #FF6B00, #CC5500)', color: 'white', fontWeight: 700, fontSize: '1rem', border: 'none', cursor: 'pointer', boxShadow: '0 4px 20px rgba(255,107,0,0.4)' }}
+              style={{ width: '100%', padding: '0.875rem', borderRadius: 14, background: 'linear-gradient(135deg, #F97316, #EA580C)', color: 'white', fontWeight: 700, fontSize: '1rem', border: 'none', cursor: 'pointer', boxShadow: '0 4px 20px rgba(249,115,22,0.4)' }}
             >
               Choisir le paiement
             </button>
@@ -584,7 +584,7 @@ export default function CheckoutPage() {
             <button
               onClick={() => void handlePay()}
               disabled={loading || !payPhone.trim()}
-              style={{ width: '100%', padding: '0.875rem', borderRadius: 14, background: loading ? 'var(--bg-elevated)' : 'linear-gradient(135deg, #FF6B00, #CC5500)', color: loading ? 'var(--text-muted)' : 'white', fontWeight: 700, fontSize: '1rem', border: 'none', cursor: loading ? 'not-allowed' : 'pointer', boxShadow: loading ? 'none' : '0 4px 20px rgba(255,107,0,0.4)', transition: 'all 0.2s' }}
+              style={{ width: '100%', padding: '0.875rem', borderRadius: 14, background: loading ? 'var(--bg-elevated)' : 'linear-gradient(135deg, #F97316, #EA580C)', color: loading ? 'var(--text-muted)' : 'white', fontWeight: 700, fontSize: '1rem', border: 'none', cursor: loading ? 'not-allowed' : 'pointer', boxShadow: loading ? 'none' : '0 4px 20px rgba(249,115,22,0.4)', transition: 'all 0.2s' }}
             >
               {loading ? (
                 <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>

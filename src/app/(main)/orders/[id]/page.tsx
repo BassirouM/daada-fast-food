@@ -165,7 +165,7 @@ function formatDateTime(iso: string): string {
 
 function statusColor(s: OrderStatus): string {
   const m: Record<OrderStatus, string> = {
-    pending: '#F59E0B', confirmed: '#3B82F6', preparing: '#FF6B00',
+    pending: '#F59E0B', confirmed: '#3B82F6', preparing: '#F97316',
     ready: '#8B5CF6', picked_up: '#06B6D4', delivered: '#10B981', cancelled: '#EF4444',
   }
   return m[s] ?? '#888'
@@ -191,7 +191,7 @@ function MapSkeleton() {
     }}>
       <div style={{
         width: 36, height: 36, borderRadius: '50%',
-        border: '3px solid rgba(255,107,0,.2)', borderTopColor: '#FF6B00',
+        border: '3px solid rgba(249,115,22,.2)', borderTopColor: '#F97316',
         animation: 'spin 0.8s linear infinite',
       }} />
       <p style={{ color: 'var(--text-muted)', fontSize: '0.8125rem' }}>Chargement carte…</p>
@@ -245,13 +245,13 @@ function OrderTimeline({ statut, createdAt, tempsEstime }: {
                   background: isDone
                     ? 'linear-gradient(135deg,#10B981,#059669)'
                     : isActive
-                      ? 'linear-gradient(135deg,#FF6B00,#CC5500)'
+                      ? 'linear-gradient(135deg,#F97316,#EA580C)'
                       : 'var(--bg-elevated)',
                   border: isActive ? 'none' : isDone ? 'none' : '2px solid var(--border)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   fontSize: '0.875rem',
                   flexShrink: 0,
-                  boxShadow: isActive ? '0 0 0 4px rgba(255,107,0,.2)' : 'none',
+                  boxShadow: isActive ? '0 0 0 4px rgba(249,115,22,.2)' : 'none',
                   animation: isActive ? 'stepPulse 1.8s ease infinite' : 'none',
                   transition: 'all 0.4s ease',
                 }}>
@@ -283,7 +283,7 @@ function OrderTimeline({ statut, createdAt, tempsEstime }: {
                 <p style={{
                   fontWeight: isActive || isDone ? 700 : 500,
                   fontSize: '0.9375rem',
-                  color: isActive ? '#FF6B00' : isDone ? 'var(--text-primary)' : 'var(--text-muted)',
+                  color: isActive ? '#F97316' : isDone ? 'var(--text-primary)' : 'var(--text-muted)',
                   transition: 'color 0.4s',
                 }}>
                   {step.label}
@@ -302,8 +302,8 @@ function OrderTimeline({ statut, createdAt, tempsEstime }: {
       </div>
       <style>{`
         @keyframes stepPulse {
-          0%,100% { box-shadow: 0 0 0 4px rgba(255,107,0,.2); }
-          50%      { box-shadow: 0 0 0 8px rgba(255,107,0,.05); }
+          0%,100% { box-shadow: 0 0 0 4px rgba(249,115,22,.2); }
+          50%      { box-shadow: 0 0 0 8px rgba(249,115,22,.05); }
         }
       `}</style>
     </div>
@@ -423,7 +423,7 @@ function ChatSheet({ commandeId, userId, onClose }: {
                   <div key={m.id} style={{ display: 'flex', justifyContent: isMe ? 'flex-end' : 'flex-start' }}>
                     <div style={{
                       maxWidth: '75%', padding: '0.5rem 0.75rem', borderRadius: isMe ? '14px 14px 4px 14px' : '14px 14px 14px 4px',
-                      background: isMe ? 'linear-gradient(135deg,#FF6B00,#CC5500)' : 'var(--bg-elevated)',
+                      background: isMe ? 'linear-gradient(135deg,#F97316,#EA580C)' : 'var(--bg-elevated)',
                       color: isMe ? 'white' : 'var(--text-primary)',
                       fontSize: '0.875rem',
                     }}>
@@ -470,7 +470,7 @@ function ChatSheet({ commandeId, userId, onClose }: {
                 disabled={!texte.trim() || sending}
                 style={{
                   width: 42, height: 42, borderRadius: '50%',
-                  background: texte.trim() ? 'linear-gradient(135deg,#FF6B00,#CC5500)' : 'var(--bg-elevated)',
+                  background: texte.trim() ? 'linear-gradient(135deg,#F97316,#EA580C)' : 'var(--bg-elevated)',
                   border: 'none', cursor: texte.trim() ? 'pointer' : 'not-allowed',
                   fontSize: '1.125rem', display: 'flex', alignItems: 'center', justifyContent: 'center',
                   flexShrink: 0,
@@ -689,7 +689,7 @@ export default function OrderTrackingPage() {
 
     doc.setFont('helvetica', 'bold')
     doc.setFontSize(20)
-    doc.setTextColor(255, 107, 0)
+    doc.setTextColor(249, 115, 22)
     doc.text('DAADA FAST FOOD', 105, 20, { align: 'center' })
 
     doc.setFontSize(10)
@@ -710,7 +710,7 @@ export default function OrderTrackingPage() {
 
     // Table header
     let y = 70
-    doc.setFillColor(255, 107, 0)
+    doc.setFillColor(249, 115, 22)
     doc.rect(20, y - 5, 170, 8, 'F')
     doc.setTextColor(255, 255, 255)
     doc.setFont('helvetica', 'bold')
@@ -744,7 +744,7 @@ export default function OrderTrackingPage() {
     doc.text(`${commande.frais_livraison} FCFA`, 188, y, { align: 'right' })
     y += 6
     doc.setFont('helvetica', 'bold')
-    doc.setTextColor(255, 107, 0)
+    doc.setTextColor(249, 115, 22)
     doc.text('TOTAL', 120, y)
     doc.text(`${commande.total} FCFA`, 188, y, { align: 'right' })
 
@@ -878,13 +878,13 @@ export default function OrderTrackingPage() {
               {eta !== null && (
                 <div style={{ textAlign: 'right' }}>
                   <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Arrivée estimée</p>
-                  <p style={{ fontWeight: 700, fontSize: '1rem', color: '#FF6B00' }}>~{eta} min</p>
+                  <p style={{ fontWeight: 700, fontSize: '1rem', color: '#F97316' }}>~{eta} min</p>
                 </div>
               )}
               {/* Chat button */}
               <button
                 onClick={() => setShowChat(true)}
-                style={{ padding: '0.5rem 0.875rem', borderRadius: 10, border: '1.5px solid var(--brand)', background: 'rgba(255,107,0,.08)', color: 'var(--brand)', fontWeight: 700, fontSize: '0.8125rem', cursor: 'pointer' }}
+                style={{ padding: '0.5rem 0.875rem', borderRadius: 10, border: '1.5px solid var(--brand)', background: 'rgba(249,115,22,.08)', color: 'var(--brand)', fontWeight: 700, fontSize: '0.8125rem', cursor: 'pointer' }}
               >
                 💬 Chat
               </button>
@@ -1006,7 +1006,7 @@ export default function OrderTrackingPage() {
                       <button
                         onClick={() => void handleSubmitRating()}
                         disabled={ratingLoading}
-                        style={{ marginTop: '0.75rem', width: '100%', padding: '0.75rem', borderRadius: 12, background: ratingLoading ? 'var(--bg-elevated)' : 'linear-gradient(135deg,#FF6B00,#CC5500)', color: ratingLoading ? 'var(--text-muted)' : 'white', fontWeight: 700, border: 'none', cursor: ratingLoading ? 'not-allowed' : 'pointer', fontSize: '0.9375rem' }}
+                        style={{ marginTop: '0.75rem', width: '100%', padding: '0.75rem', borderRadius: 12, background: ratingLoading ? 'var(--bg-elevated)' : 'linear-gradient(135deg,#F97316,#EA580C)', color: ratingLoading ? 'var(--text-muted)' : 'white', fontWeight: 700, border: 'none', cursor: ratingLoading ? 'not-allowed' : 'pointer', fontSize: '0.9375rem' }}
                       >
                         {ratingLoading ? 'Envoi…' : 'Envoyer mon avis'}
                       </button>
@@ -1021,7 +1021,7 @@ export default function OrderTrackingPage() {
               <button
                 onClick={() => void handleReorder()}
                 disabled={reordering}
-                style={{ width: '100%', padding: '0.875rem', borderRadius: 14, background: reordering ? 'var(--bg-elevated)' : 'linear-gradient(135deg,#FF6B00,#CC5500)', color: reordering ? 'var(--text-muted)' : 'white', fontWeight: 700, fontSize: '1rem', border: 'none', cursor: reordering ? 'not-allowed' : 'pointer', boxShadow: reordering ? 'none' : '0 4px 20px rgba(255,107,0,.3)' }}
+                style={{ width: '100%', padding: '0.875rem', borderRadius: 14, background: reordering ? 'var(--bg-elevated)' : 'linear-gradient(135deg,#F97316,#EA580C)', color: reordering ? 'var(--text-muted)' : 'white', fontWeight: 700, fontSize: '1rem', border: 'none', cursor: reordering ? 'not-allowed' : 'pointer', boxShadow: reordering ? 'none' : '0 4px 20px rgba(249,115,22,.3)' }}
               >
                 {reordering ? 'Chargement…' : '🔄 Commander à nouveau'}
               </button>

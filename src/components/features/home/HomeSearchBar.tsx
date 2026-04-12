@@ -58,7 +58,7 @@ export default function HomeSearchBar() {
             margin: 5,
             padding: '9px 18px',
             borderRadius: 12,
-            background: 'linear-gradient(135deg, #FF6B00, #CC5500)',
+            background: 'linear-gradient(135deg, #F97316, #EA580C)',
             color: 'white',
             fontSize: '0.875rem',
             fontWeight: 700,

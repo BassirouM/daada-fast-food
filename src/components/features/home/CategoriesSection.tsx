@@ -63,7 +63,7 @@ export default function CategoriesSection() {
                 borderRadius: 'var(--radius-xl)',
                 border: isActive ? '2px solid var(--brand)' : '1px solid var(--border)',
                 background: isActive
-                  ? 'linear-gradient(135deg, rgba(255,107,0,0.2), rgba(204,85,0,0.1))'
+                  ? 'linear-gradient(135deg, rgba(249,115,22,0.2), rgba(204,85,0,0.1))'
                   : 'var(--bg-surface)',
                 transition: 'all var(--t-base)',
                 boxShadow: isActive ? 'var(--shadow-brand)' : 'none',

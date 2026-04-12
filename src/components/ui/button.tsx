@@ -26,7 +26,7 @@ const buttonVariants = cva(
           'bg-[var(--brand)] text-white',
           'hover:bg-[var(--brand-light)]',
           'shadow-[var(--shadow-brand)]',
-          'hover:shadow-[0_6px_24px_rgba(255,107,0,0.4)]',
+          'hover:shadow-[0_6px_24px_rgba(249,115,22,0.4)]',
         ],
         secondary: [
           'bg-[var(--bg-elevated)] text-[var(--text-primary)]',

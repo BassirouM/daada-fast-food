@@ -34,7 +34,7 @@ function UserAvatar({ nom, avatarUrl }: { nom?: string; avatarUrl?: string | nul
     return (
       <span
         className="flex h-8 w-8 items-center justify-center rounded-full text-white text-xs font-bold"
-        style={{ background: 'linear-gradient(135deg, #FF6B00, #CC5500)' }}
+        style={{ background: 'linear-gradient(135deg, #F97316, #EA580C)' }}
         aria-hidden="true"
       >
         {initials}

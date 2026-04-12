@@ -31,139 +31,135 @@
 }
 
 /* =============================================================================
-   THEME — Tailwind v4 CSS variable theme
+   CSS CUSTOM PROPERTIES — Light mode (default)
    ============================================================================= */
-@theme {
-  /* Fonts */
-  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
-  --font-display: 'Syne', ui-sans-serif, system-ui, sans-serif;
+:root {
+  color-scheme: light;
 
-  /* Brand colors */
-  --color-brand-orange: #FF6B00;
-  --color-brand-orange-light: #FF8C38;
-  --color-brand-orange-dark: #CC5500;
-  --color-brand-black: #0A0A0A;
-  --color-brand-black-soft: #1A1A1A;
-  --color-brand-gray-dark: #2A2A2A;
-  --color-brand-gray-mid: #4A4A4A;
-  --color-brand-gray-light: #8A8A8A;
-  --color-brand-cream: #FFF8F3;
+  /* Backgrounds — warm white */
+  --bg-base:     #FAFAF8;
+  --bg-surface:  #FFFFFF;
+  --bg-elevated: #F3F4F6;
+  --bg-overlay:  #E5E7EB;
+  --bg-input:    #F9FAFB;
+
+  /* Text — gray-800 scale */
+  --text-primary:   #1F2937;
+  --text-secondary: #6B7280;
+  --text-muted:     #9CA3AF;
+  --text-inverse:   #FFFFFF;
+
+  /* Brand — orange-500 Tailwind */
+  --brand:        #F97316;
+  --brand-light:  #FB923C;
+  --brand-dark:   #EA580C;
+  --brand-subtle: rgba(249, 115, 22, 0.10);
+  --brand-glow:   rgba(249, 115, 22, 0.20);
+
+  /* Secondary — red-600 */
+  --secondary:        #DC2626;
+  --secondary-subtle: rgba(220, 38, 38, 0.10);
+
+  /* Accent — amber-400 */
+  --accent:        #FBBF24;
+  --accent-subtle: rgba(251, 191, 36, 0.15);
+
+  /* Borders */
+  --border:        rgba(0, 0, 0, 0.08);
+  --border-strong: rgba(0, 0, 0, 0.15);
+  --border-brand:  rgba(249, 115, 22, 0.40);
+
+  /* Status */
+  --success:        #16A34A;
+  --success-subtle: rgba(22, 163, 74, 0.10);
+  --warning:        #D97706;
+  --warning-subtle: rgba(217, 119, 6, 0.10);
+  --danger:         #DC2626;
+  --danger-subtle:  rgba(220, 38, 38, 0.10);
+  --info:           #2563EB;
+  --info-subtle:    rgba(37, 99, 235, 0.10);
+
+  /* Glass */
+  --glass-bg:       rgba(255, 255, 255, 0.70);
+  --glass-bg-hover: rgba(255, 255, 255, 0.85);
+  --glass-border:   rgba(0, 0, 0, 0.08);
+  --glass-blur:     blur(16px);
+
+  /* Shadows — light */
+  --shadow-sm:    0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md:    0 4px 12px rgba(0, 0, 0, 0.10);
+  --shadow-lg:    0 8px 24px rgba(0, 0, 0, 0.12);
+  --shadow-brand: 0 4px 20px rgba(249, 115, 22, 0.25);
+
+  /* Transitions */
+  --t-fast:   120ms ease;
+  --t-base:   200ms ease;
+  --t-slow:   300ms ease;
+  --t-spring: 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
 
   /* Radii */
-  --radius-sm: 0.375rem;
-  --radius-md: 0.625rem;
-  --radius-lg: 0.875rem;
-  --radius-xl: 1.25rem;
-  --radius-2xl: 1.75rem;
+  --radius-sm:   0.375rem;
+  --radius-md:   0.625rem;
+  --radius-lg:   0.875rem;
+  --radius-xl:   1.25rem;
+  --radius-2xl:  1.75rem;
   --radius-full: 9999px;
 
-  /* Spacing */
-  --spacing-safe-bottom: env(safe-area-inset-bottom, 0px);
-  --spacing-safe-top: env(safe-area-inset-top, 0px);
+  /* Spacing safe areas */
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-top:    env(safe-area-inset-top, 0px);
 }
 
 /* =============================================================================
-   CSS CUSTOM PROPERTIES — Dark/Light mode (no runtime JS)
+   DARK MODE — opt-in via [data-theme='dark']
    ============================================================================= */
-:root {
+[data-theme='dark'] {
   color-scheme: dark;
 
-  /* Backgrounds */
-  --bg-base: #0A0A0A;
-  --bg-surface: #141414;
-  --bg-elevated: #1E1E1E;
-  --bg-overlay: #252525;
-  --bg-input: #1A1A1A;
+  --bg-base:     #111827;
+  --bg-surface:  #1F2937;
+  --bg-elevated: #374151;
+  --bg-overlay:  #4B5563;
+  --bg-input:    #1F2937;
 
-  /* Text */
-  --text-primary: #FFFFFF;
-  --text-secondary: #A0A0A0;
-  --text-muted: #5A5A5A;
-  --text-inverse: #0A0A0A;
+  --text-primary:   #F9FAFB;
+  --text-secondary: #D1D5DB;
+  --text-muted:     #9CA3AF;
+  --text-inverse:   #111827;
 
-  /* Brand */
-  --brand: #FF6B00;
-  --brand-light: #FF8C38;
-  --brand-dark: #CC5500;
-  --brand-subtle: rgba(255, 107, 0, 0.12);
-  --brand-glow: rgba(255, 107, 0, 0.25);
+  --brand:        #F97316;
+  --brand-light:  #FB923C;
+  --brand-dark:   #EA580C;
+  --brand-subtle: rgba(249, 115, 22, 0.15);
+  --brand-glow:   rgba(249, 115, 22, 0.30);
 
-  /* Borders */
-  --border: rgba(255, 255, 255, 0.08);
-  --border-strong: rgba(255, 255, 255, 0.15);
-  --border-brand: rgba(255, 107, 0, 0.4);
+  --secondary:        #EF4444;
+  --secondary-subtle: rgba(239, 68, 68, 0.15);
 
-  /* Status */
-  --success: #22C55E;
+  --accent:        #FBBF24;
+  --accent-subtle: rgba(251, 191, 36, 0.15);
+
+  --border:        rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.16);
+  --border-brand:  rgba(249, 115, 22, 0.40);
+
+  --success:        #22C55E;
   --success-subtle: rgba(34, 197, 94, 0.12);
-  --warning: #F59E0B;
+  --warning:        #F59E0B;
   --warning-subtle: rgba(245, 158, 11, 0.12);
-  --danger: #EF4444;
-  --danger-subtle: rgba(239, 68, 68, 0.12);
-  --info: #3B82F6;
-  --info-subtle: rgba(59, 130, 246, 0.12);
+  --danger:         #EF4444;
+  --danger-subtle:  rgba(239, 68, 68, 0.12);
+  --info:           #3B82F6;
+  --info-subtle:    rgba(59, 130, 246, 0.12);
 
-  /* Glass */
-  --glass-bg: rgba(255, 255, 255, 0.04);
+  --glass-bg:       rgba(255, 255, 255, 0.04);
   --glass-bg-hover: rgba(255, 255, 255, 0.07);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --glass-blur: blur(16px);
+  --glass-border:   rgba(255, 255, 255, 0.08);
 
-  /* Shadows */
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.5);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.6);
-  --shadow-brand: 0 4px 20px rgba(255, 107, 0, 0.3);
-
-  /* Transitions */
-  --t-fast: 120ms ease;
-  --t-base: 200ms ease;
-  --t-slow: 300ms ease;
-  --t-spring: 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-[data-theme='light'] {
-  color-scheme: light;
-
-  --bg-base: #FAFAFA;
-  --bg-surface: #FFFFFF;
-  --bg-elevated: #F5F5F5;
-  --bg-overlay: #EFEFEF;
-  --bg-input: #F0F0F0;
-
-  --text-primary: #0A0A0A;
-  --text-secondary: #4A4A4A;
-  --text-muted: #8A8A8A;
-  --text-inverse: #FFFFFF;
-
-  --brand: #FF6B00;
-  --brand-light: #FF8C38;
-  --brand-dark: #CC5500;
-  --brand-subtle: rgba(255, 107, 0, 0.08);
-  --brand-glow: rgba(255, 107, 0, 0.15);
-
-  --border: rgba(0, 0, 0, 0.08);
-  --border-strong: rgba(0, 0, 0, 0.15);
-  --border-brand: rgba(255, 107, 0, 0.4);
-
-  --success: #16A34A;
-  --success-subtle: rgba(22, 163, 74, 0.1);
-  --warning: #D97706;
-  --warning-subtle: rgba(217, 119, 6, 0.1);
-  --danger: #DC2626;
-  --danger-subtle: rgba(220, 38, 38, 0.1);
-  --info: #2563EB;
-  --info-subtle: rgba(37, 99, 235, 0.1);
-
-  --glass-bg: rgba(255, 255, 255, 0.7);
-  --glass-bg-hover: rgba(255, 255, 255, 0.85);
-  --glass-border: rgba(0, 0, 0, 0.08);
-  --glass-blur: blur(16px);
-
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.12);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.15);
-  --shadow-brand: 0 4px 20px rgba(255, 107, 0, 0.2);
+  --shadow-sm:    0 1px 3px rgba(0, 0, 0, 0.50);
+  --shadow-md:    0 4px 12px rgba(0, 0, 0, 0.50);
+  --shadow-lg:    0 8px 24px rgba(0, 0, 0, 0.60);
+  --shadow-brand: 0 4px 20px rgba(249, 115, 22, 0.35);
 }
 
 /* =============================================================================
@@ -219,6 +215,67 @@
   100% { transform: scale(1); opacity: 1; }
 }
 
+@keyframes pageIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes heroGradient {
+  0%   { background-position: 0%   50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0%   50%; }
+}
+
+@keyframes typing {
+  from { width: 0; border-right-color: var(--brand); }
+  to   { width: 100%; border-right-color: var(--brand); }
+}
+
+@keyframes cursorBlink {
+  0%, 49%  { border-right-color: var(--brand); }
+  50%, 100% { border-right-color: transparent; }
+}
+
+@keyframes scrollLeft {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes statReveal {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes promoPulse {
+  0%, 100% { box-shadow: 0 0 0 0 var(--brand-glow); }
+  50%       { box-shadow: 0 0 0 7px transparent; }
+}
+
+@keyframes badgeBounce {
+  0%   { transform: scale(1); }
+  35%  { transform: scale(1.55); }
+  60%  { transform: scale(0.88); }
+  80%  { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+@keyframes slideOutLeft {
+  from { transform: translateX(0);      opacity: 1; }
+  to   { transform: translateX(-110%);  opacity: 0; }
+}
+
+@keyframes slideInFromRight {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0); }
+}
+
+@keyframes cartImpact {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.4) rotate(-8deg); }
+  70%  { transform: scale(0.9) rotate(4deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
 /* =============================================================================
    ANIMATION UTILITIES
    ============================================================================= */
@@ -226,22 +283,30 @@
 .animate-fade-out     { animation: fadeOut var(--t-base) both; }
 .animate-slide-up     { animation: slideUp var(--t-slow) both; }
 .animate-slide-down   { animation: slideDown var(--t-slow) both; }
-.animate-slide-right  { animation: slideInRight var(--t-slow) both; }
 .animate-scale-in     { animation: scaleIn var(--t-spring) both; }
 .animate-bounce-in    { animation: bounceIn var(--t-spring) both; }
 .animate-spin         { animation: spin 0.8s linear infinite; }
 .animate-pulse-brand  { animation: pulse-brand 1.5s ease infinite; }
+.animate-page-in      { animation: pageIn 0.18s ease both; }
+.animate-stat-reveal  { animation: statReveal 0.55s ease both; }
+
+.animate-slide-right {
+  animation: slideInFromRight var(--t-slow) cubic-bezier(0.34, 1.1, 0.64, 1) both;
+}
 
 .animate-shimmer {
   background: linear-gradient(
     90deg,
     var(--bg-elevated) 25%,
-    var(--bg-overlay) 50%,
+    var(--bg-overlay)  50%,
     var(--bg-elevated) 75%
   );
   background-size: 200% 100%;
   animation: shimmer 1.6s ease-in-out infinite;
 }
+
+.cart-icon-impact  { animation: cartImpact 0.38s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+.promo-card        { animation: promoPulse 2.2s ease-in-out infinite; }
 
 /* =============================================================================
    GLASSMORPHISM UTILITIES
@@ -260,9 +325,7 @@
   border: 1px solid var(--glass-border);
   transition: background var(--t-base);
 }
-.glass-hover:hover {
-  background: var(--glass-bg-hover);
-}
+.glass-hover:hover { background: var(--glass-bg-hover); }
 
 .glass-card {
   background: var(--glass-bg);
@@ -292,9 +355,10 @@
 html {
   height: 100%;
   overflow-x: hidden;
-  /* iOS safe areas */
   padding-top: env(safe-area-inset-top);
   padding-bottom: env(safe-area-inset-bottom);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -306,13 +370,10 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* Prevent bounce scroll on iOS */
   overscroll-behavior-y: none;
-  /* Prevent zoom on input focus (iOS) */
   touch-action: manipulation;
 }
 
-/* Minimum 320px support */
 .container {
   width: 100%;
   min-width: 320px;
@@ -324,28 +385,12 @@ body {
 /* =============================================================================
    SCROLLBAR — Orange branded
    ============================================================================= */
-::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: var(--brand);
-  border-radius: 999px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--brand-light);
-}
+::-webkit-scrollbar       { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--brand); border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: var(--brand-light); }
+* { scrollbar-width: thin; scrollbar-color: var(--brand) transparent; }
 
-/* Firefox */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--brand) transparent;
-}
-
-/* Hide scrollbar but keep functionality */
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
@@ -416,61 +461,18 @@ a {
   border-color: var(--brand);
 }
 
-/* Prevent text size adjust on rotation */
-html {
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
-}
-
 /* =============================================================================
-   PAGE TRANSITION — CSS only, no Framer Motion
+   HERO BACKGROUND — warm orange gradient
    ============================================================================= */
-@keyframes pageIn {
-  from { opacity: 0; transform: translateY(6px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.animate-page-in {
-  animation: pageIn 0.18s ease both;
-}
-
-/* =============================================================================
-   HOME PAGE — Additional keyframes
-   ============================================================================= */
-
-@keyframes heroGradient {
-  0%   { background-position: 0%   50%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position: 0%   50%; }
-}
-
-@keyframes typing {
-  from { width: 0; border-right-color: #FF6B00; }
-  to   { width: 100%; border-right-color: #FF6B00; }
-}
-
-@keyframes cursorBlink {
-  0%, 49%  { border-right-color: #FF6B00; }
-  50%, 100% { border-right-color: transparent; }
-}
-
-@keyframes scrollLeft {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-@keyframes statReveal {
-  from { opacity: 0; transform: translateY(14px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes promoPulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 107, 0, 0.35); }
-  50%       { box-shadow: 0 0 0 7px rgba(255, 107, 0, 0); }
-}
-
 .hero-bg {
-  background: linear-gradient(-45deg, #0A0A0A, #1a0800, #ff4500, #FF6B00, #CC5500, #0A0A0A);
+  background: linear-gradient(
+    -45deg,
+    #fff7ed,
+    #fed7aa,
+    #F97316,
+    #EA580C,
+    #fff7ed
+  );
   background-size: 400% 400%;
   animation: heroGradient 10s ease infinite;
 }
@@ -479,53 +481,8 @@ html {
   display: inline-block;
   overflow: hidden;
   white-space: nowrap;
-  border-right: 2px solid #FF6B00;
+  border-right: 2px solid var(--brand);
   animation:
     typing 2s steps(38, end) 0.6s both,
     cursorBlink 0.75s step-end 2.6s infinite;
-}
-
-.animate-stat-reveal {
-  animation: statReveal 0.55s ease both;
-}
-
-.promo-card {
-  animation: promoPulse 2.2s ease-in-out infinite;
-}
-
-/* =============================================================================
-   CART — Additional keyframes
-   ============================================================================= */
-
-@keyframes badgeBounce {
-  0%   { transform: scale(1); }
-  35%  { transform: scale(1.55); }
-  60%  { transform: scale(0.88); }
-  80%  { transform: scale(1.15); }
-  100% { transform: scale(1); }
-}
-
-@keyframes slideOutLeft {
-  from { transform: translateX(0);      opacity: 1; }
-  to   { transform: translateX(-110%);  opacity: 0; }
-}
-
-@keyframes slideInFromRight {
-  from { transform: translateX(100%); }
-  to   { transform: translateX(0); }
-}
-
-@keyframes cartImpact {
-  0%   { transform: scale(1); }
-  40%  { transform: scale(1.4) rotate(-8deg); }
-  70%  { transform: scale(0.9) rotate(4deg); }
-  100% { transform: scale(1) rotate(0deg); }
-}
-
-.animate-slide-right {
-  animation: slideInFromRight var(--t-slow) cubic-bezier(0.34, 1.1, 0.64, 1) both;
-}
-
-.cart-icon-impact {
-  animation: cartImpact 0.38s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }

@@ -29,8 +29,8 @@ const MapboxMap = dynamic(
             width: 48,
             height: 48,
             borderRadius: '50%',
-            border: '3px solid rgba(255,107,0,0.2)',
-            borderTopColor: '#FF6B00',
+            border: '3px solid rgba(249,115,22,0.2)',
+            borderTopColor: '#F97316',
             animation: 'spin 0.8s linear infinite',
           }}
         />

@@ -107,7 +107,7 @@ export default function EmailPage() {
           <button
             type="button"
             onClick={() => { setResetSent(false); setMode('login') }}
-            className="mt-2 text-sm text-[#FF6B00] font-semibold hover:text-[#FF8C00]"
+            className="mt-2 text-sm text-[#F97316] font-semibold hover:text-[#FF8C00]"
           >
             Retour à la connexion
           </button>
@@ -136,7 +136,7 @@ export default function EmailPage() {
               className={[
                 'flex-1 h-10 rounded-xl text-sm font-medium transition-all duration-150',
                 mode === m
-                  ? 'bg-[#FF6B00] text-white shadow'
+                  ? 'bg-[#F97316] text-white shadow'
                   : 'text-white/50 hover:text-white',
               ].join(' ')}
             >
@@ -157,13 +157,13 @@ export default function EmailPage() {
                 <label htmlFor="firstName" className="text-xs font-medium text-white/60">Prénom</label>
                 <input id="firstName" type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)}
                   placeholder="Aminatou" maxLength={50} autoComplete="given-name" disabled={loading} required
-                  className="h-11 px-3 rounded-xl text-sm text-white bg-white/10 border-2 border-white/20 placeholder:text-white/30 focus:outline-none focus:border-[#FF6B00] disabled:opacity-50 transition-colors" />
+                  className="h-11 px-3 rounded-xl text-sm text-white bg-white/10 border-2 border-white/20 placeholder:text-white/30 focus:outline-none focus:border-[#F97316] disabled:opacity-50 transition-colors" />
               </div>
               <div className="flex-1 flex flex-col gap-1.5">
                 <label htmlFor="lastName" className="text-xs font-medium text-white/60">Nom</label>
                 <input id="lastName" type="text" value={lastName} onChange={(e) => setLastName(e.target.value)}
                   placeholder="Moussa" maxLength={50} autoComplete="family-name" disabled={loading} required
-                  className="h-11 px-3 rounded-xl text-sm text-white bg-white/10 border-2 border-white/20 placeholder:text-white/30 focus:outline-none focus:border-[#FF6B00] disabled:opacity-50 transition-colors" />
+                  className="h-11 px-3 rounded-xl text-sm text-white bg-white/10 border-2 border-white/20 placeholder:text-white/30 focus:outline-none focus:border-[#F97316] disabled:opacity-50 transition-colors" />
               </div>
             </div>
           )}
@@ -186,7 +186,7 @@ export default function EmailPage() {
                 'h-12 px-4 rounded-2xl text-sm text-white bg-white/10 border-2 placeholder:text-white/30 focus:outline-none disabled:opacity-50 transition-colors',
                 email.length > 0 && !isEmailValid
                   ? 'border-red-500'
-                  : 'border-white/20 focus:border-[#FF6B00]',
+                  : 'border-white/20 focus:border-[#F97316]',
               ].join(' ')}
             />
           </div>
@@ -200,7 +200,7 @@ export default function EmailPage() {
                   <button
                     type="button"
                     onClick={() => { setMode('reset'); setError('') }}
-                    className="text-xs text-[#FF6B00] hover:text-[#FF8C00] transition-colors"
+                    className="text-xs text-[#F97316] hover:text-[#FF8C00] transition-colors"
                   >
                     Mot de passe oublié ?
                   </button>
@@ -218,7 +218,7 @@ export default function EmailPage() {
                   maxLength={128}
                   autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
                   disabled={loading}
-                  className="w-full h-12 pl-4 pr-12 rounded-2xl text-sm text-white bg-white/10 border-2 border-white/20 placeholder:text-white/30 focus:outline-none focus:border-[#FF6B00] disabled:opacity-50 transition-colors"
+                  className="w-full h-12 pl-4 pr-12 rounded-2xl text-sm text-white bg-white/10 border-2 border-white/20 placeholder:text-white/30 focus:outline-none focus:border-[#F97316] disabled:opacity-50 transition-colors"
                 />
                 <button
                   type="button"
@@ -249,9 +249,9 @@ export default function EmailPage() {
             aria-busy={loading}
             className={[
               'w-full py-4 rounded-2xl text-sm font-bold transition-all duration-150 mt-1',
-              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6B00]',
+              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316]',
               canSubmit && !loading
-                ? 'bg-[#FF6B00] text-white hover:bg-[#FF8C00] active:scale-[0.98] shadow-lg shadow-orange-500/30'
+                ? 'bg-[#F97316] text-white hover:bg-[#FF8C00] active:scale-[0.98] shadow-lg shadow-orange-500/30'
                 : 'bg-white/10 text-white/30 cursor-not-allowed',
             ].join(' ')}
           >

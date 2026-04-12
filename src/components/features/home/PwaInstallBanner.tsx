@@ -142,7 +142,7 @@ export default function PwaInstallBanner() {
               flex: 2,
               padding: '0.5rem',
               borderRadius: 'var(--radius-md)',
-              background: 'linear-gradient(135deg, #FF6B00, #CC5500)',
+              background: 'linear-gradient(135deg, #F97316, #EA580C)',
               color: 'white',
               fontSize: '0.8125rem',
               fontWeight: 700,

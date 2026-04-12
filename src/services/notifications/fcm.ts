@@ -145,7 +145,7 @@ async function sendToTokens(
         android: {
           notification: {
             icon:  'ic_notification',
-            color: '#FF6B00',
+            color: '#F97316',
             sound: 'default',
           },
           priority: 'high',

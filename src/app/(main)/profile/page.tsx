@@ -116,7 +116,7 @@ function getInitials(nom: string): string {
 
 function getAvatarColor(nom: string): string {
   const palette = [
-    '#FF6B00', '#E63946', '#457B9D', '#2A9D8F',
+    '#F97316', '#E63946', '#457B9D', '#2A9D8F',
     '#E9C46A', '#8338EC', '#06D6A0', '#118AB2',
   ]
   let hash = 0
@@ -361,7 +361,7 @@ function FideliteCard() {
         className="relative rounded-2xl overflow-hidden p-5 shadow-[var(--shadow-lg)]"
         style={{
           background:
-            'linear-gradient(135deg, #0A0A0A 0%, #1c0900 45%, #FF6B00 100%)',
+            'linear-gradient(135deg, #0A0A0A 0%, #1c0900 45%, #F97316 100%)',
         }}
       >
         {/* Cercles décoratifs */}
@@ -369,7 +369,7 @@ function FideliteCard() {
           aria-hidden="true"
           className="pointer-events-none absolute top-0 right-0 w-48 h-48 rounded-full opacity-10"
           style={{
-            background: 'radial-gradient(circle, #FF6B00 0%, transparent 70%)',
+            background: 'radial-gradient(circle, #F97316 0%, transparent 70%)',
             transform: 'translate(35%, -35%)',
           }}
         />
@@ -377,7 +377,7 @@ function FideliteCard() {
           aria-hidden="true"
           className="pointer-events-none absolute bottom-0 left-0 w-36 h-36 rounded-full opacity-10"
           style={{
-            background: 'radial-gradient(circle, #FF6B00 0%, transparent 70%)',
+            background: 'radial-gradient(circle, #F97316 0%, transparent 70%)',
             transform: 'translate(-35%, 35%)',
           }}
         />
@@ -464,7 +464,7 @@ function FideliteCard() {
                   className={cn(
                     'transition-all leading-none',
                     isActive &&
-                      'text-2xl drop-shadow-[0_0_10px_rgba(255,107,0,0.9)]',
+                      'text-2xl drop-shadow-[0_0_10px_rgba(249,115,22,0.9)]',
                     !isActive && 'text-base',
                     !isActive && !isPast && 'opacity-25',
                   )}

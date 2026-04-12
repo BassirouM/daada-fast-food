@@ -99,7 +99,7 @@ function CartItemRow({
             borderRadius: 12,
             overflow: 'hidden',
             flexShrink: 0,
-            background: 'linear-gradient(135deg, #FF6B00 0%, #CC5500 100%)',
+            background: 'linear-gradient(135deg, #F97316 0%, #EA580C 100%)',
             position: 'relative',
             display: 'flex',
             alignItems: 'center',
@@ -234,11 +234,11 @@ function EmptyCart() {
       }}
     >
       <svg width="120" height="120" viewBox="0 0 120 120" fill="none" aria-hidden="true">
-        <circle cx="60" cy="60" r="56" fill="rgba(255,107,0,0.08)" stroke="rgba(255,107,0,0.2)" strokeWidth="1.5" />
-        <path d="M38 44h44l-6 28H44L38 44Z" fill="none" stroke="rgba(255,107,0,0.6)" strokeWidth="2" strokeLinejoin="round" />
-        <path d="M34 38h8l4 6" stroke="rgba(255,107,0,0.6)" strokeWidth="2" strokeLinecap="round" />
-        <circle cx="50" cy="80" r="3" fill="rgba(255,107,0,0.6)" />
-        <circle cx="70" cy="80" r="3" fill="rgba(255,107,0,0.6)" />
+        <circle cx="60" cy="60" r="56" fill="rgba(249,115,22,0.08)" stroke="rgba(249,115,22,0.2)" strokeWidth="1.5" />
+        <path d="M38 44h44l-6 28H44L38 44Z" fill="none" stroke="rgba(249,115,22,0.6)" strokeWidth="2" strokeLinejoin="round" />
+        <path d="M34 38h8l4 6" stroke="rgba(249,115,22,0.6)" strokeWidth="2" strokeLinecap="round" />
+        <circle cx="50" cy="80" r="3" fill="rgba(249,115,22,0.6)" />
+        <circle cx="70" cy="80" r="3" fill="rgba(249,115,22,0.6)" />
       </svg>
       <h2
         style={{
@@ -262,12 +262,12 @@ function EmptyCart() {
           gap: '0.5rem',
           padding: '0.875rem 2rem',
           borderRadius: 999,
-          background: 'linear-gradient(135deg, #FF6B00, #CC5500)',
+          background: 'linear-gradient(135deg, #F97316, #EA580C)',
           color: 'white',
           fontWeight: 700,
           fontSize: '0.9375rem',
           textDecoration: 'none',
-          boxShadow: '0 4px 20px rgba(255,107,0,0.35)',
+          boxShadow: '0 4px 20px rgba(249,115,22,0.35)',
         }}
       >
         🍽️ Voir le menu
@@ -589,12 +589,12 @@ export default function CartPage() {
                 justifyContent: 'space-between',
                 padding: '0.9375rem 1.25rem',
                 borderRadius: 16,
-                background: 'linear-gradient(135deg, #FF6B00 0%, #CC5500 100%)',
+                background: 'linear-gradient(135deg, #F97316 0%, #EA580C 100%)',
                 color: 'white',
                 fontWeight: 700,
                 fontSize: '1rem',
                 textDecoration: 'none',
-                boxShadow: '0 4px 24px rgba(255,107,0,0.4)',
+                boxShadow: '0 4px 24px rgba(249,115,22,0.4)',
               }}
             >
               <span>Commander maintenant</span>

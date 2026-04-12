@@ -51,7 +51,7 @@ function AvatarCircle({ nom }: { nom: string }) {
         width: 44,
         height: 44,
         borderRadius: '50%',
-        background: 'linear-gradient(135deg, #FF6B00, #CC5500)',
+        background: 'linear-gradient(135deg, #F97316, #EA580C)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -59,7 +59,7 @@ function AvatarCircle({ nom }: { nom: string }) {
         fontWeight: 700,
         color: 'white',
         flexShrink: 0,
-        boxShadow: '0 2px 8px rgba(255,107,0,0.35)',
+        boxShadow: '0 2px 8px rgba(249,115,22,0.35)',
       }}
     >
       {initials || '?'}
@@ -135,13 +135,13 @@ export default function WelcomeBanner() {
           style={{
             padding: '0.4375rem 0.875rem',
             borderRadius: 999,
-            background: 'linear-gradient(135deg, #FF6B00, #CC5500)',
+            background: 'linear-gradient(135deg, #F97316, #EA580C)',
             color: 'white',
             fontSize: '0.8125rem',
             fontWeight: 700,
             textDecoration: 'none',
             flexShrink: 0,
-            boxShadow: '0 2px 10px rgba(255,107,0,0.35)',
+            boxShadow: '0 2px 10px rgba(249,115,22,0.35)',
           }}
         >
           Se connecter

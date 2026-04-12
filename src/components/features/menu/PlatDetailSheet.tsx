@@ -122,7 +122,7 @@ export default function PlatDetailSheet({ plat, suggestions, onClose, onSelectPl
               alignItems: 'center',
               justifyContent: 'center',
               fontSize: '5rem',
-              background: 'linear-gradient(135deg, #FF6B00, #CC5500)',
+              background: 'linear-gradient(135deg, #F97316, #EA580C)',
             }}
           >
             {catEmoji(plat.categorie)}
@@ -171,9 +171,9 @@ export default function PlatDetailSheet({ plat, suggestions, onClose, onSelectPl
               fontWeight: 600,
               padding: '3px 10px',
               borderRadius: 999,
-              background: 'rgba(255,107,0,0.15)',
+              background: 'rgba(249,115,22,0.15)',
               color: 'var(--brand)',
-              border: '1px solid rgba(255,107,0,0.3)',
+              border: '1px solid rgba(249,115,22,0.3)',
             }}
           >
             {catEmoji(plat.categorie)} {plat.categorie}
@@ -285,7 +285,7 @@ export default function PlatDetailSheet({ plat, suggestions, onClose, onSelectPl
             borderRadius: 'var(--radius-xl)',
             background: added
               ? 'linear-gradient(135deg, #22C55E, #16A34A)'
-              : 'linear-gradient(135deg, #FF6B00, #CC5500)',
+              : 'linear-gradient(135deg, #F97316, #EA580C)',
             color: 'white',
             fontSize: '1rem',
             fontWeight: 700,
@@ -294,7 +294,7 @@ export default function PlatDetailSheet({ plat, suggestions, onClose, onSelectPl
             alignItems: 'center',
             justifyContent: 'center',
             gap: '0.5rem',
-            boxShadow: added ? '0 4px 16px rgba(34,197,94,0.4)' : '0 4px 20px rgba(255,107,0,0.4)',
+            boxShadow: added ? '0 4px 16px rgba(34,197,94,0.4)' : '0 4px 20px rgba(249,115,22,0.4)',
             transition: 'all 0.3s ease',
             marginBottom: '1rem',
           }}
@@ -339,7 +339,7 @@ export default function PlatDetailSheet({ plat, suggestions, onClose, onSelectPl
                       alignItems: 'center',
                       justifyContent: 'center',
                       fontSize: '2rem',
-                      background: s.image_url ? 'none' : 'linear-gradient(135deg, #FF6B00, #CC5500)',
+                      background: s.image_url ? 'none' : 'linear-gradient(135deg, #F97316, #EA580C)',
                     }}
                   >
                     {s.image_url ? (

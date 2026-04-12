@@ -80,7 +80,7 @@ function baseLayout(content: string, title: string): string {
       <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#1A1A1A;border-radius:16px;overflow:hidden;border:1px solid #2A2A2A;">
         <!-- Header -->
         <tr>
-          <td style="background:linear-gradient(135deg,#FF6B00,#CC5500);padding:28px 32px;text-align:center;">
+          <td style="background:linear-gradient(135deg,#F97316,#EA580C);padding:28px 32px;text-align:center;">
             <div style="font-size:28px;font-weight:900;color:#FFFFFF;letter-spacing:-0.5px;">🍔 Daada</div>
             <div style="font-size:13px;color:rgba(255,255,255,0.8);margin-top:4px;">Fast Food · Maroua, Cameroun</div>
           </td>
@@ -92,7 +92,7 @@ function baseLayout(content: string, title: string): string {
           <td style="background:#111111;padding:20px 32px;text-align:center;border-top:1px solid #2A2A2A;">
             <p style="margin:0;font-size:12px;color:#666666;">
               © 2026 Daada Fast Food · Maroua, Cameroun<br>
-              <a href="${APP_URL}" style="color:#FF6B00;text-decoration:none;">daada.cm</a>
+              <a href="${APP_URL}" style="color:#F97316;text-decoration:none;">daada.cm</a>
             </p>
           </td>
         </tr>
@@ -115,14 +115,14 @@ function templateOrderConfirmation(d: OrderConfirmationData): { subject: string;
       <td style="padding:10px 0;border-bottom:1px solid #2A2A2A;color:#FFFFFF;font-size:14px;">
         ${a.nom} × ${a.quantite}
       </td>
-      <td style="padding:10px 0;border-bottom:1px solid #2A2A2A;color:#FF6B00;font-size:14px;text-align:right;font-weight:600;">
+      <td style="padding:10px 0;border-bottom:1px solid #2A2A2A;color:#F97316;font-size:14px;text-align:right;font-weight:600;">
         ${formatPrice(a.sousTotal)}
       </td>
     </tr>`).join('')
 
   const html = baseLayout(`
     <h2 style="margin:0 0 8px;font-size:22px;font-weight:800;color:#FFFFFF;">Commande confirmée ✅</h2>
-    <p style="margin:0 0 24px;color:#888888;font-size:14px;">Bonjour ${d.clientNom}, votre commande <strong style="color:#FF6B00;">#${shortId}</strong> a été reçue.</p>
+    <p style="margin:0 0 24px;color:#888888;font-size:14px;">Bonjour ${d.clientNom}, votre commande <strong style="color:#F97316;">#${shortId}</strong> a été reçue.</p>
 
     <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:20px;">
       ${lignes}
@@ -136,7 +136,7 @@ function templateOrderConfirmation(d: OrderConfirmationData): { subject: string;
       </tr>
       <tr>
         <td style="padding:12px 0 0;font-size:16px;font-weight:800;color:#FFFFFF;">Total</td>
-        <td style="padding:12px 0 0;font-size:16px;font-weight:800;color:#FF6B00;text-align:right;">${formatPrice(d.total)}</td>
+        <td style="padding:12px 0 0;font-size:16px;font-weight:800;color:#F97316;text-align:right;">${formatPrice(d.total)}</td>
       </tr>
     </table>
 
@@ -146,7 +146,7 @@ function templateOrderConfirmation(d: OrderConfirmationData): { subject: string;
     </div>
 
     <a href="${APP_URL}/orders/${d.commandeId}"
-      style="display:block;padding:14px;border-radius:12px;background:linear-gradient(135deg,#FF6B00,#CC5500);color:#FFFFFF;text-decoration:none;text-align:center;font-weight:700;font-size:15px;box-shadow:0 4px 20px rgba(255,107,0,0.3);">
+      style="display:block;padding:14px;border-radius:12px;background:linear-gradient(135deg,#F97316,#EA580C);color:#FFFFFF;text-decoration:none;text-align:center;font-weight:700;font-size:15px;box-shadow:0 4px 20px rgba(249,115,22,0.3);">
       🏍 Suivre ma commande
     </a>
   `, `Commande #${shortId} confirmée — Daada Fast Food`)
@@ -160,7 +160,7 @@ function templateOrderDelivered(d: OrderDeliveredData): { subject: string; html:
   const html = baseLayout(`
     <h2 style="margin:0 0 8px;font-size:22px;font-weight:800;color:#FFFFFF;">Commande livrée 🎉</h2>
     <p style="margin:0 0 24px;color:#888888;font-size:14px;">
-      Bonjour ${d.clientNom}, votre commande <strong style="color:#FF6B00;">#${shortId}</strong> a été livrée par <strong style="color:#FFFFFF;">${d.livreurNom}</strong>.
+      Bonjour ${d.clientNom}, votre commande <strong style="color:#F97316;">#${shortId}</strong> a été livrée par <strong style="color:#FFFFFF;">${d.livreurNom}</strong>.
     </p>
 
     <div style="background:#222222;border-radius:10px;padding:16px;margin-bottom:24px;text-align:center;">
@@ -175,7 +175,7 @@ function templateOrderDelivered(d: OrderDeliveredData): { subject: string; html:
 
     <div style="display:flex;gap:12px;margin-bottom:24px;">
       <a href="${APP_URL}/orders/${d.commandeId}"
-        style="flex:1;display:block;padding:12px;border-radius:12px;background:linear-gradient(135deg,#FF6B00,#CC5500);color:#FFFFFF;text-decoration:none;text-align:center;font-weight:700;font-size:14px;">
+        style="flex:1;display:block;padding:12px;border-radius:12px;background:linear-gradient(135deg,#F97316,#EA580C);color:#FFFFFF;text-decoration:none;text-align:center;font-weight:700;font-size:14px;">
         📄 Voir la facture
       </a>
       <a href="${APP_URL}/menu"
@@ -185,7 +185,7 @@ function templateOrderDelivered(d: OrderDeliveredData): { subject: string; html:
     </div>
 
     <p style="margin:0;font-size:12px;color:#444444;text-align:center;">
-      Montant total payé : <strong style="color:#FF6B00;">${formatPrice(d.total)}</strong> · ${d.datelivraison}
+      Montant total payé : <strong style="color:#F97316;">${formatPrice(d.total)}</strong> · ${d.datelivraison}
     </p>
   `, `Commande #${shortId} livrée — Daada Fast Food`)
 
@@ -216,7 +216,7 @@ function templateWelcome(d: WelcomeData): { subject: string; html: string } {
     </div>
 
     <a href="${APP_URL}/menu"
-      style="display:block;padding:14px;border-radius:12px;background:linear-gradient(135deg,#FF6B00,#CC5500);color:#FFFFFF;text-decoration:none;text-align:center;font-weight:700;font-size:15px;box-shadow:0 4px 20px rgba(255,107,0,0.3);">
+      style="display:block;padding:14px;border-radius:12px;background:linear-gradient(135deg,#F97316,#EA580C);color:#FFFFFF;text-decoration:none;text-align:center;font-weight:700;font-size:15px;box-shadow:0 4px 20px rgba(249,115,22,0.3);">
       🍔 Découvrir le menu
     </a>
   `, 'Bienvenue chez Daada Fast Food')

@@ -1,5 +1,5 @@
 /**
- * DAADA Design Tokens
+ * DAADA Design Tokens — v2
  * Source of truth for all design decisions.
  * CSS variables are injected via globals.css in the main app.
  * This file exports the same values as a JS object for use in JS/TS contexts.
@@ -9,40 +9,49 @@
 
 export const colors = {
   brand: {
-    orange: '#FF6B00',
-    orangeLight: '#FF8C38',
-    orangeDark: '#CC5500',
-    black: '#0A0A0A',
-    blackSoft: '#1A1A1A',
-    grayDark: '#2A2A2A',
-    grayMid: '#4A4A4A',
-    grayLight: '#8A8A8A',
-    cream: '#FFF8F3',
+    // orange-500 Tailwind — primary
+    orange:      '#F97316',
+    orangeLight: '#FB923C',
+    orangeDark:  '#EA580C',
+    // red-600 — secondary
+    red:         '#DC2626',
+    redLight:    '#EF4444',
+    redDark:     '#B91C1C',
+    // amber-400 — accent / promo
+    amber:       '#FBBF24',
+    amberLight:  '#FCD34D',
+    amberDark:   '#F59E0B',
+    // gray-900 for dark surfaces
+    dark:        '#111827',
+    darkSoft:    '#1F2937',
+    // warm white for light surfaces
+    light:       '#FAFAF8',
+    lightSoft:   '#FFFFFF',
   },
 
-  // Neutral scale (dark-first)
+  // Neutral scale
   neutral: {
     50:  '#FAFAFA',
-    100: '#F4F4F4',
-    200: '#E8E8E8',
-    300: '#D0D0D0',
-    400: '#A0A0A0',
-    500: '#6A6A6A',
-    600: '#4A4A4A',
-    700: '#2A2A2A',
-    800: '#1A1A1A',
-    900: '#0F0F0F',
-    950: '#0A0A0A',
+    100: '#F3F4F6',
+    200: '#E5E7EB',
+    300: '#D1D5DB',
+    400: '#9CA3AF',
+    500: '#6B7280',
+    600: '#4B5563',
+    700: '#374151',
+    800: '#1F2937',
+    900: '#111827',
+    950: '#030712',
   },
 
-  // Semantic status colors
-  success:  '#22C55E',
-  warning:  '#F59E0B',
-  danger:   '#EF4444',
-  info:     '#3B82F6',
+  // Semantic status colors (light mode)
+  success:  '#16A34A',
+  warning:  '#D97706',
+  danger:   '#DC2626',
+  info:     '#2563EB',
   premium:  '#F59E0B',
 
-  // CSS variable refs (resolved at runtime)
+  // CSS variable refs (resolved at runtime via globals.css)
   css: {
     bgBase:     'var(--bg-base)',
     bgSurface:  'var(--bg-surface)',
@@ -60,6 +69,12 @@ export const colors = {
     brandDark:   'var(--brand-dark)',
     brandSubtle: 'var(--brand-subtle)',
     brandGlow:   'var(--brand-glow)',
+
+    secondary:       'var(--secondary)',
+    secondarySubtle: 'var(--secondary-subtle)',
+
+    accent:       'var(--accent)',
+    accentSubtle: 'var(--accent-subtle)',
 
     border:       'var(--border)',
     borderStrong: 'var(--border-strong)',
@@ -89,23 +104,23 @@ export const typography = {
     display: "'Syne', ui-sans-serif, system-ui, sans-serif",
   },
   sizes: {
-    xs:  '0.75rem',    // 12px
-    sm:  '0.875rem',   // 14px
-    md:  '1rem',       // 16px
-    lg:  '1.125rem',   // 18px
-    xl:  '1.25rem',    // 20px
-    '2xl': '1.5rem',   // 24px
-    '3xl': '1.875rem', // 30px
-    '4xl': '2.25rem',  // 36px
-    '5xl': '3rem',     // 48px
-    '6xl': '3.75rem',  // 60px
+    xs:    '0.75rem',    // 12px
+    sm:    '0.875rem',   // 14px
+    md:    '1rem',       // 16px
+    lg:    '1.125rem',   // 18px
+    xl:    '1.25rem',    // 20px
+    '2xl': '1.5rem',     // 24px
+    '3xl': '1.875rem',   // 30px
+    '4xl': '2.25rem',    // 36px
+    '5xl': '3rem',       // 48px
+    '6xl': '3.75rem',    // 60px
   },
   weights: {
-    normal:   400,
-    medium:   500,
-    semibold: 600,
-    bold:     700,
-    extrabold:800,
+    normal:    400,
+    medium:    500,
+    semibold:  600,
+    bold:      700,
+    extrabold: 800,
   },
   lineHeights: {
     none:    1,
@@ -137,7 +152,7 @@ export const spacing = {
   20: '80px',
 } as const
 
-// ─── Border Radius ───────────────────────────────────────────────────────────
+// ─── Border Radius ────────────────────────────────────────────────────────────
 
 export const radius = {
   sm:   '6px',
@@ -146,7 +161,6 @@ export const radius = {
   xl:   '20px',
   '2xl':'28px',
   full: '9999px',
-  // CSS vars
   css: {
     sm:   'var(--radius-sm)',
     md:   'var(--radius-md)',
@@ -156,24 +170,23 @@ export const radius = {
   },
 } as const
 
-// ─── Shadows ─────────────────────────────────────────────────────────────────
+// ─── Shadows ──────────────────────────────────────────────────────────────────
 
 export const shadows = {
-  sm:      '0 1px 3px rgba(0,0,0,0.5)',
-  md:      '0 4px 12px rgba(0,0,0,0.5)',
-  lg:      '0 8px 24px rgba(0,0,0,0.6)',
-  xl:      '0 20px 48px rgba(0,0,0,0.7)',
-  glowOrange: '0 4px 20px rgba(255,107,0,0.35)',
+  sm:         '0 1px 3px rgba(0,0,0,0.08)',
+  md:         '0 4px 12px rgba(0,0,0,0.10)',
+  lg:         '0 8px 24px rgba(0,0,0,0.12)',
+  xl:         '0 20px 48px rgba(0,0,0,0.16)',
+  glowOrange: '0 4px 20px rgba(249,115,22,0.30)',
 } as const
 
-// ─── Transitions ─────────────────────────────────────────────────────────────
+// ─── Transitions ──────────────────────────────────────────────────────────────
 
 export const transitions = {
   fast:   '150ms ease',
   normal: '300ms ease',
   slow:   '500ms ease',
   spring: '300ms cubic-bezier(0.34,1.56,0.64,1)',
-  // CSS class helpers (defined in globals.css)
   classes: {
     fast:   'transition-all duration-150 ease-out',
     normal: 'transition-all duration-300 ease-out',
@@ -181,7 +194,7 @@ export const transitions = {
   },
 } as const
 
-// ─── Z-index ─────────────────────────────────────────────────────────────────
+// ─── Z-index ──────────────────────────────────────────────────────────────────
 
 export const zIndex = {
   base:     0,
@@ -194,41 +207,45 @@ export const zIndex = {
   tooltip:  600,
 } as const
 
-// ─── CSS Variables injection helper ──────────────────────────────────────────
+// ─── CSS Variables injection helper ───────────────────────────────────────────
 
-/** Generates a <style> block with all Daada CSS variables.
+/** Generates a <style> block with all Daada CSS variables (light theme).
  *  Useful for Storybook / isolated component previews. */
 export const cssVariablesBlock = `
 :root {
-  --bg-base: #0A0A0A;
-  --bg-surface: #141414;
-  --bg-elevated: #1E1E1E;
-  --bg-overlay: #252525;
-  --bg-input: #1A1A1A;
-  --text-primary: #FFFFFF;
-  --text-secondary: #A0A0A0;
-  --text-muted: #5A5A5A;
-  --text-inverse: #0A0A0A;
-  --brand: #FF6B00;
-  --brand-light: #FF8C38;
-  --brand-dark: #CC5500;
-  --brand-subtle: rgba(255,107,0,0.12);
-  --brand-glow: rgba(255,107,0,0.25);
-  --border: rgba(255,255,255,0.08);
-  --border-strong: rgba(255,255,255,0.15);
-  --border-brand: rgba(255,107,0,0.4);
-  --success: #22C55E;
-  --success-subtle: rgba(34,197,94,0.12);
-  --warning: #F59E0B;
-  --warning-subtle: rgba(245,158,11,0.12);
-  --danger: #EF4444;
-  --danger-subtle: rgba(239,68,68,0.12);
-  --info: #3B82F6;
-  --info-subtle: rgba(59,130,246,0.12);
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.5);
-  --shadow-md: 0 4px 12px rgba(0,0,0,0.5);
-  --shadow-lg: 0 8px 24px rgba(0,0,0,0.6);
-  --shadow-brand: 0 4px 20px rgba(255,107,0,0.3);
+  --bg-base: #FAFAF8;
+  --bg-surface: #FFFFFF;
+  --bg-elevated: #F3F4F6;
+  --bg-overlay: #E5E7EB;
+  --bg-input: #F9FAFB;
+  --text-primary: #1F2937;
+  --text-secondary: #6B7280;
+  --text-muted: #9CA3AF;
+  --text-inverse: #FFFFFF;
+  --brand: #F97316;
+  --brand-light: #FB923C;
+  --brand-dark: #EA580C;
+  --brand-subtle: rgba(249,115,22,0.10);
+  --brand-glow: rgba(249,115,22,0.20);
+  --secondary: #DC2626;
+  --secondary-subtle: rgba(220,38,38,0.10);
+  --accent: #FBBF24;
+  --accent-subtle: rgba(251,191,36,0.15);
+  --border: rgba(0,0,0,0.08);
+  --border-strong: rgba(0,0,0,0.15);
+  --border-brand: rgba(249,115,22,0.40);
+  --success: #16A34A;
+  --success-subtle: rgba(22,163,74,0.10);
+  --warning: #D97706;
+  --warning-subtle: rgba(217,119,6,0.10);
+  --danger: #DC2626;
+  --danger-subtle: rgba(220,38,38,0.10);
+  --info: #2563EB;
+  --info-subtle: rgba(37,99,235,0.10);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.10);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+  --shadow-brand: 0 4px 20px rgba(249,115,22,0.25);
   --t-fast: 120ms ease;
   --t-base: 200ms ease;
   --t-slow: 300ms ease;

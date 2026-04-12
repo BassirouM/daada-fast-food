@@ -76,7 +76,7 @@ export default function TrackingMap({ livreurPosition, clientPosition, eta }: Pr
           type:  'line',
           source:'route',
           paint: {
-            'line-color': '#FF6B00',
+            'line-color': '#F97316',
             'line-width': 3,
             'line-dasharray': [2, 2],
             'line-opacity': 0.7,

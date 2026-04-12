@@ -21,7 +21,7 @@ function Confetti() {
     Array.from({ length: 60 }, (_, i) => ({
       id:       i,
       x:        Math.random() * 100,
-      color:    ['#FF6B00', '#FF8C3A', '#FFC77A', '#FFEB99', '#10B981', '#3B82F6', '#8B5CF6'][Math.floor(Math.random() * 7)] ?? '#FF6B00',
+      color:    ['#F97316', '#FF8C3A', '#FFC77A', '#FFEB99', '#10B981', '#3B82F6', '#8B5CF6'][Math.floor(Math.random() * 7)] ?? '#F97316',
       delay:    Math.random() * 1.2,
       duration: 2.5 + Math.random() * 2,
       size:     6 + Math.random() * 8,
@@ -178,13 +178,13 @@ function SuccessPageInner() {
                 display:       'block',
                 padding:       '0.875rem',
                 borderRadius:  14,
-                background:    'linear-gradient(135deg, #FF6B00, #CC5500)',
+                background:    'linear-gradient(135deg, #F97316, #EA580C)',
                 color:         'white',
                 fontWeight:    700,
                 fontSize:      '1rem',
                 textDecoration:'none',
                 textAlign:     'center',
-                boxShadow:     '0 4px 20px rgba(255,107,0,0.4)',
+                boxShadow:     '0 4px 20px rgba(249,115,22,0.4)',
               }}
             >
               🏍 Suivre ma commande

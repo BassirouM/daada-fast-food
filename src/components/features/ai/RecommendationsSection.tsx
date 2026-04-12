@@ -23,7 +23,7 @@ const fetcher = (url: string) => fetch(url).then((r) => r.json()) as Promise<{ r
 function getTagStyle(reason: string): { bg: string; color: string } {
   const r = reason.toLowerCase()
   if (r.includes('préféré') || r.includes('preferé') || r.includes('🔥')) {
-    return { bg: 'rgba(255,107,0,0.18)', color: '#FF6B00' }
+    return { bg: 'rgba(249,115,22,0.18)', color: '#F97316' }
   }
   if (r.includes('populaire') || r.includes('📈')) {
     return { bg: 'rgba(139,92,246,0.18)', color: '#8B5CF6' }
@@ -34,7 +34,7 @@ function getTagStyle(reason: string): { bg: string; color: string } {
   if (r.includes('nouveau') || r.includes('✨')) {
     return { bg: 'rgba(59,130,246,0.18)', color: '#3B82F6' }
   }
-  return { bg: 'rgba(255,107,0,0.12)', color: '#FF8C38' }
+  return { bg: 'rgba(249,115,22,0.12)', color: '#FB923C' }
 }
 
 // ─── Skeleton ─────────────────────────────────────────────────────────────────
@@ -86,7 +86,7 @@ function RecoCard({ reco }: { reco: Recommendation }) {
         ) : (
           <div style={{
             width: '100%', height: '100%',
-            background: 'linear-gradient(135deg, #FF6B00, #CC5500)',
+            background: 'linear-gradient(135deg, #F97316, #EA580C)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             fontSize: '2.5rem',
           }}>

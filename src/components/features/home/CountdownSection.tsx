@@ -41,7 +41,7 @@ export default function CountdownSection() {
       <span
         style={{
           fontVariantNumeric: 'tabular-nums',
-          background: 'rgba(255,107,0,0.12)',
+          background: 'rgba(249,115,22,0.12)',
           padding: '0.125rem 0.5rem',
           borderRadius: 'var(--radius-sm)',
           letterSpacing: '0.05em',

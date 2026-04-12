@@ -39,8 +39,8 @@ function PhoneInputField({
           isInvalid
             ? 'border-red-500 bg-red-500/10'
             : isValid
-            ? 'border-[#FF6B00] bg-white/10'
-            : 'border-white/20 bg-white/10 focus-within:border-[#FF6B00]',
+            ? 'border-[#F97316] bg-white/10'
+            : 'border-white/20 bg-white/10 focus-within:border-[#F97316]',
         ].join(' ')}
       >
         {/* Préfixe fixe +237 */}
@@ -73,7 +73,7 @@ function PhoneInputField({
         {isDirty && (
           <span className="pr-4" aria-hidden>
             {isValid
-              ? <span className="text-[#FF6B00] text-lg">✓</span>
+              ? <span className="text-[#F97316] text-lg">✓</span>
               : isInvalid
               ? <span className="text-red-400 text-lg">✗</span>
               : null
@@ -181,9 +181,9 @@ export default function LoginPage() {
             aria-busy={loading}
             className={[
               'w-full py-4 rounded-2xl text-sm font-bold transition-all duration-150',
-              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6B00] focus-visible:ring-offset-2 focus-visible:ring-offset-transparent',
+              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316] focus-visible:ring-offset-2 focus-visible:ring-offset-transparent',
               isValid && !loading
-                ? 'bg-[#FF6B00] text-white hover:bg-[#FF8C00] active:scale-[0.98] shadow-lg shadow-orange-500/30'
+                ? 'bg-[#F97316] text-white hover:bg-[#FF8C00] active:scale-[0.98] shadow-lg shadow-orange-500/30'
                 : 'bg-white/10 text-white/30 cursor-not-allowed',
             ].join(' ')}
           >
@@ -214,7 +214,7 @@ export default function LoginPage() {
           <span>Nouveau sur Daada ?</span>
           <Link
             href="/register"
-            className="text-[#FF6B00] font-semibold hover:text-[#FF8C00] transition-colors duration-100"
+            className="text-[#F97316] font-semibold hover:text-[#FF8C00] transition-colors duration-100"
           >
             Créer un compte
           </Link>

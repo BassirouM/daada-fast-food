@@ -13,7 +13,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         className="fixed inset-0 -z-10"
         aria-hidden
         style={{
-          background: 'linear-gradient(160deg, #FF6B00 0%, #CC4400 30%, #0A0A0A 70%)',
+          background: 'linear-gradient(160deg, #F97316 0%, #CC4400 30%, #0A0A0A 70%)',
         }}
       />
 
@@ -23,13 +23,13 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
           <span
             className="text-5xl leading-none"
             aria-hidden
-            style={{ filter: 'drop-shadow(0 0 16px rgba(255,107,0,0.8))' }}
+            style={{ filter: 'drop-shadow(0 0 16px rgba(249,115,22,0.8))' }}
           >
             🔥
           </span>
           <span
             className="text-5xl font-black tracking-tight text-white"
-            style={{ textShadow: '0 2px 20px rgba(255,107,0,0.6)' }}
+            style={{ textShadow: '0 2px 20px rgba(249,115,22,0.6)' }}
           >
             Daada
           </span>

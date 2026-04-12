@@ -97,7 +97,7 @@ function makeMarkerEl(html: string, size = 36): HTMLDivElement {
 }
 
 const FLAME_SVG = `<svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="18" cy="18" r="18" fill="#FF6B00"/>
+  <circle cx="18" cy="18" r="18" fill="#F97316"/>
   <text x="18" y="23" text-anchor="middle" font-size="18">🔥</text>
 </svg>`
 
@@ -111,7 +111,7 @@ const USER_SVG = `<svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
 </svg>`
 
 const PIN_SVG = `<svg viewBox="0 0 36 44" xmlns="http://www.w3.org/2000/svg">
-  <path d="M18 2C10.3 2 4 8.3 4 16c0 10.5 14 26 14 26S32 26.5 32 16C32 8.3 25.7 2 18 2z" fill="#FF6B00" stroke="white" stroke-width="2"/>
+  <path d="M18 2C10.3 2 4 8.3 4 16c0 10.5 14 26 14 26S32 26.5 32 16C32 8.3 25.7 2 18 2z" fill="#F97316" stroke="white" stroke-width="2"/>
   <circle cx="18" cy="16" r="5" fill="white"/>
 </svg>`
 
@@ -278,7 +278,7 @@ export default function MapboxMap({
         source: 'zones',
         filter: ['==', ['get', 'active'], true],
         paint: {
-          'fill-color': '#FF6B00',
+          'fill-color': '#F97316',
           'fill-opacity': 0.12,
         },
       })
@@ -289,7 +289,7 @@ export default function MapboxMap({
         type: 'line',
         source: 'zones',
         paint: {
-          'line-color': ['case', ['get', 'active'], '#FF6B00', '#EF4444'],
+          'line-color': ['case', ['get', 'active'], '#F97316', '#EF4444'],
           'line-width': 1.5,
           'line-opacity': 0.6,
         },
@@ -603,7 +603,7 @@ export default function MapboxMap({
         type: 'line',
         source: 'route',
         layout: { 'line-join': 'round', 'line-cap': 'round' },
-        paint: { 'line-color': '#FF6B00', 'line-width': 4, 'line-opacity': 0.85 },
+        paint: { 'line-color': '#F97316', 'line-width': 4, 'line-opacity': 0.85 },
       })
     }
 
@@ -751,7 +751,7 @@ export default function MapboxMap({
             background: 'rgba(10,10,10,0.95)',
             borderRadius: 16,
             padding: '1rem',
-            border: '1px solid rgba(255,107,0,0.3)',
+            border: '1px solid rgba(249,115,22,0.3)',
             backdropFilter: 'blur(12px)',
           }}
         >
@@ -765,7 +765,7 @@ export default function MapboxMap({
               </p>
             </div>
             <div style={{ textAlign: 'right', flexShrink: 0, marginLeft: '0.75rem' }}>
-              <p style={{ color: '#FF6B00', fontWeight: 700, fontSize: '0.9375rem' }}>
+              <p style={{ color: '#F97316', fontWeight: 700, fontSize: '0.9375rem' }}>
                 ~{selectedAddr.tempsEstime} min
               </p>
               <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.75rem' }}>
@@ -787,13 +787,13 @@ export default function MapboxMap({
               width: '100%',
               padding: '0.75rem',
               borderRadius: 12,
-              background: 'linear-gradient(135deg, #FF6B00, #CC5500)',
+              background: 'linear-gradient(135deg, #F97316, #EA580C)',
               color: 'white',
               fontWeight: 700,
               fontSize: '0.9375rem',
               border: 'none',
               cursor: 'pointer',
-              boxShadow: '0 4px 16px rgba(255,107,0,0.35)',
+              boxShadow: '0 4px 16px rgba(249,115,22,0.35)',
               opacity: (!findZone(selectedAddr.lng, selectedAddr.lat) && selectedAddr.fraisLivraison === 0) ? 0.5 : 1,
             }}
           >
@@ -814,14 +814,14 @@ export default function MapboxMap({
             background: 'rgba(10,10,10,0.95)',
             borderRadius: 16,
             padding: '1rem',
-            border: '1px solid rgba(255,107,0,0.3)',
+            border: '1px solid rgba(249,115,22,0.3)',
             backdropFilter: 'blur(12px)',
           }}
         >
           <p style={{ color: 'white', fontWeight: 700, fontSize: '0.9375rem' }}>
             🏍 {trackingInfo.nom}
           </p>
-          <p style={{ color: '#FF6B00', fontSize: '0.875rem', marginTop: '0.25rem' }}>
+          <p style={{ color: '#F97316', fontSize: '0.875rem', marginTop: '0.25rem' }}>
             ETA : ~{trackingInfo.eta} min
           </p>
         </div>

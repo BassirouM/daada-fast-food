@@ -97,7 +97,7 @@ export default function RegisterPage() {
           {/* Prénom */}
           <div className="flex flex-col gap-1.5">
             <label htmlFor="firstName" className="text-sm font-medium text-white/80">
-              Prénom <span className="text-[#FF6B00]" aria-hidden>*</span>
+              Prénom <span className="text-[#F97316]" aria-hidden>*</span>
             </label>
             <input
               id="firstName"
@@ -110,14 +110,14 @@ export default function RegisterPage() {
               autoComplete="given-name"
               disabled={loading}
               aria-required="true"
-              className="h-12 px-4 rounded-2xl text-sm text-white bg-white/10 border-2 border-white/20 placeholder:text-white/30 focus:outline-none focus:border-[#FF6B00] disabled:opacity-50 transition-colors"
+              className="h-12 px-4 rounded-2xl text-sm text-white bg-white/10 border-2 border-white/20 placeholder:text-white/30 focus:outline-none focus:border-[#F97316] disabled:opacity-50 transition-colors"
             />
           </div>
 
           {/* Nom */}
           <div className="flex flex-col gap-1.5">
             <label htmlFor="lastName" className="text-sm font-medium text-white/80">
-              Nom <span className="text-[#FF6B00]" aria-hidden>*</span>
+              Nom <span className="text-[#F97316]" aria-hidden>*</span>
             </label>
             <input
               id="lastName"
@@ -130,7 +130,7 @@ export default function RegisterPage() {
               autoComplete="family-name"
               disabled={loading}
               aria-required="true"
-              className="h-12 px-4 rounded-2xl text-sm text-white bg-white/10 border-2 border-white/20 placeholder:text-white/30 focus:outline-none focus:border-[#FF6B00] disabled:opacity-50 transition-colors"
+              className="h-12 px-4 rounded-2xl text-sm text-white bg-white/10 border-2 border-white/20 placeholder:text-white/30 focus:outline-none focus:border-[#F97316] disabled:opacity-50 transition-colors"
             />
           </div>
 
@@ -148,7 +148,7 @@ export default function RegisterPage() {
               placeholder="EX: ABC123"
               maxLength={6}
               disabled={loading}
-              className="h-12 px-4 rounded-2xl text-sm text-white bg-white/10 border-2 border-white/20 placeholder:text-white/30 focus:outline-none focus:border-[#FF6B00] disabled:opacity-50 transition-colors font-mono tracking-widest"
+              className="h-12 px-4 rounded-2xl text-sm text-white bg-white/10 border-2 border-white/20 placeholder:text-white/30 focus:outline-none focus:border-[#F97316] disabled:opacity-50 transition-colors font-mono tracking-widest"
             />
             <p className="text-xs text-white/30">
               Si un ami vous a invité, saisissez son code pour obtenir un bonus.
@@ -170,7 +170,7 @@ export default function RegisterPage() {
                 className={[
                   'w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all duration-150',
                   cguAccepted
-                    ? 'bg-[#FF6B00] border-[#FF6B00]'
+                    ? 'bg-[#F97316] border-[#F97316]'
                     : 'border-white/30 bg-white/10',
                 ].join(' ')}
                 aria-hidden
@@ -184,7 +184,7 @@ export default function RegisterPage() {
             </div>
             <span className="text-sm text-white/60 leading-relaxed">
               J'accepte les{' '}
-              <Link href="/cgu" target="_blank" className="text-[#FF6B00] hover:underline">
+              <Link href="/cgu" target="_blank" className="text-[#F97316] hover:underline">
                 conditions générales d'utilisation
               </Link>{' '}
               de Daada.
@@ -205,9 +205,9 @@ export default function RegisterPage() {
             aria-busy={loading}
             className={[
               'w-full py-4 rounded-2xl text-sm font-bold transition-all duration-150 mt-1',
-              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6B00]',
+              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316]',
               isValid && !loading
-                ? 'bg-[#FF6B00] text-white hover:bg-[#FF8C00] active:scale-[0.98] shadow-lg shadow-orange-500/30'
+                ? 'bg-[#F97316] text-white hover:bg-[#FF8C00] active:scale-[0.98] shadow-lg shadow-orange-500/30'
                 : 'bg-white/10 text-white/30 cursor-not-allowed',
             ].join(' ')}
           >
