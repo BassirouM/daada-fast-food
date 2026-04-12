@@ -17,15 +17,15 @@ const ThemeContext = createContext<ThemeContextType>({
 })
 
 function applyTheme(t: Theme) {
-  if (t === 'light') {
-    document.documentElement.setAttribute('data-theme', 'light')
+  if (t === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark')
   } else {
     document.documentElement.removeAttribute('data-theme')
   }
 }
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>('dark')
+  const [theme, setThemeState] = useState<Theme>('light')
 
   useEffect(() => {
     const stored = localStorage.getItem('daada-theme') as Theme | null

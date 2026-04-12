@@ -1,222 +1,433 @@
-import Link from "next/link";
+import type { Metadata } from 'next'
+import Link from 'next/link'
+import Image from 'next/image'
 
-const MOCK_RECIPES = [
-  {
-    id: "r1",
-    title: "Ndolé Traditionnel de Maman",
-    imageUrl: "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=400&h=300&fit=crop",
-    difficulty: "Moyen",
-    prepTime: 30,
-    cookTime: 60,
-    tier: "free",
-  },
-  {
-    id: "r2",
-    title: "Poulet DG — Recette Facile",
-    imageUrl: "https://images.unsplash.com/photo-1598103442097-8b74394b95c8?w=400&h=300&fit=crop",
-    difficulty: "Facile",
-    prepTime: 20,
-    cookTime: 45,
-    tier: "free",
-  },
-  {
-    id: "r3",
-    title: "Eru Authentique",
-    imageUrl: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop",
-    difficulty: "Moyen",
-    prepTime: 25,
-    cookTime: 50,
-    tier: "free",
-  },
-  {
-    id: "r4",
-    title: "Secret : Sauce Arachide Parfaite",
-    imageUrl: "https://images.unsplash.com/photo-1547592180-85f173990554?w=400&h=300&fit=crop",
-    difficulty: "Difficile",
-    prepTime: 45,
-    cookTime: 90,
-    tier: "premium",
-  },
-  {
-    id: "r5",
-    title: "Beignets de Plantain Croustillants",
-    imageUrl: "https://images.unsplash.com/photo-1551024601-bec78aea704b?w=400&h=300&fit=crop",
-    difficulty: "Facile",
-    prepTime: 10,
-    cookTime: 20,
-    tier: "premium",
-  },
-  {
-    id: "r6",
-    title: "Thieb Bou Djenn Camerounais",
-    imageUrl: "https://images.unsplash.com/photo-1529042410759-befb1204b468?w=400&h=300&fit=crop",
-    difficulty: "Difficile",
-    prepTime: 60,
-    cookTime: 120,
-    tier: "premium",
-  },
-];
+export const metadata: Metadata = {
+  title: 'Cuisine Camerounaise',
+  description: 'Découvrez les recettes des meilleures cuisinières de Maroua. Ndolé, Poulet DG, Eru — filmées en HD avec ingrédients locaux.',
+}
 
-const MOCK_ÉPICIERS = [
-  { id: "e1", name: "Marché Central Maroua", distance: "0.8 km", specialty: "Épices, légumes frais" },
-  { id: "e2", name: "Épicerie Chez Fatima", distance: "1.2 km", specialty: "Huile de palme, graines" },
-  { id: "e3", name: "Grand Marché", distance: "2.1 km", specialty: "Tout ingrédients" },
-];
+// ─── Types ────────────────────────────────────────────────────────────────────
 
-const difficultyColor: Record<string, string> = {
-  Facile: "text-green-600",
-  Moyen: "text-amber-600",
-  Difficile: "text-red-600",
-};
+type Recette = {
+  id: string
+  titre: string
+  imageUrl: string
+  difficulte: 'Facile' | 'Moyen' | 'Difficile'
+  tempTotal: number
+  tier: 'free' | 'premium'
+  categorie: string
+}
 
-export default function CuisinePage() {
+type Epicier = {
+  id: string
+  nom: string
+  distance: string
+  specialite: string
+}
+
+// ─── Data (en attendant Supabase) ─────────────────────────────────────────────
+
+const RECETTES: Recette[] = [
+  {
+    id: 'r1',
+    titre: 'Ndolé Traditionnel de Maman',
+    imageUrl: 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=600&h=400&fit=crop',
+    difficulte: 'Moyen',
+    tempTotal: 90,
+    tier: 'free',
+    categorie: 'Plat principal',
+  },
+  {
+    id: 'r2',
+    titre: 'Poulet DG — Recette Facile',
+    imageUrl: 'https://images.unsplash.com/photo-1598103442097-8b74394b95c8?w=600&h=400&fit=crop',
+    difficulte: 'Facile',
+    tempTotal: 65,
+    tier: 'free',
+    categorie: 'Plat principal',
+  },
+  {
+    id: 'r3',
+    titre: 'Eru Authentique',
+    imageUrl: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&h=400&fit=crop',
+    difficulte: 'Moyen',
+    tempTotal: 75,
+    tier: 'free',
+    categorie: 'Plat principal',
+  },
+  {
+    id: 'r4',
+    titre: 'Secret : Sauce Arachide Parfaite',
+    imageUrl: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=600&h=400&fit=crop',
+    difficulte: 'Difficile',
+    tempTotal: 135,
+    tier: 'premium',
+    categorie: 'Sauce',
+  },
+  {
+    id: 'r5',
+    titre: 'Beignets de Plantain Croustillants',
+    imageUrl: 'https://images.unsplash.com/photo-1551024601-bec78aea704b?w=600&h=400&fit=crop',
+    difficulte: 'Facile',
+    tempTotal: 30,
+    tier: 'premium',
+    categorie: 'Snack',
+  },
+  {
+    id: 'r6',
+    titre: 'Thieb Bou Djenn Camerounais',
+    imageUrl: 'https://images.unsplash.com/photo-1529042410759-befb1204b468?w=600&h=400&fit=crop',
+    difficulte: 'Difficile',
+    tempTotal: 180,
+    tier: 'premium',
+    categorie: 'Plat principal',
+  },
+]
+
+const EPICIERS: Epicier[] = [
+  { id: 'e1', nom: 'Marché Central Maroua', distance: '0.8 km', specialite: 'Épices, légumes frais' },
+  { id: 'e2', nom: 'Épicerie Chez Fatima', distance: '1.2 km', specialite: 'Huile de palme, graines' },
+  { id: 'e3', nom: 'Grand Marché', distance: '2.1 km', specialite: 'Tous ingrédients' },
+]
+
+const DIFFICULTE_COLOR: Record<Recette['difficulte'], string> = {
+  Facile:    'var(--success)',
+  Moyen:     'var(--warning)',
+  Difficile: 'var(--danger)',
+}
+
+// ─── RecetteCard ──────────────────────────────────────────────────────────────
+
+function RecetteCard({ recette }: { recette: Recette }) {
+  const isPremium = recette.tier === 'premium'
+
   return (
-    <div className="min-h-screen" style={{ backgroundColor: "#fffbf5" }}>
-      {/* Hero */}
-      <section className="bg-gradient-to-br from-amber-50 to-orange-50 py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
-          <div className="max-w-2xl">
-            <span className="inline-flex items-center rounded-full bg-gradient-to-r from-amber-500 to-yellow-400 px-3 py-1 text-xs font-semibold text-white">
-              ✨ Daada Cuisine
-            </span>
-            <h1
-              className="mt-3 text-4xl font-black text-gray-900 sm:text-5xl"
-              style={{ fontFamily: "Playfair Display, Georgia, serif" }}
+    <div
+      style={{
+        background: 'var(--bg-surface)',
+        borderRadius: 20,
+        overflow: 'hidden',
+        border: '1px solid var(--border)',
+        boxShadow: 'var(--shadow-sm)',
+        transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+        cursor: 'pointer',
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform = 'translateY(-3px)'
+        e.currentTarget.style.boxShadow = 'var(--shadow-md)'
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = 'translateY(0)'
+        e.currentTarget.style.boxShadow = 'var(--shadow-sm)'
+      }}
+    >
+      {/* Image */}
+      <div style={{ position: 'relative', height: 200, overflow: 'hidden', background: 'var(--bg-elevated)' }}>
+        <Image
+          src={recette.imageUrl}
+          alt={recette.titre}
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          style={{
+            objectFit: 'cover',
+            filter: isPremium ? 'blur(6px) brightness(0.8)' : 'none',
+            transition: 'transform 0.3s ease',
+          }}
+        />
+
+        {/* Badge tier */}
+        <div style={{ position: 'absolute', top: 12, right: 12 }}>
+          <span
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 4,
+              padding: '3px 10px',
+              borderRadius: 999,
+              fontSize: '0.6875rem',
+              fontWeight: 700,
+              background: isPremium
+                ? 'linear-gradient(135deg, var(--accent-dark), var(--accent))'
+                : 'var(--success)',
+              color: 'white',
+            }}
+          >
+            {isPremium ? '✨ PREMIUM' : '✓ GRATUIT'}
+          </span>
+        </div>
+
+        {/* Premium lock overlay */}
+        {isPremium && (
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              background: 'rgba(0,0,0,0.25)',
+            }}
+          >
+            <div
+              style={{
+                background: 'rgba(255,255,255,0.92)',
+                borderRadius: 14,
+                padding: '10px 20px',
+                textAlign: 'center',
+              }}
             >
-              Cuisinez comme un Chef camerounais 👨‍🍳
-            </h1>
-            <p className="mt-4 text-lg text-gray-600">
-              Découvrez les secrets des meilleures cuisinières de Maroua. Recettes filmées en HD,
-              instructions détaillées, ingrédients locaux.
-            </p>
-            <div className="mt-6 flex flex-wrap items-center gap-4">
-              <Link
-                href="/login"
-                className="rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-600 transition-colors"
-              >
-                Commencer gratuitement
-              </Link>
-              <span className="text-sm text-gray-500">
-                Premium dès 1 500 FCFA/mois — annulable à tout moment
-              </span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Recipes Grid */}
-      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
-        <div className="flex items-center justify-between">
-          <h2
-            className="text-2xl font-bold text-gray-900"
-            style={{ fontFamily: "Playfair Display, Georgia, serif" }}
-          >
-            Toutes les recettes
-          </h2>
-          <div className="flex gap-2">
-            <span className="inline-flex items-center rounded-full bg-green-500 px-2.5 py-0.5 text-xs font-semibold text-white">
-              3 gratuites
-            </span>
-            <span className="inline-flex items-center rounded-full bg-gradient-to-r from-amber-500 to-yellow-400 px-2.5 py-0.5 text-xs font-semibold text-white">
-              3 premium
-            </span>
-          </div>
-        </div>
-
-        <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {MOCK_RECIPES.map((recipe) => {
-            const isPremium = recipe.tier === "premium";
-            return (
-              <div
-                key={recipe.id}
-                className="group relative overflow-hidden rounded-2xl border border-gray-100 bg-white cursor-pointer transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5"
-              >
-                {/* Image */}
-                <div className="relative h-52 overflow-hidden bg-gray-100">
-                  <img
-                    src={recipe.imageUrl}
-                    alt={recipe.title}
-                    className={`h-full w-full object-cover transition-transform duration-300 group-hover:scale-105 ${
-                      isPremium ? "blur-sm scale-105" : ""
-                    }`}
-                    loading="lazy"
-                  />
-                  <div className="absolute right-3 top-3">
-                    <span
-                      className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold ${
-                        isPremium
-                          ? "bg-gradient-to-r from-amber-500 to-yellow-400 text-white"
-                          : "bg-green-500 text-white"
-                      }`}
-                    >
-                      {isPremium ? "✨ PREMIUM" : "✓ GRATUIT"}
-                    </span>
-                  </div>
-                  {isPremium && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/30 backdrop-blur-[2px]">
-                      <div className="flex flex-col items-center gap-2 rounded-xl bg-white/90 px-5 py-3">
-                        <span className="text-2xl">🔓</span>
-                        <span className="text-sm font-semibold text-gray-800">Débloquer la recette</span>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Content */}
-                <div className="p-4">
-                  <h3 className="font-semibold text-gray-900 line-clamp-2">{recipe.title}</h3>
-                  <div className="mt-2 flex items-center gap-3 text-xs text-gray-500">
-                    <span className={`font-medium ${difficultyColor[recipe.difficulty] ?? "text-gray-600"}`}>
-                      {recipe.difficulty}
-                    </span>
-                    <span>•</span>
-                    <span>🕐 {recipe.prepTime + recipe.cookTime} min</span>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* Épiciers */}
-      <section className="border-t border-gray-100 bg-white py-12">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
-          <h2
-            className="text-2xl font-bold text-gray-900"
-            style={{ fontFamily: "Playfair Display, Georgia, serif" }}
-          >
-            🗺️ Trouvez vos ingrédients à Maroua
-          </h2>
-          <p className="mt-1 text-gray-500">
-            Épiceries et marchés partenaires avec les ingrédients de nos recettes
-          </p>
-
-          {/* Map placeholder */}
-          <div className="mt-6 flex h-64 items-center justify-center rounded-2xl bg-gray-100">
-            <div className="text-center">
-              <span className="text-5xl">🗺️</span>
-              <p className="mt-2 text-sm text-gray-500">
-                Carte Mapbox — disponible après configuration
+              <div style={{ fontSize: '1.5rem', marginBottom: 4 }}>🔓</div>
+              <p style={{ fontSize: '0.8125rem', fontWeight: 600, color: '#1F2937' }}>
+                Débloquer la recette
               </p>
             </div>
           </div>
+        )}
+      </div>
 
-          {/* Épiciers list */}
-          <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
-            {MOCK_ÉPICIERS.map((e) => (
-              <div
-                key={e.id}
-                className="rounded-xl border border-gray-100 bg-gray-50 p-4"
-              >
-                <h3 className="font-semibold text-gray-900">{e.name}</h3>
-                <p className="mt-1 text-xs font-medium text-primary">{e.distance}</p>
-                <p className="mt-1 text-sm text-gray-500">{e.specialty}</p>
+      {/* Content */}
+      <div style={{ padding: '1rem' }}>
+        <p style={{ fontSize: '0.6875rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 4 }}>
+          {recette.categorie}
+        </p>
+        <h3 style={{ fontSize: '0.9375rem', fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.3, marginBottom: 10 }}>
+          {recette.titre}
+        </h3>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <span style={{ fontSize: '0.8125rem', fontWeight: 600, color: DIFFICULTE_COLOR[recette.difficulte] }}>
+            {recette.difficulte}
+          </span>
+          <span style={{ color: 'var(--border-strong)', fontSize: '0.75rem' }}>•</span>
+          <span style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)' }}>
+            🕐 {recette.tempTotal} min
+          </span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ─── Page ─────────────────────────────────────────────────────────────────────
+
+export default function CuisinePage() {
+  const libres  = RECETTES.filter((r) => r.tier === 'free')
+  const premium = RECETTES.filter((r) => r.tier === 'premium')
+
+  return (
+    <div style={{ minHeight: '100vh', background: 'var(--bg-base)' }}>
+
+      {/* ── Hero ────────────────────────────────────────────────────────────── */}
+      <section
+        style={{
+          background: 'linear-gradient(135deg, #fff7ed 0%, #ffedd5 50%, #fed7aa 100%)',
+          padding: '4rem 1.5rem 3rem',
+          borderBottom: '1px solid var(--border)',
+        }}
+      >
+        <div style={{ maxWidth: 720, margin: '0 auto' }}>
+          <span
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 6,
+              padding: '4px 14px',
+              borderRadius: 999,
+              background: 'linear-gradient(135deg, var(--accent-dark, #F59E0B), var(--accent, #FBBF24))',
+              color: 'white',
+              fontSize: '0.75rem',
+              fontWeight: 700,
+              marginBottom: '1rem',
+            }}
+          >
+            ✨ Daada Cuisine
+          </span>
+
+          <h1
+            style={{
+              fontSize: 'clamp(1.75rem, 5vw, 2.75rem)',
+              fontWeight: 800,
+              color: '#1F2937',
+              lineHeight: 1.15,
+              marginBottom: '1rem',
+            }}
+          >
+            Cuisinez comme un Chef camerounais 👨‍🍳
+          </h1>
+
+          <p style={{ fontSize: '1.0625rem', color: '#4B5563', lineHeight: 1.6, marginBottom: '1.5rem', maxWidth: 560 }}>
+            Découvrez les secrets des meilleures cuisinières de Maroua.
+            Recettes filmées en HD, instructions détaillées, ingrédients locaux.
+          </p>
+
+          <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '1rem' }}>
+            <Link
+              href="/login"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 8,
+                padding: '0.75rem 1.5rem',
+                borderRadius: 12,
+                background: 'var(--brand)',
+                color: 'white',
+                fontWeight: 700,
+                fontSize: '0.9375rem',
+                textDecoration: 'none',
+                boxShadow: 'var(--shadow-brand)',
+                transition: 'background 0.15s',
+              }}
+            >
+              Commencer gratuitement →
+            </Link>
+            <span style={{ fontSize: '0.875rem', color: '#6B7280' }}>
+              Premium dès 1 500 FCFA/mois · annulable à tout moment
+            </span>
+          </div>
+
+          {/* Stats */}
+          <div style={{ display: 'flex', gap: '2rem', marginTop: '2rem' }}>
+            {[
+              { v: '3', l: 'recettes gratuites' },
+              { v: '3', l: 'recettes premium' },
+              { v: '100%', l: 'ingrédients locaux' },
+            ].map(({ v, l }) => (
+              <div key={l}>
+                <p style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--brand)' }}>{v}</p>
+                <p style={{ fontSize: '0.75rem', color: '#6B7280' }}>{l}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
+
+      <div style={{ maxWidth: 1024, margin: '0 auto', padding: '2rem 1.5rem' }}>
+
+        {/* ── Recettes gratuites ──────────────────────────────────────────── */}
+        <section style={{ marginBottom: '3rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem' }}>
+            <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--text-primary)' }}>
+              Recettes gratuites
+            </h2>
+            <span
+              style={{
+                padding: '3px 12px',
+                borderRadius: 999,
+                background: 'var(--success-subtle)',
+                color: 'var(--success)',
+                fontSize: '0.75rem',
+                fontWeight: 700,
+              }}
+            >
+              {libres.length} disponibles
+            </span>
+          </div>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+              gap: '1.25rem',
+            }}
+          >
+            {libres.map((r) => <RecetteCard key={r.id} recette={r} />)}
+          </div>
+        </section>
+
+        {/* ── Recettes premium ────────────────────────────────────────────── */}
+        <section style={{ marginBottom: '3rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem' }}>
+            <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--text-primary)' }}>
+              Recettes premium ✨
+            </h2>
+            <Link
+              href="/login"
+              style={{
+                padding: '5px 14px',
+                borderRadius: 999,
+                background: 'linear-gradient(135deg, #F59E0B, #FBBF24)',
+                color: 'white',
+                fontSize: '0.75rem',
+                fontWeight: 700,
+                textDecoration: 'none',
+              }}
+            >
+              Débloquer tout
+            </Link>
+          </div>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+              gap: '1.25rem',
+            }}
+          >
+            {premium.map((r) => <RecetteCard key={r.id} recette={r} />)}
+          </div>
+        </section>
+
+        {/* ── Trouver les ingrédients ──────────────────────────────────────── */}
+        <section
+          style={{
+            background: 'var(--bg-surface)',
+            borderRadius: 20,
+            border: '1px solid var(--border)',
+            padding: '1.75rem',
+          }}
+        >
+          <h2 style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '0.375rem' }}>
+            🗺️ Trouvez vos ingrédients à Maroua
+          </h2>
+          <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', marginBottom: '1.25rem' }}>
+            Épiceries et marchés partenaires avec les ingrédients de nos recettes
+          </p>
+
+          {/* Map placeholder */}
+          <div
+            style={{
+              height: 200,
+              borderRadius: 14,
+              background: 'var(--bg-elevated)',
+              border: '1px solid var(--border)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexDirection: 'column',
+              gap: 8,
+              marginBottom: '1.25rem',
+            }}
+          >
+            <span style={{ fontSize: '2.5rem' }}>🗺️</span>
+            <p style={{ fontSize: '0.8125rem', color: 'var(--text-muted)' }}>
+              Carte interactive — disponible après configuration Mapbox
+            </p>
+          </div>
+
+          {/* Épiciers */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '0.75rem' }}>
+            {EPICIERS.map((e) => (
+              <div
+                key={e.id}
+                style={{
+                  background: 'var(--bg-elevated)',
+                  borderRadius: 12,
+                  padding: '0.875rem',
+                  border: '1px solid var(--border)',
+                }}
+              >
+                <h3 style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: 4 }}>
+                  {e.nom}
+                </h3>
+                <p style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--brand)', marginBottom: 2 }}>
+                  📍 {e.distance}
+                </p>
+                <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
+                  {e.specialite}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+      </div>
     </div>
-  );
+  )
 }

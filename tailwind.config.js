@@ -7,6 +7,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        // New tokens
         brand: {
           DEFAULT: '#F97316',
           light:   '#FB923C',
@@ -22,6 +23,8 @@ module.exports = {
           light:   '#FCD34D',
           dark:    '#F59E0B',
         },
+        // Alias for backward compatibility
+        primary: '#F97316',
       },
       fontFamily: {
         sans:    ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
