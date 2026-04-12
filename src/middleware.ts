@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { createServerClient } from '@supabase/auth-helpers-nextjs'
+import { createServerClient } from '@supabase/ssr'
 import { Ratelimit } from '@upstash/ratelimit'
 import { Redis } from '@upstash/redis'
 
@@ -57,7 +57,7 @@ function getClientIp(req: NextRequest): string {
     if (first) return first.trim()
   }
 
-  return req.ip ?? 'unknown'
+  return 'unknown'
 }
 
 async function applyRateLimit(
@@ -135,9 +135,9 @@ export async function middleware(request: NextRequest) {
     {
       cookies: {
         getAll: () => request.cookies.getAll(),
-        setAll: (cookiesToSet) => {
+        setAll: (cookiesToSet: { name: string; value: string; options?: Record<string, unknown> }[]) => {
           cookiesToSet.forEach(({ name, value, options }) =>
-            response.cookies.set(name, value, options)
+            response.cookies.set(name, value, options as Parameters<typeof response.cookies.set>[2])
           )
         },
       },
