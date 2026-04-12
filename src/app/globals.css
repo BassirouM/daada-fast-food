@@ -1,9 +1,11 @@
 /* =============================================================================
    DAADA FAST FOOD — Design System
-   Tailwind v4 + CSS custom properties
+   Tailwind v3 + CSS custom properties
    ============================================================================= */
 
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* Self-hosted variable fonts */
 @font-face {

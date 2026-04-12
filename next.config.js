@@ -63,6 +63,16 @@ const nextConfig = {
     ]
   },
 
+  // ─── Webpack ───────────────────────────────────────────────────────────────
+  webpack: (config) => {
+    // @upstash/redis résout vers nodejs.mjs en Edge — forcer la version fetch-based
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@upstash/redis': require.resolve('@upstash/redis/cloudflare'),
+    }
+    return config
+  },
+
   // ─── Redirects ─────────────────────────────────────────────────────────────
   async redirects() {
     return [
